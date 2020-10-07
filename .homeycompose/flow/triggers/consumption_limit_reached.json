@@ -1,0 +1,26 @@
+{
+    "id": "consumption_limit_reached",
+    "title": {
+      "en": "Consumption limit reached",
+      "no": "Effektgrense nådd"
+    },
+    "tokens": [{
+      "name": "consumption",
+      "type": "number",
+      "title": {
+        "en": "Watt hours",
+        "no": "Watt-timer"
+      },
+      "example": {
+        "en": "4000",
+        "no": "4000"
+      }
+    }],
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      }
+    ]
+  }

@@ -1,0 +1,16 @@
+
+{
+    "title": {
+      "en": "Consumption warning triggered",
+      "no": "Forbruksvarsel aktivert"
+    },
+    "desc": {
+      "en": "Consumption warning has been triggered this hour",
+      "no": "Forbruksvarsel har blitt aktivert denne timen"
+    },
+    "type": "boolean",
+    "getable": true,
+    "setable": false,
+    "greyout": true,
+    "icon": "/assets/alert.svg"
+  }

@@ -1,0 +1,26 @@
+{
+    "id": "consumption_updated",
+    "title": {
+      "en": "Update consumption",
+      "no": "Oppdater forbruk"
+    },
+    "hint": {
+      "en": "Set new consumption",
+      "no": "Sett nytt forbruk"
+    },
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      },
+      {
+        "name": "consumption",
+        "type": "number",
+        "title": {
+          "en": "Watt",
+          "no": "Watt"
+        }
+      }
+    ]
+  }

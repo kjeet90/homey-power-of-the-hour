@@ -1,0 +1,25 @@
+{
+  "id": "no.kjeet90.powerofthehour",
+  "version": "0.0.1",
+  "compatibility": ">=4.2.0",
+  "sdk": 2,
+  "name": {
+    "en": "Power of the hour"
+  },
+  "description": {
+    "en": "Notifies when power limits set by user is reached",
+    "no": "Varsler når effektgrense satt av brukeren er nådd"
+  },
+  "category": [
+    "energy"
+  ],
+  "permissions": [],
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png"
+  },
+  "author": {
+    "name": "Kjetil Haugland",
+    "email": "hauglandkjetil@gmail.com"
+  }
+}

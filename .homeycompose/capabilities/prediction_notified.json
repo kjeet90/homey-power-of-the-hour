@@ -1,0 +1,16 @@
+
+{
+    "title": {
+      "en": "Prediction warning sent",
+      "no": "Estimeringsvarsel sendt"
+    },
+    "desc": {
+      "en": "Prediction warning has been sent this hour",
+      "no": "Estimeringsadvarsel har blitt sendt denne timen"
+    },
+    "type": "boolean",
+    "getable": true,
+    "setable": false,
+    "greyout": true,
+    "icon": "/assets/alert.svg"
+  }

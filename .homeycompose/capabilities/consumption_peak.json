@@ -1,0 +1,34 @@
+
+{
+    
+    "title": {
+      "en": "Peak this hour",
+      "no": "Topp denne timen"
+    },
+    "desc": {
+      "en": "Shows highest registered peak within this hour",
+      "no": "Viser høyeste registrerte topp denne timen"
+    },
+    "tokens": [{
+      "name": "value",
+      "title": {
+        "en": "Watt",
+        "no": "Watt"
+      },
+      "example": {
+       "en": 1200,
+       "no": 1200 
+      }
+    }],
+    "type": "number",
+    "min": 0,
+    "decimals": 0,
+    "units": {
+      "en": "W",
+      "no": "W"
+    },
+    "getable": true,
+    "setable": false,
+    "greyout": true,
+    "icon": "/assets/maximum.svg"
+  }

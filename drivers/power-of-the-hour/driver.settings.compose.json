@@ -1,0 +1,39 @@
+[
+    {
+        "type": "group",
+        "label": {
+            "en": "Consumption",
+            "no": "Forbruk"
+        },
+        "children": [
+            {
+                "$extends": "consumption_limit",
+                "id": "consumption_limit"
+            },
+            {
+                "$extends": "notification_consumption_time",
+                "id": "notification_consumption_time"
+            }
+        ]
+    },
+    {
+        "type": "group",
+        "label": {
+            "en": "Prediction",
+            "no": "Estimat"
+        },
+        "children": [
+            {
+                "$extends": "prediction_age",
+                "id": "prediction_age"    
+            },
+            {
+                "$extends": "prediction_limit",
+                "id": "prediction_limit"
+            },{
+                "$extends": "notification_prediction_time",
+                "id": "notification_prediction_time"
+            }
+        ]
+    }
+]

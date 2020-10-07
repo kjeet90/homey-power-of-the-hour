@@ -1,0 +1,13 @@
+{
+    "id": "prediction_limit",
+    "type": "number",
+    "label": {
+      "en": "Notify at predicted usage over (Wh)",
+      "no": "Varsle ved estimert forbruk over (Wt)"
+    },
+    "value": 4000,
+    "hint": {
+        "en": "Notifies if prediction (Watt hours) is reached before the number of minutes have passed in the current hour",
+        "no": "Notifiserer dersom estimert forbruk (Watt-timer) er nådd før antall minutter i den gjeldende timen har gått"
+    }
+}

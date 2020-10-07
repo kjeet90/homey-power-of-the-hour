@@ -1,0 +1,12 @@
+{
+  "name": "no.kjeet90.powerofthehour",
+  "version": "0.0.1",
+  "main": "app.js",
+  "engines": {
+    "node": ">=12.16.1"
+  },
+  "devDependencies": {
+    "eslint-config-athom": "^2.1.0",
+    "homey": "^2.7.0"
+  }
+}
