@@ -2,8 +2,8 @@
     "id": "prediction_limit",
     "type": "number",
     "label": {
-      "en": "Notify at predicted usage over (Wh)",
-      "no": "Varsle ved estimert forbruk over (Wt)"
+      "en": "Notify at prediction over (Wh)",
+      "no": "Varsle ved estimat over (Wt)"
     },
     "value": 4000,
     "hint": {
