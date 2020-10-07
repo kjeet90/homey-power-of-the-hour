@@ -114,7 +114,8 @@
     {
       "id": "power-of-the-hour",
       "name": {
-        "en": "Power of the hour"
+        "en": "Power of the hour",
+        "no": "Power of the hour"
       },
       "class": "sensor",
       "capabilities": [

@@ -1,7 +1,8 @@
 {
   "id": "power-of-the-hour",
   "name": {
-    "en": "Power of the hour"
+    "en": "Power of the hour",
+    "no": "Power of the hour"
   },
   "class": "sensor",
   "capabilities": ["consumption", "consumption_notified","predictor", "prediction_notified", "consumption_peak", "consumption_previous_hour"],
