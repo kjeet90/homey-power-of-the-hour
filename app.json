@@ -291,6 +291,21 @@
               }
             },
             {
+              "id": "prediction_history_count",
+              "type": "number",
+              "label": {
+                "en": "History",
+                "no": "Historikk"
+              },
+              "value": 360,
+              "min": 0,
+              "max": 1000,
+              "hint": {
+                "en": "Maximum number of readings stored (used for prediction calculations). If you are not using the predictor you can set this to 0 to save memory. Example with storing 360 readings: If your device is updating every 5 seconds you would be able to predict based on 30 minutes of history. 5 seconds * 360  = 1800 seconds = 30 minutes.",
+                "no": "Maksimalt antall avlesninger som lagres (brukt estimeringskalkulasjoner). Dersom du ikke bruker estimatoren kan denne settes til 0 for å spare minne. Eksempel med lagring av 360 avlesninger: Dersom enheten din oppdaterer hvert 5 sekund vil du kunne estimere basert på 30 minutters historikk. 5 sekund * 360  = 1800 sekunder = 30 minutter."
+              }
+            },
+            {
               "id": "prediction_limit",
               "type": "number",
               "label": {
@@ -390,8 +405,8 @@
     },
     "consumption_notified": {
       "title": {
-        "en": "Consumption warning triggered",
-        "no": "Forbruksvarsel aktivert"
+        "en": "Consumption warning sent",
+        "no": "Forbruksvarsel sendt"
       },
       "desc": {
         "en": "Consumption warning has been triggered this hour",

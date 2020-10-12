@@ -36,6 +36,10 @@
                 "id": "prediction_age"    
             },
             {
+                "$extends": "prediction_history_count",
+                "id": "prediction_history_count"    
+            },
+            {
                 "$extends": "prediction_limit",
                 "id": "prediction_limit"
             },

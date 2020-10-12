@@ -133,7 +133,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   }
 
   updateReferenceReadings(watt, timeOfReading) {
-    if (this.referenceReadings.length > maxStoredReadings) {
+    if (this.referenceReadings.length > this.getSetting('prediction_history_count')) {
       this.referenceReadings.pop();
     }
     this.referenceReadings.unshift(
@@ -146,6 +146,9 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   async onSettings(oldSettings, newSettings, changedKeys) {
     if (changedKeys.includes('prediction_age')) {
       this.predict();
+    }
+    if(changedKeys.includes('prediction_history_count')) {
+      this.referenceReadings = this.referenceReadings.slice(0, newSettings.prediction_history_count);
     }
   }
 }
