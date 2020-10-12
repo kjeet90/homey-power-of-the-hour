@@ -1,8 +1,8 @@
 
 {
     "title": {
-      "en": "Consumption warning triggered",
-      "no": "Forbruksvarsel aktivert"
+      "en": "Consumption warning sent",
+      "no": "Forbruksvarsel sendt"
     },
     "desc": {
       "en": "Consumption warning has been triggered this hour",

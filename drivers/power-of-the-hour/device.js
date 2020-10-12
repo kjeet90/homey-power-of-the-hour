@@ -3,7 +3,7 @@
 const Homey = require('homey');
 const calculations = require('../../lib/calculations');
 
-const maxStoredReadings = 360; // given a update of every 5 seconds -> 60/12 = 12 * 30 minutes = 360 readings
+let maxStoredReadings = 360; // given a update of every 5 seconds -> 60/12 = 12 * 30 minutes = 360 readings
 
 
 module.exports = class PowerOfTheHour extends Homey.Device {
