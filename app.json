@@ -324,7 +324,7 @@
               },
               "value": 1,
               "min": 1,
-              "max": 60,
+              "max": 1000,
               "step": 1,
               "hint": {
                 "en": "Maximum age or count of readings which are used for predicting the future consumption",
