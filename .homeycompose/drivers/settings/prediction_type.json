@@ -1,0 +1,27 @@
+{
+    "id": "prediction_type",
+    "type": "dropdown",
+    "label": {
+      "en": "Prediction method",
+      "no": "Estimeringsmetode"
+    },
+    "value": "time",
+    "values": [{
+      "id": "time",
+      "label": {
+        "en": "Age (minutes)",
+        "no": "Alder (minutter)"
+      }
+    },
+    {
+      "id": "count",
+      "label": {
+        "en": "Count",
+        "no": "Antall"
+      }
+    }],
+    "hint": {
+        "en": "Select if the predictions should be done based on age of readings or a specific amount of readings",
+        "no": "Velg om estimeringen skal gjøres basert på alder av avlesninger eller et spesifikt antall avlesninger"
+    }
+}

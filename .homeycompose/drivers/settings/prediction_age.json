@@ -1,67 +1,16 @@
 {
     "id": "prediction_age",
-    "type": "dropdown",
+    "type": "number",
     "label": {
-      "en": "Prediction age",
-      "no": "Alder for estimat"
+      "en": "Prediction",
+      "no": "Estimering"
     },
-    "value": "latest",
-    "values": [
-    {
-      "id": "latest",
-      "label": {
-        "en": "Only last reading",
-        "no": "Bare siste avlesning"
-      }
-    },
-    {
-      "id": "1",
-      "label": {
-        "en": "1 minute",
-        "no": "1 minutt"
-      }
-    },
-    {
-      "id": "5",
-      "label": {
-        "en": "5 minutes",
-        "no": "5 minutter"
-      }
-    },
-    {
-      "id": "10",
-      "label": {
-        "en": "10 minutes",
-        "no": "10 minutter"
-      }
-    },
-    {
-      "id": "15",
-      "label": {
-        "en": "15 minutes",
-        "no": "15 minutter"
-      }
-    },{
-      "id": "20",
-      "label": {
-        "en": "20 minutes",
-        "no": "20 minutter"
-      }
-    },{
-      "id": "25",
-      "label": {
-        "en": "25 minutes",
-        "no": "25 minutter"
-      }
-    },{
-      "id": "30",
-      "label": {
-        "en": "30 minutes",
-        "no": "30 minutter"
-      }
-    }],
+    "value": 1,
+    "min": 1,
+    "max": 60,
+    "step": 1,
     "hint": {
-        "en": "Maximum age of readings which are used for predicting the future consumption",
-        "no": "Maksimale alderen av målinger som brukes for estimere fremtidig forbruk"
+        "en": "Maximum age or count of readings which are used for predicting the future consumption",
+        "no": "Maksimale alderen eller antall av målinger som brukes for estimere fremtidig forbruk"
     }
 }

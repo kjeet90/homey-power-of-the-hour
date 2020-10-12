@@ -148,8 +148,8 @@
         {
           "type": "group",
           "label": {
-            "en": "Consumption",
-            "no": "Forbruk"
+            "en": "Consumption notification",
+            "no": "Forbruksvarsel"
           },
           "children": [
             {
@@ -215,96 +215,10 @@
         {
           "type": "group",
           "label": {
-            "en": "Prediction",
-            "no": "Estimat"
+            "en": "Prediction notification",
+            "no": "Estimeringsvarsel"
           },
           "children": [
-            {
-              "id": "prediction_age",
-              "type": "dropdown",
-              "label": {
-                "en": "Prediction age",
-                "no": "Alder for estimat"
-              },
-              "value": "latest",
-              "values": [
-                {
-                  "id": "latest",
-                  "label": {
-                    "en": "Only last reading",
-                    "no": "Bare siste avlesning"
-                  }
-                },
-                {
-                  "id": "1",
-                  "label": {
-                    "en": "1 minute",
-                    "no": "1 minutt"
-                  }
-                },
-                {
-                  "id": "5",
-                  "label": {
-                    "en": "5 minutes",
-                    "no": "5 minutter"
-                  }
-                },
-                {
-                  "id": "10",
-                  "label": {
-                    "en": "10 minutes",
-                    "no": "10 minutter"
-                  }
-                },
-                {
-                  "id": "15",
-                  "label": {
-                    "en": "15 minutes",
-                    "no": "15 minutter"
-                  }
-                },
-                {
-                  "id": "20",
-                  "label": {
-                    "en": "20 minutes",
-                    "no": "20 minutter"
-                  }
-                },
-                {
-                  "id": "25",
-                  "label": {
-                    "en": "25 minutes",
-                    "no": "25 minutter"
-                  }
-                },
-                {
-                  "id": "30",
-                  "label": {
-                    "en": "30 minutes",
-                    "no": "30 minutter"
-                  }
-                }
-              ],
-              "hint": {
-                "en": "Maximum age of readings which are used for predicting the future consumption",
-                "no": "Maksimale alderen av målinger som brukes for estimere fremtidig forbruk"
-              }
-            },
-            {
-              "id": "prediction_history_count",
-              "type": "number",
-              "label": {
-                "en": "History",
-                "no": "Historikk"
-              },
-              "value": 360,
-              "min": 0,
-              "max": 1000,
-              "hint": {
-                "en": "Maximum number of readings stored (used for prediction calculations). If you are not using the predictor you can set this to 0 to save memory. Example with storing 360 readings: If your device is updating every 5 seconds you would be able to predict based on 30 minutes of history. 5 seconds * 360  = 1800 seconds = 30 minutes.",
-                "no": "Maksimalt antall avlesninger som lagres (brukt estimeringskalkulasjoner). Dersom du ikke bruker estimatoren kan denne settes til 0 for å spare minne. Eksempel med lagring av 360 avlesninger: Dersom enheten din oppdaterer hvert 5 sekund vil du kunne estimere basert på 30 minutters historikk. 5 sekund * 360  = 1800 sekunder = 30 minutter."
-              }
-            },
             {
               "id": "prediction_limit",
               "type": "number",
@@ -361,6 +275,75 @@
               "hint": {
                 "en": "If enabled: notifies if predicted consumption (Watt hours) is above limit, and the time is between the earliest/latest limit",
                 "no": "Dersom aktivert: notifiserer dersom estimert forbruk (Watt-timer) er over satt grense, og tidspunktet er mellom tidligst/senest grense"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Advanced",
+            "no": "Avansert"
+          },
+          "children": [
+            {
+              "id": "prediction_type",
+              "type": "dropdown",
+              "label": {
+                "en": "Prediction method",
+                "no": "Estimeringsmetode"
+              },
+              "value": "time",
+              "values": [
+                {
+                  "id": "time",
+                  "label": {
+                    "en": "Age (minutes)",
+                    "no": "Alder (minutter)"
+                  }
+                },
+                {
+                  "id": "count",
+                  "label": {
+                    "en": "Count",
+                    "no": "Antall"
+                  }
+                }
+              ],
+              "hint": {
+                "en": "Select if the predictions should be done based on age of readings or a specific amount of readings",
+                "no": "Velg om estimeringen skal gjøres basert på alder av avlesninger eller et spesifikt antall avlesninger"
+              }
+            },
+            {
+              "id": "prediction_age",
+              "type": "number",
+              "label": {
+                "en": "Prediction",
+                "no": "Estimering"
+              },
+              "value": 1,
+              "min": 1,
+              "max": 60,
+              "step": 1,
+              "hint": {
+                "en": "Maximum age or count of readings which are used for predicting the future consumption",
+                "no": "Maksimale alderen eller antall av målinger som brukes for estimere fremtidig forbruk"
+              }
+            },
+            {
+              "id": "prediction_history_count",
+              "type": "number",
+              "label": {
+                "en": "History",
+                "no": "Historikk"
+              },
+              "value": 360,
+              "min": 0,
+              "max": 1000,
+              "hint": {
+                "en": "Maximum number of readings stored (used for prediction calculations). If you are not using the predictor you can set this to 0 to save memory. Example with storing 360 readings: If your device is updating every 5 seconds you would be able to predict based on 30 minutes of history. 5 seconds * 360  = 1800 seconds = 30 minutes.",
+                "no": "Maksimalt antall avlesninger som lagres (brukt estimeringskalkulasjoner). Dersom du ikke bruker estimatoren kan denne settes til 0 for å spare minne. Eksempel med lagring av 360 avlesninger: Dersom enheten din oppdaterer hvert 5 sekund vil du kunne estimere basert på 30 minutters historikk. 5 sekund * 360  = 1800 sekunder = 30 minutter."
               }
             }
           ]

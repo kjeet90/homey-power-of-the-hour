@@ -126,7 +126,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
 
   predict() {
     if (this.referenceReadings.length > 1) {
-      const prediction = calculations.getPrediction(this.referenceReadings, this.getSetting('prediction_age'));
+      const prediction = calculations.getPrediction(this.referenceReadings, this.getSetting('prediction_age'), this.getSetting('prediction_type'));
       this.predictedWattHours = this.wattHours + prediction;
       this.setCapabilityValue('predictor', this.predictedWattHours);
     }
