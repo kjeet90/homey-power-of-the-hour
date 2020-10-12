@@ -166,53 +166,48 @@
               }
             },
             {
-              "id": "notification_consumption_time",
-              "type": "dropdown",
+              "id": "notification_consumption_time_earliest",
+              "type": "number",
               "label": {
-                "en": "within",
-                "no": "innen"
+                "en": "Earliest after (minutes)",
+                "no": "Tidligst etter (minutter)"
               },
-              "value": "30",
-              "values": [
-                {
-                  "id": "always",
-                  "label": {
-                    "en": "Anytime",
-                    "no": "Når som helst"
-                  }
-                },
-                {
-                  "id": "15",
-                  "label": {
-                    "en": "15 minutes",
-                    "no": "15 minutter"
-                  }
-                },
-                {
-                  "id": "30",
-                  "label": {
-                    "en": "30 minutes",
-                    "no": "30 minutter"
-                  }
-                },
-                {
-                  "id": "45",
-                  "label": {
-                    "en": "45 minutes",
-                    "no": "45 minutter"
-                  }
-                },
-                {
-                  "id": "off",
-                  "label": {
-                    "en": "Don't notify",
-                    "no": "Ikke varsle"
-                  }
-                }
-              ],
+              "value": 10,
+              "min": 0,
+              "max": 60,
+              "step": 1,
               "hint": {
-                "en": "Notifies if consumption (Watt hours) is exceeded before the set number of minutes have passed in the current hour",
-                "no": "Varsler dersom forbruk (Watt-timer) er oversteget før satt antall minutter i den gjeldende timen har gått"
+                "en": "Notifies if consumption (Watt hours) is above limit, and the time is between the earliest/latest limit",
+                "no": "Notifiserer dersom forbruk (Watt-timer) er over satt grense, og tidspunktet er mellom tidligst/senest grense"
+              }
+            },
+            {
+              "id": "notification_consumption_time_latest",
+              "type": "number",
+              "label": {
+                "en": "Latest before (minutes)",
+                "no": "Senest før (minutter)"
+              },
+              "value": 50,
+              "min": 0,
+              "max": 60,
+              "step": 1,
+              "hint": {
+                "en": "Notifies if consumption (Watt hours) is above limit, and the time is between the earliest/latest limit",
+                "no": "Notifiserer dersom forbruk (Watt-timer) er over satt grense, og tidspunktet er mellom tidligst/senest grense"
+              }
+            },
+            {
+              "id": "notification_consumption_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Notification enabled",
+                "no": "Varsling aktivert"
+              },
+              "value": true,
+              "hint": {
+                "en": "If enabled: notifies if consumption (Watt hours) is above limit, and the time is between the earliest/latest limit",
+                "no": "Dersom aktivert: notifiserer dersom forbruk (Watt-timer) er over satt grense, og tidspunktet er mellom tidligst/senest grense"
               }
             }
           ]
@@ -309,53 +304,48 @@
               }
             },
             {
-              "id": "notification_prediction_time",
-              "type": "dropdown",
+              "id": "notification_prediction_time_earliest",
+              "type": "number",
               "label": {
-                "en": "within",
-                "no": "innen"
+                "en": "Earliest after (minutes)",
+                "no": "Tidligst etter (minutter)"
               },
-              "value": "30",
-              "values": [
-                {
-                  "id": "always",
-                  "label": {
-                    "en": "Anytime",
-                    "no": "Når som helst"
-                  }
-                },
-                {
-                  "id": "15",
-                  "label": {
-                    "en": "15 minutes",
-                    "no": "15 minutter"
-                  }
-                },
-                {
-                  "id": "30",
-                  "label": {
-                    "en": "30 minutes",
-                    "no": "30 minutter"
-                  }
-                },
-                {
-                  "id": "45",
-                  "label": {
-                    "en": "45 minutes",
-                    "no": "45 minutter"
-                  }
-                },
-                {
-                  "id": "off",
-                  "label": {
-                    "en": "Don't notify",
-                    "no": "Ikke varsle"
-                  }
-                }
-              ],
+              "value": 10,
+              "min": 0,
+              "max": 60,
+              "step": 1,
               "hint": {
-                "en": "Notifies if predicted consumption (Watt hours) is reached before the number of minutes have passed in the current hour",
-                "no": "Notifiserer dersom estimert forbruk (Watt-timer) er nådd før antall minutter i den gjeldende timen har gått"
+                "en": "Notifies if predicted consumption (Watt hours) is above limit, and the time is between the earliest/latest limit",
+                "no": "Notifiserer dersom estimert forbruk (Watt-timer) er over satt grense, og tidspunktet er mellom tidligst/senest grense"
+              }
+            },
+            {
+              "id": "notification_prediction_time_latest",
+              "type": "number",
+              "label": {
+                "en": "Latest before (minutes)",
+                "no": "Senest før (minutter)"
+              },
+              "value": 50,
+              "min": 0,
+              "max": 60,
+              "step": 1,
+              "hint": {
+                "en": "Notifies if predicted consumption (Watt hours) is above limit, and the time is between the earliest/latest limit",
+                "no": "Notifiserer dersom estimert forbruk (Watt-timer) er over satt grense, og tidspunktet er mellom tidligst/senest grense"
+              }
+            },
+            {
+              "id": "notification_prediction_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Notification enabled",
+                "no": "Varsling aktivert"
+              },
+              "value": true,
+              "hint": {
+                "en": "If enabled: notifies if predicted consumption (Watt hours) is above limit, and the time is between the earliest/latest limit",
+                "no": "Dersom aktivert: notifiserer dersom estimert forbruk (Watt-timer) er over satt grense, og tidspunktet er mellom tidligst/senest grense"
               }
             }
           ]

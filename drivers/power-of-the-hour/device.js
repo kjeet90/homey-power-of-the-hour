@@ -75,12 +75,12 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   }
 
   checkNotify() {
-    if (this.getWattHours() > this.getSetting('consumption_limit') && this.isNotifyAllowed('notification_consumption_time') && !this.consumptionNotified) {
+    if (this.getWattHours() > this.getSetting('consumption_limit') && this.isNotifyAllowed('consumption') && !this.consumptionNotified) {
       Homey.app.consumptionLimitTrigger.trigger(this, this.getFlowCardTokens('consumption'), {});
       this.consumptionNotified = true;
       this.setCapabilityValue('consumption_notified', this.consumptionNotified);
     }
-    if (this.getPredictedWattHours() > this.getSetting('prediction_limit') && this.isNotifyAllowed('notification_prediction_time') && !this.predictionNotified) {
+    if (this.getPredictedWattHours() > this.getSetting('prediction_limit') && this.isNotifyAllowed('prediction') && !this.predictionNotified) {
       Homey.app.predictionLimitTrigger.trigger(this, this.getFlowCardTokens('prediction'), {}).then();
       this.predictionNotified = true;
       this.setCapabilityValue('prediction_notified', this.predictionNotified);
@@ -108,15 +108,20 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   }
 
   isNotifyAllowed(setting) {
-    const currentTime = new Date().getMinutes();
-    const selectedTime = this.getSetting(setting);
-    if (selectedTime === 'always') {
-      return true;
-    } else if (selectedTime === 'off') {
-      return false;
+    let earliest;
+    let latest;
+    let enabled;
+    if(setting === 'prediction') { 
+      earliest = this.getSetting('notification_prediction_time_earliest');
+      latest = this.getSetting('notification_prediction_time_latest');
+      enabled = this.getSetting('notification_prediction_enabled');
     } else {
-      return currentTime <= Number(selectedTime);
+      earliest = this.getSetting('notification_consumption_time_earliest');
+      latest = this.getSetting('notification_consumption_time_latest');
+      enabled = this.getSetting('notification_consumption_enabled');
     }
+    const currentTime = new Date().getMinutes();
+    return enabled && currentTime <= Number(latest) && currentTime >= Number(earliest);
   }
 
   predict() {

@@ -1,0 +1,16 @@
+{
+    "id": "notification_consumption_time_earliest",
+    "type": "number",
+    "label": {
+      "en": "Earliest after (minutes)",
+      "no": "Tidligst etter (minutter)"
+    },
+    "value": 10,
+    "min": 0,
+    "max": 60,
+    "step": 1,
+    "hint": {
+      "en": "Notifies if consumption (Watt hours) is above limit, and the time is between the earliest/latest limit",
+      "no": "Notifiserer dersom forbruk (Watt-timer) er over satt grense, og tidspunktet er mellom tidligst/senest grense"
+    }
+}

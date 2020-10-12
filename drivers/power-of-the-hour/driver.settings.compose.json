@@ -11,8 +11,16 @@
                 "id": "consumption_limit"
             },
             {
-                "$extends": "notification_consumption_time",
-                "id": "notification_consumption_time"
+                "$extends": "notification_consumption_time_earliest",
+                "id": "notification_consumption_time_earliest"
+            },
+            {
+                "$extends": "notification_consumption_time_latest",
+                "id": "notification_consumption_time_latest"
+            },
+            {
+                "$extends": "notification_consumption_enabled",
+                "id": "notification_consumption_enabled"
             }
         ]
     },
@@ -30,9 +38,18 @@
             {
                 "$extends": "prediction_limit",
                 "id": "prediction_limit"
-            },{
-                "$extends": "notification_prediction_time",
-                "id": "notification_prediction_time"
+            },
+            {
+                "$extends": "notification_prediction_time_earliest",
+                "id": "notification_prediction_time_earliest"
+            },
+            {
+                "$extends": "notification_prediction_time_latest",
+                "id": "notification_prediction_time_latest"
+            },
+            {
+                "$extends": "notification_prediction_enabled",
+                "id": "notification_prediction_enabled"
             }
         ]
     }

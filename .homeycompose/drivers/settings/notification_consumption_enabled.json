@@ -1,0 +1,13 @@
+{
+    "id": "notification_consumption_enabled",
+    "type": "checkbox",
+    "label": {
+      "en": "Notification enabled",
+      "no": "Varsling aktivert"
+    },
+    "value": true,
+    "hint": {
+      "en": "If enabled: notifies if consumption (Watt hours) is above limit, and the time is between the earliest/latest limit",
+      "no": "Dersom aktivert: notifiserer dersom forbruk (Watt-timer) er over satt grense, og tidspunktet er mellom tidligst/senest grense"
+    }
+}
