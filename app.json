@@ -330,7 +330,7 @@
               "value": false,
               "hint": {
                 "en": "If enabled: Resets prediction notification if predicted consumption is below limit",
-                "no": "Dersom aktivert: Resetter estimeringsvarsel dersom estimert forbruk er under grensen"
+                "no": "Dersom aktivert: Nullstiller estimeringsvarsel dersom estimert forbruk er under grensen"
               }
             }
           ]
