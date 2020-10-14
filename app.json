@@ -309,15 +309,15 @@
               "id": "prediction_reset_limit",
               "type": "number",
               "label": {
-                "en": "Reset notification if predicter below (Wh)",
-                "no": "Resett varsel ved estimat under (Wt)"
+                "en": "Reset notification below (Wh)",
+                "no": "Nullstill varsel under (Wt)"
               },
               "value": 2000,
               "min": 0,
               "step": 1,
               "hint": {
-                "en": "Resets the prediction notification if predicted consumption is below (Watt hours)",
-                "no": "Resetter estimeringsvarsel dersom estimert forbruk er under (Watt-timer)"
+                "en": "Resets the prediction notification if the predicted consumption is below the limit (Watt hours)",
+                "no": "Nullstiller estimeringsvarsel dersom estimert forbruk er under grensen (Watt-timer)"
               }
             },
             {
@@ -325,7 +325,7 @@
               "type": "checkbox",
               "label": {
                 "en": "Reset notification enabled",
-                "no": "Resett varsel aktivert"
+                "no": "Nullstill varsel aktivert"
               },
               "value": false,
               "hint": {
