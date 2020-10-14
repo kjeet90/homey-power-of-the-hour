@@ -1,0 +1,26 @@
+{
+    "id": "prediction_reset",
+    "title": {
+      "en": "Prediction notification reset",
+      "no": "Estimertingsvarsel resatt"
+    },
+    "tokens": [{
+      "name": "predicted",
+      "type": "number",
+      "title": {
+        "en": "Watt hours",
+        "no": "Watt-timer"
+      },
+      "example": {
+        "en": "1500",
+        "no": "1500"
+      }
+    }],
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      }
+    ]
+  }

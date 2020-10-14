@@ -79,6 +79,34 @@
             "filter": "driver_id=power-of-the-hour"
           }
         ]
+      },
+      {
+        "id": "prediction_reset",
+        "title": {
+          "en": "Prediction notification reset",
+          "no": "Estimertingsvarsel resatt"
+        },
+        "tokens": [
+          {
+            "name": "predicted",
+            "type": "number",
+            "title": {
+              "en": "Watt hours",
+              "no": "Watt-timer"
+            },
+            "example": {
+              "en": "1500",
+              "no": "1500"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
       }
     ],
     "actions": [
@@ -275,6 +303,34 @@
               "hint": {
                 "en": "If enabled: notifies if predicted consumption (Watt hours) is above limit, and the time is between the earliest/latest limit",
                 "no": "Dersom aktivert: notifiserer dersom estimert forbruk (Watt-timer) er over satt grense, og tidspunktet er mellom tidligst/senest grense"
+              }
+            },
+            {
+              "id": "prediction_reset_limit",
+              "type": "number",
+              "label": {
+                "en": "Reset notification if predicter below (Wh)",
+                "no": "Resett varsel ved estimat under (Wt)"
+              },
+              "value": 2000,
+              "min": 0,
+              "step": 1,
+              "hint": {
+                "en": "Resets the prediction notification if predicted consumption is below (Watt hours)",
+                "no": "Resetter estimeringsvarsel dersom estimert forbruk er under (Watt-timer)"
+              }
+            },
+            {
+              "id": "prediction_reset_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Reset notification enabled",
+                "no": "Resett varsel aktivert"
+              },
+              "value": false,
+              "hint": {
+                "en": "If enabled: Resets prediction notification if predicted consumption is below limit",
+                "no": "Dersom aktivert: Resetter estimeringsvarsel dersom estimert forbruk er under grensen"
               }
             }
           ]

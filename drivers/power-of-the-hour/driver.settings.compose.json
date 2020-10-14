@@ -46,6 +46,14 @@
             {
                 "$extends": "notification_prediction_enabled",
                 "id": "notification_prediction_enabled"
+            },
+            {
+                "$extends": "prediction_reset_limit",
+                "id": "prediction_reset_limit"
+            },
+            {
+                "$extends": "prediction_reset_enabled",
+                "id": "prediction_reset_enabled"
             }
         ]
     }, {

@@ -85,6 +85,11 @@ module.exports = class PowerOfTheHour extends Homey.Device {
       this.predictionNotified = true;
       this.setCapabilityValue('prediction_notified', this.predictionNotified);
     }
+    if(this.predictionNotified && this.getSetting('prediction_reset_enabled') && this.getPredictedWattHours() < this.getSetting('prediction_reset_limit')) {
+      Homey.app.predictionResetLimitTrigger.trigger(this, this.getFlowCardTokens('prediction'), {}).then();
+      this.predictionNotified = false;
+      this.setCapabilityValue('prediction_notified', this.predictionNotified);
+    }
   }
 
   getFlowCardTokens(type) {
@@ -148,5 +153,6 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     if(changedKeys.includes('prediction_history_count')) {
       this.referenceReadings = this.referenceReadings.slice(0, newSettings.prediction_history_count);
     }
+    // TODO: Add check on prediction_limit vs prediction_reset_limit. Reset should not be allowed to be higher
   }
 }
