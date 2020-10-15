@@ -60,7 +60,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     this.totalPreviousHour = this.wattHours + (watt * calculations.getRemainingHour(this.previousTimestamp));
     this.consumptionNotified = false;
     this.predictionNotified = false;
-    this.wattHours = watt * calculations.getDecimalHour(timeNow);
+    this.wattHours = watt * calculations.getElapsedHour(timeNow);
     this.checkIfPeak(watt, true);
     this.setCapabilityValue('consumption_previous_hour', this.totalPreviousHour);
     this.setCapabilityValue('consumption_notified', false);
