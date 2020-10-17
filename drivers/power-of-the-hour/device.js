@@ -42,7 +42,6 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     const timeNow = new Date();
     const hoursSincePreviousReading = calculations.getHoursBetween(timeNow, this.previousTimestamp);
     const isNewHour = calculations.isNewHour(timeNow, this.previousTimestamp);
-
     if (isNewHour) {
       this.startNewHour(watt, timeNow);
     } else {
@@ -61,15 +60,18 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     this.consumptionNotified = false;
     this.predictionNotified = false;
     this.wattHours = watt * calculations.getElapsedHour(timeNow);
-    this.checkIfPeak(watt, true);
+    this.wattPeak = watt;
     this.setCapabilityValue('consumption_previous_hour', this.totalPreviousHour);
     this.setCapabilityValue('consumption_notified', false);
     this.setCapabilityValue('prediction_notified', false);
+    this.setCapabilityValue('consumption_peak', this.wattPeak);
+    Homey.app.hourResetTrigger.trigger(this);
   }
 
-  checkIfPeak(watt, forceUpdate) {
-    if (forceUpdate || watt > this.wattPeak) {
+  checkIfPeak(watt) {
+    if (watt > this.wattPeak) {
       this.wattPeak = watt;
+      Homey.app.newPeakTrigger.trigger(this, this.getFlowCardTokens('peak'), {});
       this.setCapabilityValue('consumption_peak', this.wattPeak);
     }
   }
@@ -81,12 +83,12 @@ module.exports = class PowerOfTheHour extends Homey.Device {
       this.setCapabilityValue('consumption_notified', this.consumptionNotified);
     }
     if (this.getPredictedWattHours() > this.getSetting('prediction_limit') && this.isNotifyAllowed('prediction') && !this.predictionNotified) {
-      Homey.app.predictionLimitTrigger.trigger(this, this.getFlowCardTokens('prediction'), {}).then();
+      Homey.app.predictionLimitTrigger.trigger(this, this.getFlowCardTokens('prediction'), {});
       this.predictionNotified = true;
       this.setCapabilityValue('prediction_notified', this.predictionNotified);
     }
     if(this.predictionNotified && this.getSetting('prediction_reset_enabled') && this.getPredictedWattHours() < this.getSetting('prediction_reset_limit')) {
-      Homey.app.predictionResetLimitTrigger.trigger(this, this.getFlowCardTokens('prediction'), {}).then();
+      Homey.app.predictionResetLimitTrigger.trigger(this, this.getFlowCardTokens('prediction'), {});
       this.predictionNotified = false;
       this.setCapabilityValue('prediction_notified', this.predictionNotified);
     }
@@ -97,7 +99,12 @@ module.exports = class PowerOfTheHour extends Homey.Device {
       return {
         predicted: this.getPredictedWattHours()
       }
-    } else {
+    } else if(type === 'peak') {
+      return {
+        peak: this.getPeak()
+      }
+    } 
+    else {
       return {
         consumption: this.getWattHours()
       };
@@ -110,6 +117,10 @@ module.exports = class PowerOfTheHour extends Homey.Device {
 
   getWattHours() {
     return Math.ceil(this.wattHours);
+  }
+
+  getPeak() {
+    return Math.ceil(this.wattPeak);
   }
 
   isNotifyAllowed(setting) {

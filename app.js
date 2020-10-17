@@ -15,6 +15,12 @@ module.exports = class PowerOfTheHour extends Homey.App {
     this.predictionResetLimitTrigger = new Homey.FlowCardTriggerDevice('prediction_reset');
     this.predictionResetLimitTrigger.register();
 
+    this.hourResetTrigger = new Homey.FlowCardTriggerDevice('hour_reset');
+    this.hourResetTrigger.register();
+
+    this.newPeakTrigger = new Homey.FlowCardTriggerDevice('new_peak');
+    this.newPeakTrigger.register();
+
     new Homey.FlowCardAction('consumption_updated')
       .register()
       .registerRunListener((args, state) => { args.device.onActionConsumptionChanged(args, state) });

@@ -53,6 +53,49 @@
         ]
       },
       {
+        "id": "hour_reset",
+        "title": {
+          "en": "New hour started",
+          "no": "Ny time startet"
+        },
+        "tokens": [],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
+        "id": "new_peak",
+        "title": {
+          "en": "New peak",
+          "no": "Ny topp"
+        },
+        "tokens": [
+          {
+            "name": "peak",
+            "type": "number",
+            "title": {
+              "en": "Watt",
+              "no": "Watt"
+            },
+            "example": {
+              "en": "4000",
+              "no": "4000"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
         "id": "prediction_limit_reached",
         "title": {
           "en": "Prediction limit reached",
