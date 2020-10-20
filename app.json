@@ -6,6 +6,7 @@
   "name": {
     "en": "Power of the hour"
   },
+  "brandColor": "#04ddf9",
   "description": {
     "en": "Notifies when power limits set by user is reached",
     "no": "Varsler når effektgrense satt av brukeren er nådd"
