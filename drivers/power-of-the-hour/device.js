@@ -60,10 +60,11 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     this.consumptionNotified = false;
     this.wattHours = watt * calculations.getElapsedHour(timeNow);
     this.wattPeak = watt;
+    this.predictedWattHours = 0;
+    this.resetPredictionNotification();
     this.setCapabilityValue('consumption_previous_hour', this.totalPreviousHour);
     this.setCapabilityValue('consumption_notified', false);
     this.setCapabilityValue('consumption_peak', this.wattPeak);
-    this.resetPredictionNotification();
     Homey.app.hourResetTrigger.trigger(this);
   }
 
@@ -86,13 +87,13 @@ module.exports = class PowerOfTheHour extends Homey.Device {
       this.predictionNotified = true;
       this.setCapabilityValue('prediction_notified', this.predictionNotified);
     }
-    if(this.getPredictedWattHours() < this.getSetting('prediction_reset_limit')) {
-        this.resetPredictionNotification();
+    if (this.getPredictedWattHours() < this.getSetting('prediction_reset_limit')) {
+      this.resetPredictionNotification();
     }
   }
 
   resetPredictionNotification() {
-    if(this.predictionNotified && this.getSetting('prediction_reset_enabled')) {
+    if (this.predictionNotified && this.getSetting('prediction_reset_enabled')) {
       Homey.app.predictionResetLimitTrigger.trigger(this, this.getFlowCardTokens('prediction'), {});
       this.predictionNotified = false;
       this.setCapabilityValue('prediction_notified', this.predictionNotified);
@@ -104,11 +105,11 @@ module.exports = class PowerOfTheHour extends Homey.Device {
       return {
         predicted: this.getPredictedWattHours()
       }
-    } else if(type === 'peak') {
+    } else if (type === 'peak') {
       return {
         peak: this.getPeak()
       }
-    } 
+    }
     else {
       return {
         consumption: this.getWattHours()
@@ -132,7 +133,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     let earliest;
     let latest;
     let enabled;
-    if(setting === 'prediction') { 
+    if (setting === 'prediction') {
       earliest = this.getSetting('notification_prediction_time_earliest');
       latest = this.getSetting('notification_prediction_time_latest');
       enabled = this.getSetting('notification_prediction_enabled');
@@ -145,10 +146,10 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     return enabled && currentTime <= Number(latest) && currentTime >= Number(earliest);
   }
 
-  predict() {    
-      const prediction = calculations.getPrediction(this.referenceReadings, this.getSetting('prediction_age'), this.getSetting('prediction_type'));
-      this.predictedWattHours = this.wattHours + prediction;
-      this.setCapabilityValue('predictor', this.predictedWattHours);
+  predict() {
+    const prediction = calculations.getPrediction(this.referenceReadings, this.getSetting('prediction_age'), this.getSetting('prediction_type'));
+    this.predictedWattHours = this.wattHours + prediction;
+    this.setCapabilityValue('predictor', this.predictedWattHours);
   }
 
   updateReferenceReadings(watt, timeOfReading) {
@@ -166,7 +167,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     if (changedKeys.includes('prediction_age')) {
       this.predict();
     }
-    if(changedKeys.includes('prediction_history_count')) {
+    if (changedKeys.includes('prediction_history_count')) {
       this.referenceReadings = this.referenceReadings.slice(0, newSettings.prediction_history_count);
     }
     // TODO: Add check on prediction_limit vs prediction_reset_limit. Reset should not be allowed to be higher
