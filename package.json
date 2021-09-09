@@ -11,6 +11,6 @@
   "devDependencies": {
     "eslint-config-athom": "^2.1.1",
     "jest": "^27.1.1",
-    "homey": "^2.20.6"
+    "homey": "^2.21.0"
   }
 }
