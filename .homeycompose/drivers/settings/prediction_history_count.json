@@ -1,0 +1,15 @@
+{
+    "id": "prediction_history_count",
+    "type": "number",
+    "label": {
+      "en": "History",
+      "no": "Historikk"
+    },
+    "value": 100,
+    "min": 0,
+    "max": 1000,
+    "hint": {
+        "en": "Maximum amount of readings stored (used for prediction calculations). Example with storing 360 readings: If your device is updating every 5 seconds you would be able to predict based on 30 minutes of history. 5 seconds * 360  = 1800 seconds = 30 minutes.",
+        "no": "Maksimalt antall avlesninger som lagres (brukt estimeringskalkulasjoner). Eksempel med lagring av 360 avlesninger: Dersom enheten din oppdaterer hvert 5 sekund vil du kunne estimere basert på 30 minutters historikk. 5 sekund * 360  = 1800 sekunder = 30 minutter."
+    }
+}

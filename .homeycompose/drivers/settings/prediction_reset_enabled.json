@@ -1,0 +1,13 @@
+{
+    "id": "prediction_reset_enabled",
+    "type": "checkbox",
+    "label": {
+      "en": "Reset notification",
+      "no": "Nullstill varsel"
+    },
+    "value": true,
+    "hint": {
+      "en": "Activates notification if the predicted consumption limit is exceeded",
+      "no": "Aktiverer varsel dersom estimert forbruksgrense overstiges"
+    }
+}

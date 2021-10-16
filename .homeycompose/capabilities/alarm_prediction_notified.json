@@ -1,0 +1,16 @@
+
+{
+    "title": {
+      "en": "Prediction notification triggered",
+      "no": "Estimeringsvarsel trigget"
+    },
+    "desc": {
+      "en": "Prediction notification has been triggered",
+      "no": "Estimeringsvarsel har blitt trigget"
+    },
+    "type": "boolean",
+    "getable": true,
+    "setable": false,
+    "greyout": true,
+    "icon": "/assets/alert.svg"
+  }

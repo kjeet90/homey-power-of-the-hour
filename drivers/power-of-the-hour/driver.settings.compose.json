@@ -1,0 +1,92 @@
+[
+    {
+        "type": "group",
+        "label": {
+            "en": "Consumption notification",
+            "no": "Forbruksvarsel"
+        },
+        "children": [
+            {
+                "$extends": "consumption_limit",
+                "id": "consumption_limit"
+            },
+            {
+                "$extends": "notification_consumption_time_earliest",
+                "id": "notification_consumption_time_earliest"
+            },
+            {
+                "$extends": "notification_consumption_time_latest",
+                "id": "notification_consumption_time_latest"
+            },
+            {
+                "$extends": "notification_consumption_enabled",
+                "id": "notification_consumption_enabled"
+            }
+        ]
+    },
+    {
+        "type": "group",
+        "label": {
+            "en": "Prediction notification",
+            "no": "Estimeringsvarsel"
+        },
+        "children": [ 
+            {
+                "$extends": "prediction_limit",
+                "id": "prediction_limit"
+            },
+            {
+                "$extends": "notification_prediction_time_earliest",
+                "id": "notification_prediction_time_earliest"
+            },
+            {
+                "$extends": "notification_prediction_time_latest",
+                "id": "notification_prediction_time_latest"
+            },
+            {
+                "$extends": "notification_prediction_enabled",
+                "id": "notification_prediction_enabled"
+            },
+            {
+                "$extends": "prediction_reset_limit",
+                "id": "prediction_reset_limit"
+            },
+            {
+                "$extends": "prediction_reset_enabled",
+                "id": "prediction_reset_enabled"
+            },
+            {
+                "$extends": "prediction_reset_new_hour_enabled",
+                "id": "prediction_reset_new_hour_enabled"
+            }
+        ]
+    }, {
+        "type": "group",
+        "label": {
+            "en": "Advanced",
+            "no": "Avansert"
+        },
+        "children": [
+            {
+                "$extends": "prediction_type",
+                "id": "prediction_type"    
+            },
+            {
+                "$extends": "prediction_age",
+                "id": "prediction_age"    
+            },
+            {
+                "$extends": "prediction_history_count",
+                "id": "prediction_history_count"    
+            },
+            {
+                "$extends": "simulation_enabled",
+                "id": "simulation_enabled"    
+            },
+            {
+                "$extends": "simulation_interval",
+                "id": "simulation_interval"    
+            }
+        ]
+    }
+]

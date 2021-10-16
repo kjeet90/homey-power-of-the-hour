@@ -1,0 +1,27 @@
+{
+    "id": "hour_reset",
+    "title": {
+      "en": "New hour started",
+      "no": "Ny time startet"
+    },
+    "highlight": true,
+    "tokens": [{
+      "name": "previous",
+      "type": "number",
+      "title": {
+        "en": "Previous hours consumption (Watt hours)",
+        "no": "Forrige times forbruk (Watt-timer)"
+      },
+      "example": {
+        "en": "4000",
+        "no": "4000"
+      }
+    }],
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      }
+    ]
+  }

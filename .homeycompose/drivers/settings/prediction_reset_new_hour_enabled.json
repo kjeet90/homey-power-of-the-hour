@@ -1,0 +1,13 @@
+{
+    "id": "prediction_reset_new_hour_enabled",
+    "type": "checkbox",
+    "label": {
+      "en": "Reset notification on new hour",
+      "no": "Nullstill varsel ved ny time"
+    },
+    "value": false,
+    "hint": {
+      "en": "Activates notification when the predicted consumption is reset when a new hour starts. It will then report a estimated consumption of 0 (zero).",
+      "no": "Aktiverer varsel når det estimerte forbruket blir resatt når en ny time starter. Den vil da rapportere om et estimert forbruk på 0 (null)"
+    }
+}

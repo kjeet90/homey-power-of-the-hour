@@ -1,0 +1,15 @@
+{
+    "id": "prediction_limit",
+    "type": "number",
+    "label": {
+      "en": "Notify at prediction over (Wh)",
+      "no": "Varsle ved estimat over (Wt)"
+    },
+    "value": 4500,
+    "min": 0,
+    "step": 1,
+    "hint": {
+        "en": "Limit that will be used to trigger notification if the predicted consumption exceeds it within this hour",
+        "no": "Grense som blir brukt til å trigge varsel dersom estimert forbruk overstiges innen denne timen"
+    }
+}

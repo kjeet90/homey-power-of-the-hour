@@ -1,0 +1,33 @@
+
+{
+    "title": {
+      "en": "Consumption this hour",
+      "no": "Forbruk denne timen"
+    },
+    "desc": {
+      "en": "Shows total consumption so far this hour",
+      "no": "Viser totalt forbruk så langt denne timen"
+    },
+    "tokens": [{
+      "name": "value",
+      "title": {
+        "en": "Watt hours",
+        "no": "Watt-timer"
+      },
+      "example": {
+       "en": 1200,
+       "no": 1200 
+      }
+    }],
+    "type": "number",
+    "min": 0,
+    "decimals": 0,
+    "units": {
+      "en": "Wh",
+      "no": "Wt"
+    },
+    "getable": true,
+    "setable": false,
+    "greyout": true,
+    "icon": "/assets/average.svg"
+  }

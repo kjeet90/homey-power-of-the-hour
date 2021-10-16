@@ -1,0 +1,38 @@
+{
+  "id": "no.kjeet90.powerofthehour",
+  "version": "0.1.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "name": {
+    "en": "Power of the hour"
+  },
+  "brandColor": "#06bdd6",
+  "description": {
+    "en": "Keep your energy consumption below your desired limit"
+  },
+  "category": [
+    "energy"
+  ],
+  "permissions": [],
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "source": "https://github.com/kjeet90/homey-power-of-the-hour",
+  "bugs": {
+    "url": "https://github.com/kjeet90/homey-power-of-the-hour/issues"
+  },
+  "support": "mailto:hauglandkjetil@gmail.com",
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "kjetilhaugland"
+      }
+    }
+  },
+  "author": {
+    "name": "Kjetil Haugland",
+    "email": "hauglandkjetil@gmail.com"
+  }
+}

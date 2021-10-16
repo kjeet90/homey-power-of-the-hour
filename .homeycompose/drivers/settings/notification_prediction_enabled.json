@@ -1,0 +1,13 @@
+{
+    "id": "notification_prediction_enabled",
+    "type": "checkbox",
+    "label": {
+      "en": "Notification enabled",
+      "no": "Varsling aktivert"
+    },
+    "value": true,
+    "hint": {
+      "en": "Activates notification if the predicted consumption limit is exceeded",
+      "no": "Aktiverer varsel dersom estimert forbruksgrense overstiges"
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "id": "simulation_interval",
+    "type": "number",
+    "label": {
+      "en": "Simulation interval",
+      "no": "Simuleringsintervall"
+    },
+    "value": 180,
+    "min": 30,
+    "max": 600,
+    "step": 1,
+    "hint": {
+        "en": "Number of seconds between each simulation signal if no other consumption is reported",
+        "no": "Antall sekunder mellom hver simulering dersom ikke noe annet forbruk er rapportert"
+    }
+}

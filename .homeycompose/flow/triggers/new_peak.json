@@ -1,0 +1,27 @@
+{
+    "id": "new_peak",
+    "title": {
+      "en": "New consumption peak",
+      "no": "Ny forbrukstopp"
+    },
+    "highlight": true,
+    "tokens": [{
+      "name": "peak",
+      "type": "number",
+      "title": {
+        "en": "Watt",
+        "no": "Watt"
+      },
+      "example": {
+        "en": "4000",
+        "no": "4000"
+      }
+    }],
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      }
+    ]
+  }

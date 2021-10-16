@@ -1,0 +1,16 @@
+{
+    "id": "notification_prediction_time_latest",
+    "type": "number",
+    "label": {
+      "en": "Latest before (minutes)",
+      "no": "Senest før (minutter)"
+    },
+    "value": 60,
+    "min": 0,
+    "max": 60,
+    "step": 1,
+    "hint": {
+        "en": "If the notication is activated this is the latest it will notify about estimated consumption. If the limit is exceeded later it will not notify within this hour",
+        "no": "Dersom varsling er aktivert er dette det seneste den vil varsle om estimert forbruk. Dersom grensen overstiges senere vil den ikke varsle denne timen"
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "id": "consumption_limit",
+    "type": "number",
+    "label": {
+      "en": "Notify at usage over (Wh)",
+      "no": "Varsle ved forbruk over (Wt)"
+    },
+    "value": 4000,
+    "min": 0,
+    "step": 1,
+    "hint": {
+        "en": "Limit that will be used to trigger notification if the consumption exceeds it within this hour",
+        "no": "Grense som blir brukt til å trigge varsel dersom forbruket overstiges innen denne timen"
+    }
+}

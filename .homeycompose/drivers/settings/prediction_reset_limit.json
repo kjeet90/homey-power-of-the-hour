@@ -1,0 +1,15 @@
+{
+    "id": "prediction_reset_limit",
+    "type": "number",
+    "label": {
+      "en": "Reset notification below (Wh)",
+      "no": "Nullstill varsel under (Wt)"
+    },
+    "value": 3500,
+    "min": 0,
+    "step": 1,
+    "hint": {
+      "en": "Limit that will be used to reset the notification if the predicted consumption drops below it within this hour",
+      "no": "Grense som blir brukt til å resette varsel dersom estimert forbruk går under innen denne timen"
+    }
+}

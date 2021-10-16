@@ -1,0 +1,703 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "no.kjeet90.powerofthehour",
+  "version": "0.1.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "name": {
+    "en": "Power of the hour"
+  },
+  "brandColor": "#06bdd6",
+  "description": {
+    "en": "Keep your energy consumption below your desired limit"
+  },
+  "category": [
+    "energy"
+  ],
+  "permissions": [],
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "source": "https://github.com/kjeet90/homey-power-of-the-hour",
+  "bugs": {
+    "url": "https://github.com/kjeet90/homey-power-of-the-hour/issues"
+  },
+  "support": "mailto:hauglandkjetil@gmail.com",
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "kjetilhaugland"
+      }
+    }
+  },
+  "author": {
+    "name": "Kjetil Haugland",
+    "email": "hauglandkjetil@gmail.com"
+  },
+  "flow": {
+    "triggers": [
+      {
+        "id": "consumption_limit_reached",
+        "title": {
+          "en": "Consumption limit exceeded",
+          "no": "Forbruksgrense oversteget"
+        },
+        "highlight": true,
+        "tokens": [
+          {
+            "name": "consumption",
+            "type": "number",
+            "title": {
+              "en": "Watt hours",
+              "no": "Watt-timer"
+            },
+            "example": {
+              "en": "4000",
+              "no": "4000"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
+        "id": "hour_reset",
+        "title": {
+          "en": "New hour started",
+          "no": "Ny time startet"
+        },
+        "highlight": true,
+        "tokens": [
+          {
+            "name": "previous",
+            "type": "number",
+            "title": {
+              "en": "Previous hours consumption (Watt hours)",
+              "no": "Forrige times forbruk (Watt-timer)"
+            },
+            "example": {
+              "en": "4000",
+              "no": "4000"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
+        "id": "new_peak",
+        "title": {
+          "en": "New consumption peak",
+          "no": "Ny forbrukstopp"
+        },
+        "highlight": true,
+        "tokens": [
+          {
+            "name": "peak",
+            "type": "number",
+            "title": {
+              "en": "Watt",
+              "no": "Watt"
+            },
+            "example": {
+              "en": "4000",
+              "no": "4000"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
+        "id": "prediction_limit_reached",
+        "title": {
+          "en": "Prediction limit exceeded",
+          "no": "Estimert forbruksgrense oversteget"
+        },
+        "highlight": true,
+        "tokens": [
+          {
+            "name": "predicted",
+            "type": "number",
+            "title": {
+              "en": "Watt hours",
+              "no": "Watt-timer"
+            },
+            "example": {
+              "en": "4000",
+              "no": "4000"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
+        "id": "prediction_reset",
+        "title": {
+          "en": "Prediction notification reset",
+          "no": "Estimertingsvarsel resatt"
+        },
+        "highlight": true,
+        "tokens": [
+          {
+            "name": "predicted",
+            "type": "number",
+            "title": {
+              "en": "Watt hours",
+              "no": "Watt-timer"
+            },
+            "example": {
+              "en": "1500",
+              "no": "1500"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "consumption_updated",
+        "title": {
+          "en": "Update consumption",
+          "no": "Oppdater forbruk"
+        },
+        "titleFormatted": {
+          "en": "Update consumption with [[consumption]]",
+          "no": "Oppdater forbruk med [[consumption]]"
+        },
+        "hint": {
+          "en": "Register change in consumption",
+          "no": "Registrer endring i forbruk"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          },
+          {
+            "name": "consumption",
+            "type": "number",
+            "title": {
+              "en": "Watt",
+              "no": "Watt"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "id": "power-of-the-hour",
+      "name": {
+        "en": "Power of the hour",
+        "no": "Power of the hour"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "meter_consumption",
+        "alarm_consumption_notified",
+        "meter_predictor",
+        "alarm_prediction_notified",
+        "meter_consumption_peak",
+        "meter_consumption_previous_hour"
+      ],
+      "images": {
+        "large": "/drivers/power-of-the-hour/assets/images/large.png",
+        "small": "/drivers/power-of-the-hour/assets/images/small.png"
+      },
+      "icon": "/drivers/power-of-the-hour/assets/icon.svg",
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_my_devices"
+          }
+        },
+        {
+          "id": "add_my_devices",
+          "template": "add_devices"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Consumption notification",
+            "no": "Forbruksvarsel"
+          },
+          "children": [
+            {
+              "id": "consumption_limit",
+              "type": "number",
+              "label": {
+                "en": "Notify at usage over (Wh)",
+                "no": "Varsle ved forbruk over (Wt)"
+              },
+              "value": 4000,
+              "min": 0,
+              "step": 1,
+              "hint": {
+                "en": "Limit that will be used to trigger notification if the consumption exceeds it within this hour",
+                "no": "Grense som blir brukt til å trigge varsel dersom forbruket overstiges innen denne timen"
+              }
+            },
+            {
+              "id": "notification_consumption_time_earliest",
+              "type": "number",
+              "label": {
+                "en": "Earliest after (minutes)",
+                "no": "Tidligst etter (minutter)"
+              },
+              "value": 0,
+              "min": 0,
+              "max": 60,
+              "step": 1,
+              "hint": {
+                "en": "If the notication is activated this is the earliest it will notify about consumption. If the limit is exceeded earlier it will not notify until it has reached these many minutes into the hour",
+                "no": "Dersom varsling er aktivert er dette det tidligste den vil varsle om forbruk. Dersom grensen overstiges tidligere vil den ikke varsle før dette antallet minutter inn i timen"
+              }
+            },
+            {
+              "id": "notification_consumption_time_latest",
+              "type": "number",
+              "label": {
+                "en": "Latest before (minutes)",
+                "no": "Senest før (minutter)"
+              },
+              "value": 60,
+              "min": 0,
+              "max": 60,
+              "step": 1,
+              "hint": {
+                "en": "If the notication is activated this is the latest it will notify about consumption. If the limit is exceeded later it will not notify within this hour",
+                "no": "Dersom varsling er aktivert er dette det seneste den vil varsle om forbruk. Dersom grensen overstiges senere vil den ikke varsle denne timen"
+              }
+            },
+            {
+              "id": "notification_consumption_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Notification",
+                "no": "Varsling"
+              },
+              "value": true,
+              "hint": {
+                "en": "Activates notification if the consumption limit is exceeded",
+                "no": "Aktiverer varsel dersom forbruksgrensen overstiges"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Prediction notification",
+            "no": "Estimeringsvarsel"
+          },
+          "children": [
+            {
+              "id": "prediction_limit",
+              "type": "number",
+              "label": {
+                "en": "Notify at prediction over (Wh)",
+                "no": "Varsle ved estimat over (Wt)"
+              },
+              "value": 4500,
+              "min": 0,
+              "step": 1,
+              "hint": {
+                "en": "Limit that will be used to trigger notification if the predicted consumption exceeds it within this hour",
+                "no": "Grense som blir brukt til å trigge varsel dersom estimert forbruk overstiges innen denne timen"
+              }
+            },
+            {
+              "id": "notification_prediction_time_earliest",
+              "type": "number",
+              "label": {
+                "en": "Earliest after (minutes)",
+                "no": "Tidligst etter (minutter)"
+              },
+              "value": 30,
+              "min": 0,
+              "max": 60,
+              "step": 1,
+              "hint": {
+                "en": "If the notication is activated this is the earliest it will notify about predicted consumption. If the limit is exceeded earlier it will not notify until it has reached these many minutes into the hour",
+                "no": "Dersom varsling er aktivert er dette det tidligste den vil varsle om estimert forbruk. Dersom grensen overstiges tidligere vil den ikke varsle før dette antallet minutter inn i timen"
+              }
+            },
+            {
+              "id": "notification_prediction_time_latest",
+              "type": "number",
+              "label": {
+                "en": "Latest before (minutes)",
+                "no": "Senest før (minutter)"
+              },
+              "value": 60,
+              "min": 0,
+              "max": 60,
+              "step": 1,
+              "hint": {
+                "en": "If the notication is activated this is the latest it will notify about estimated consumption. If the limit is exceeded later it will not notify within this hour",
+                "no": "Dersom varsling er aktivert er dette det seneste den vil varsle om estimert forbruk. Dersom grensen overstiges senere vil den ikke varsle denne timen"
+              }
+            },
+            {
+              "id": "notification_prediction_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Notification enabled",
+                "no": "Varsling aktivert"
+              },
+              "value": true,
+              "hint": {
+                "en": "Activates notification if the predicted consumption limit is exceeded",
+                "no": "Aktiverer varsel dersom estimert forbruksgrense overstiges"
+              }
+            },
+            {
+              "id": "prediction_reset_limit",
+              "type": "number",
+              "label": {
+                "en": "Reset notification below (Wh)",
+                "no": "Nullstill varsel under (Wt)"
+              },
+              "value": 3500,
+              "min": 0,
+              "step": 1,
+              "hint": {
+                "en": "Limit that will be used to reset the notification if the predicted consumption drops below it within this hour",
+                "no": "Grense som blir brukt til å resette varsel dersom estimert forbruk går under innen denne timen"
+              }
+            },
+            {
+              "id": "prediction_reset_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Reset notification",
+                "no": "Nullstill varsel"
+              },
+              "value": true,
+              "hint": {
+                "en": "Activates notification if the predicted consumption limit is exceeded",
+                "no": "Aktiverer varsel dersom estimert forbruksgrense overstiges"
+              }
+            },
+            {
+              "id": "prediction_reset_new_hour_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Reset notification on new hour",
+                "no": "Nullstill varsel ved ny time"
+              },
+              "value": false,
+              "hint": {
+                "en": "Activates notification when the predicted consumption is reset when a new hour starts. It will then report a estimated consumption of 0 (zero).",
+                "no": "Aktiverer varsel når det estimerte forbruket blir resatt når en ny time starter. Den vil da rapportere om et estimert forbruk på 0 (null)"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Advanced",
+            "no": "Avansert"
+          },
+          "children": [
+            {
+              "id": "prediction_type",
+              "type": "dropdown",
+              "label": {
+                "en": "Prediction method",
+                "no": "Estimeringsmetode"
+              },
+              "value": "time",
+              "values": [
+                {
+                  "id": "time",
+                  "label": {
+                    "en": "Age (minutes)",
+                    "no": "Alder (minutter)"
+                  }
+                },
+                {
+                  "id": "count",
+                  "label": {
+                    "en": "Count",
+                    "no": "Antall"
+                  }
+                }
+              ],
+              "hint": {
+                "en": "Select if the predictions should be done based on age of readings or a specific amount of readings",
+                "no": "Velg om estimeringen skal gjøres basert på alder av avlesninger eller et spesifikt antall avlesninger"
+              }
+            },
+            {
+              "id": "prediction_age",
+              "type": "number",
+              "label": {
+                "en": "Prediction",
+                "no": "Estimering"
+              },
+              "value": 5,
+              "min": 1,
+              "max": 1000,
+              "step": 1,
+              "hint": {
+                "en": "Maximum age or amount of readings which are used for predicting the consumption",
+                "no": "Maksimale alderen eller antall av målinger som brukes for estimere forbruk"
+              }
+            },
+            {
+              "id": "prediction_history_count",
+              "type": "number",
+              "label": {
+                "en": "History",
+                "no": "Historikk"
+              },
+              "value": 100,
+              "min": 0,
+              "max": 1000,
+              "hint": {
+                "en": "Maximum amount of readings stored (used for prediction calculations). Example with storing 360 readings: If your device is updating every 5 seconds you would be able to predict based on 30 minutes of history. 5 seconds * 360  = 1800 seconds = 30 minutes.",
+                "no": "Maksimalt antall avlesninger som lagres (brukt estimeringskalkulasjoner). Eksempel med lagring av 360 avlesninger: Dersom enheten din oppdaterer hvert 5 sekund vil du kunne estimere basert på 30 minutters historikk. 5 sekund * 360  = 1800 sekunder = 30 minutter."
+              }
+            },
+            {
+              "id": "simulation_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Simulation",
+                "no": "Simulering"
+              },
+              "value": true,
+              "hint": {
+                "en": "Recommended to have enabled: Simulates a new consumption if it's over x seconds since the previous actual reported consumption. This makes sure values are continuously updated and will help triggers be more precise",
+                "no": "Anbefalt å ha på: Simulerer nytt forbruk dersom det er over x sekunder siden forrige faktiske forbruksoppdatering. Dette sørger for at verdier oppdater seg kontinuerlig og hjelper til at triggere er mer nøyaktige."
+              }
+            },
+            {
+              "id": "simulation_interval",
+              "type": "number",
+              "label": {
+                "en": "Simulation interval",
+                "no": "Simuleringsintervall"
+              },
+              "value": 180,
+              "min": 30,
+              "max": 600,
+              "step": 1,
+              "hint": {
+                "en": "Number of seconds between each simulation signal if no other consumption is reported",
+                "no": "Antall sekunder mellom hver simulering dersom ikke noe annet forbruk er rapportert"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "capabilities": {
+    "alarm_consumption_notified": {
+      "title": {
+        "en": "Consumption notification triggered",
+        "no": "Forbruksvarsel trigget"
+      },
+      "desc": {
+        "en": "Consumption notification has been triggered",
+        "no": "Forbruksvarsel har blitt trigget"
+      },
+      "type": "boolean",
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/alert.svg"
+    },
+    "alarm_prediction_notified": {
+      "title": {
+        "en": "Prediction notification triggered",
+        "no": "Estimeringsvarsel trigget"
+      },
+      "desc": {
+        "en": "Prediction notification has been triggered",
+        "no": "Estimeringsvarsel har blitt trigget"
+      },
+      "type": "boolean",
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/alert.svg"
+    },
+    "meter_consumption": {
+      "title": {
+        "en": "Consumption this hour",
+        "no": "Forbruk denne timen"
+      },
+      "desc": {
+        "en": "Shows total consumption so far this hour",
+        "no": "Viser totalt forbruk så langt denne timen"
+      },
+      "tokens": [
+        {
+          "name": "value",
+          "title": {
+            "en": "Watt hours",
+            "no": "Watt-timer"
+          },
+          "example": {
+            "en": 1200,
+            "no": 1200
+          }
+        }
+      ],
+      "type": "number",
+      "min": 0,
+      "decimals": 0,
+      "units": {
+        "en": "Wh",
+        "no": "Wt"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/average.svg"
+    },
+    "meter_consumption_peak": {
+      "title": {
+        "en": "Peak this hour",
+        "no": "Topp denne timen"
+      },
+      "desc": {
+        "en": "Shows highest registered consumption peak within this hour",
+        "no": "Viser høyeste registrerte forbrukstopp denne timen"
+      },
+      "tokens": [
+        {
+          "name": "value",
+          "title": {
+            "en": "Watt",
+            "no": "Watt"
+          },
+          "example": {
+            "en": 1200,
+            "no": 1200
+          }
+        }
+      ],
+      "type": "number",
+      "min": 0,
+      "decimals": 0,
+      "units": {
+        "en": "W",
+        "no": "W"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/maximum.svg"
+    },
+    "meter_consumption_previous_hour": {
+      "title": {
+        "en": "Consumption previous hour",
+        "no": "Forbruk forrige time"
+      },
+      "desc": {
+        "en": "Shows previous hours total consumption",
+        "no": "Viser forrige times totale forbruk"
+      },
+      "tokens": [
+        {
+          "name": "value",
+          "title": {
+            "en": "Watt hours",
+            "no": "Watt-timer"
+          },
+          "example": {
+            "en": 4500,
+            "no": 4500
+          }
+        }
+      ],
+      "type": "number",
+      "min": 0,
+      "decimals": 0,
+      "units": {
+        "en": "Wh",
+        "no": "Wt"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/previous.svg"
+    },
+    "meter_predictor": {
+      "title": {
+        "en": "Predicted consumption",
+        "no": "Estimert forbruk"
+      },
+      "desc": {
+        "en": "Shows total predicted consumption for this hour based on history",
+        "no": "Viser totalt estimert forbruk for denne timen basert på historikk"
+      },
+      "tokens": [
+        {
+          "name": "value",
+          "title": {
+            "en": "Watt hours",
+            "no": "Watt-timer"
+          },
+          "example": {
+            "en": 1200,
+            "no": 1200
+          }
+        }
+      ],
+      "type": "number",
+      "min": 0,
+      "decimals": 0,
+      "units": {
+        "en": "Wh",
+        "no": "Wt"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/predicted.svg"
+    }
+  }
+}

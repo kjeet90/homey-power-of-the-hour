@@ -1,0 +1,33 @@
+
+{
+    "title": {
+      "en": "Predicted consumption",
+      "no": "Estimert forbruk"
+    },
+    "desc": {
+      "en": "Shows total predicted consumption for this hour based on history",
+      "no": "Viser totalt estimert forbruk for denne timen basert på historikk"
+    },
+    "tokens": [{
+      "name": "value",
+      "title": {
+        "en": "Watt hours",
+        "no": "Watt-timer"
+      },
+      "example": {
+       "en": 1200,
+       "no": 1200 
+      }
+    }],
+    "type": "number",
+    "min": 0,
+    "decimals": 0,
+    "units": {
+      "en": "Wh",
+      "no": "Wt"
+    },
+    "getable": true,
+    "setable": false,
+    "greyout": true,
+    "icon": "/assets/predicted.svg"
+  }
