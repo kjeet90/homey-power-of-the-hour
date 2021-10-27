@@ -29,5 +29,6 @@
     "getable": true,
     "setable": false,
     "greyout": true,
-    "icon": "/assets/predicted.svg"
+    "icon": "/assets/predicted.svg",
+    "insights": true
   }
