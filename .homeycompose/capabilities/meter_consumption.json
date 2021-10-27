@@ -29,5 +29,6 @@
     "getable": true,
     "setable": false,
     "greyout": true,
-    "icon": "/assets/average.svg"
+    "icon": "/assets/average.svg",
+    "insights": true
   }

@@ -12,11 +12,12 @@ You can get notified about several different power situations
 You can enable and disable the consumption warning triggers in the 'Advanced settings' of the device.
 The 'Power of the hour' predictor can be configured to use either x amount of historic readings or x minutes old readings.
 
-To install the device:
+How to use:
 
-1. Add the ‘Power of the hour’ device.
+1. Add a ‘Power of the hour’ device.
 2. Go to ‘Settings‘ and select what to display in the status indicator.
 3. Go to ‘Advanced settings’ and adjust the limits and warnings.
+4. Create flows
 
 
 Example of use:
@@ -28,7 +29,8 @@ Goal: Keep the consumption below 5000Wh
     - Prediction limit: 5000Wh between 30 and 60 minutes
     - Reset prediction limit: 3500Wh
     - All warnings enabled
-2. Create four flows
+2. Create five flows
+    - When: Consumption changes on device you want to monitor, Then: 'Consumption updated' with the consumption
     - When: 'Consumption limit reached', Then: Turn all heating off (Full ECO mode)
     - When: 'Prediction limit reached', Then: Reduce heating to keep below consumption limit (ECO mode)
     - When: 'Prediction limit reset', Then: Turn all heating on again (Comfort mode)
