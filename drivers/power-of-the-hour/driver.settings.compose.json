@@ -78,14 +78,6 @@
             {
                 "$extends": "prediction_history_count",
                 "id": "prediction_history_count"    
-            },
-            {
-                "$extends": "simulation_enabled",
-                "id": "simulation_enabled"    
-            },
-            {
-                "$extends": "simulation_interval",
-                "id": "simulation_interval"    
             }
         ]
     }
