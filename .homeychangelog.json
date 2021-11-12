@@ -1,4 +1,7 @@
 {
+  "0.1.3": {
+    "en": "On restart of homey/app: This hours consumpion calculated on first reading and elapsed time. Internal check of notifications every 60 seconds if no readings are received."
+  },
   "0.1.2": {
     "en": "Added insight for consumption and predicted"
   },

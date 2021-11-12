@@ -38,6 +38,12 @@ test('Hours between 12:00-12:00 the same day to equal 0', () => {
     expect(calculations.getHoursBetween(newest,oldest)).toBe(0);
 });
 
+test('Hours between undefined-12:30 the same day to equal 0.5', () => {
+    const oldest = undefined;
+    const newest = '2020-10-21T12:30:00.000Z'
+    expect(calculations.getHoursBetween(newest,oldest)).toBe(0.5);
+});
+
 // getElapsedHour
 test('Elapsed hour 12:00 to equal 0', () => {
     const timestamp = '2020-10-21T12:00:00.000Z'
@@ -89,6 +95,13 @@ test('Is new hour between 12:00 and 13:00 the same day to equal true', () => {
     const newest = '2020-10-21T13:00:00.000Z'
     expect(calculations.isNewHour(newest,oldest)).toBe(true);
 })
+
+test('Is new hour when previous hour is undefined', () => {
+    const oldest = undefined;
+    const newest = '2020-10-21T13:20:00.000Z'
+    expect(calculations.isNewHour(newest,oldest)).toBe(true);
+})
+
 
 test('Is new hour between 12:15 and 13:20 the same day to equal true', () => {
     const oldest = '2020-10-21T12:15:00.000Z'
