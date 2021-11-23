@@ -1,16 +1,25 @@
 
 {
     "title": {
-      "en": "Consumption notification triggered",
+      "en": "Consumption notification trigged",
       "no": "Forbruksvarsel trigget"
     },
     "desc": {
-      "en": "Consumption notification has been triggered",
+      "en": "Consumption notification has been trigged",
       "no": "Forbruksvarsel har blitt trigget"
     },
     "type": "boolean",
     "getable": true,
     "setable": false,
     "greyout": true,
-    "icon": "/assets/alert.svg"
+    "insights": true,
+    "icon": "/assets/alert.svg",
+    "insightsTitleTrue": {
+      "en": "Consumption notification trigged",
+      "no": "Forbruksvarsel trigget"
+    },
+    "insightsTitleFalse": {
+      "en": "Consumption notification reset",
+      "no": "Forbruksvarsel resatt"
+    }
   }

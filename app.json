@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "no.kjeet90.powerofthehour",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
@@ -41,8 +41,12 @@
       {
         "id": "consumption_limit_reached",
         "title": {
-          "en": "Consumption limit exceeded",
-          "no": "Forbruksgrense oversteget"
+          "en": "Consumption notification trigged",
+          "no": "Forbruksvarsel trigget"
+        },
+        "hint": {
+          "en": "This card triggers when the actial consumption has exceeded the configured limit and the time of the hour is between the notification times set in settings.",
+          "no": "Dette kortet trigges når det faktiske forbruket har oversteget den konfigurerte grensen og klokkeslettet er mellom varseltidspunktet satt i innstillinger."
         },
         "highlight": true,
         "tokens": [
@@ -68,10 +72,47 @@
         ]
       },
       {
+        "id": "consumption_reset",
+        "title": {
+          "en": "Consumption notification reset",
+          "no": "Forbruksvarsel resatt"
+        },
+        "hint": {
+          "en": "This card triggers when the consumption notification is trigged and a new hour starts. Can be used to e.g. turn heaters back on if they were turned off by the consumption notification.",
+          "no": "Dette kortet trigges når forbruksvarselet er trigget og en ny time starter. Kan f.eks brukes til å skru på varmeovner igjen, dersom de ble skrudd av pga forbruksvarselet."
+        },
+        "highlight": true,
+        "tokens": [
+          {
+            "name": "previous",
+            "type": "number",
+            "title": {
+              "en": "Previous hours consumption (Watt hours)",
+              "no": "Forrige times forbruk (Watt-timer)"
+            },
+            "example": {
+              "en": "4000",
+              "no": "4000"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
         "id": "hour_reset",
         "title": {
           "en": "New hour started",
           "no": "Ny time startet"
+        },
+        "hint": {
+          "en": "This card triggers when a new hour starts, even when no notifications have been trigged.",
+          "no": "Dette kortet trigges når en ny time starter, selv uten at noen varsler har vært trigget."
         },
         "highlight": true,
         "tokens": [
@@ -102,6 +143,10 @@
           "en": "New consumption peak",
           "no": "Ny forbrukstopp"
         },
+        "hint": {
+          "en": "This card triggers when a new consumption peak is registered within the current hour.",
+          "no": "Dette kortet trigges når en ny forbrukstopp er registrert for den gjeldende timen."
+        },
         "highlight": true,
         "tokens": [
           {
@@ -128,8 +173,12 @@
       {
         "id": "prediction_limit_reached",
         "title": {
-          "en": "Prediction limit exceeded",
-          "no": "Estimert forbruksgrense oversteget"
+          "en": "Prediction notification trigged",
+          "no": "Estimeringsvarsel trigget"
+        },
+        "hint": {
+          "en": "This card triggers when the predicted consumption has exceeded the configured limit and the time of the hour is between the notification times set in settings.",
+          "no": "Dette kortet trigges når det estimerte forbruket har oversteget den konfigurerte grensen og klokkeslettet er mellom varseltidspunktet satt i innstillinger."
         },
         "highlight": true,
         "tokens": [
@@ -158,7 +207,11 @@
         "id": "prediction_reset",
         "title": {
           "en": "Prediction notification reset",
-          "no": "Estimertingsvarsel resatt"
+          "no": "Estimeringsvarsel resatt"
+        },
+        "hint": {
+          "en": "This card triggers when the predicted consumption drops below the configured limit while the prediction notification is trigged and the setting 'Reset activated' is on. It can also be set to trigger on reset due to start of a new hour in the settings (still requires predicton notification to be trigged). Can be used to e.g. turn heaters back on if they were turned off by the prediction notification.",
+          "no": "Dette kortet trigges dersom det estimerte forbruket går under den konfigurerte grensen mens estimeringsvarselet er trigget og innstillingen 'Reset aktivert' er på. Det kan også bli satt til å trigge pga start av ny time i innstillinger (det krever likevel at estimeringsvarselet er trigget). Kan f.eks brukes til å skru på varmeovner igjen, dersom de ble skrudd av pga estimeringsvarselet. "
         },
         "highlight": true,
         "tokens": [
@@ -184,6 +237,46 @@
         ]
       }
     ],
+    "conditions": [
+      {
+        "id": "is_consumption_trigged",
+        "title": {
+          "en": "Consumption notification is !{{|not}} trigged",
+          "no": "Forbruksvarsel !{{|ikke}} er trigget"
+        },
+        "hint": {
+          "en": "This card can be used to check if the consumption notification has been trigged.",
+          "no": "Dette kortet kan brukes til å sjekke om forbruksvarselet er trigget."
+        },
+        "highlight": true,
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
+        "id": "is_prediction_trigged",
+        "title": {
+          "en": "Prediction notification is !{{|not}} triggered",
+          "no": "Estimeringsvarsel !{{|ikke}} er trigget"
+        },
+        "hint": {
+          "en": "This card can be used to check if the prediction notification has been trigged.",
+          "no": "Dette kortet kan brukes til å sjekke om estimeringsvarselet er trigget."
+        },
+        "highlight": true,
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      }
+    ],
     "actions": [
       {
         "id": "consumption_updated",
@@ -191,13 +284,13 @@
           "en": "Update consumption",
           "no": "Oppdater forbruk"
         },
-        "titleFormatted": {
-          "en": "Update consumption with [[consumption]]",
-          "no": "Oppdater forbruk med [[consumption]]"
-        },
         "hint": {
           "en": "Register change in consumption",
           "no": "Registrer endring i forbruk"
+        },
+        "titleFormatted": {
+          "en": "Update consumption with [[consumption]]",
+          "no": "Oppdater forbruk med [[consumption]]"
         },
         "args": [
           {
@@ -263,15 +356,15 @@
               "id": "consumption_limit",
               "type": "number",
               "label": {
-                "en": "Notify at usage over (Wh)",
-                "no": "Varsle ved forbruk over (Wt)"
+                "en": "Consumption limit (Wh)",
+                "no": "Forbruksgrense (Wt)"
               },
               "value": 4000,
               "min": 0,
               "step": 1,
               "hint": {
-                "en": "Limit that will be used to trigger notification if the consumption exceeds it within this hour",
-                "no": "Grense som blir brukt til å trigge varsel dersom forbruket overstiges innen denne timen"
+                "en": "Limit that will be used to trigger notification if the actual consumption exceeds it.",
+                "no": "Grense som blir brukt til å trigge varsel dersom faktisk forbruk overstiger den."
               }
             },
             {
@@ -286,8 +379,8 @@
               "max": 60,
               "step": 1,
               "hint": {
-                "en": "If the notication is activated this is the earliest it will notify about consumption. If the limit is exceeded earlier it will not notify until it has reached these many minutes into the hour",
-                "no": "Dersom varsling er aktivert er dette det tidligste den vil varsle om forbruk. Dersom grensen overstiges tidligere vil den ikke varsle før dette antallet minutter inn i timen"
+                "en": "If the notication is activated this is the earliest it will notify about consumption. If the limit is exceeded earlier it will not notify until it has reached these many minutes into the hour.",
+                "no": "Dersom varsling er aktivert er dette det tidligste den vil varsle om forbruk. Dersom grensen overstiges tidligere vil den ikke varsle før dette antallet minutter inn i timen."
               }
             },
             {
@@ -302,21 +395,21 @@
               "max": 60,
               "step": 1,
               "hint": {
-                "en": "If the notication is activated this is the latest it will notify about consumption. If the limit is exceeded later it will not notify within this hour",
-                "no": "Dersom varsling er aktivert er dette det seneste den vil varsle om forbruk. Dersom grensen overstiges senere vil den ikke varsle denne timen"
+                "en": "If the notication is activated this is the latest it will notify about consumption. If the limit is exceeded later it will not notify within this hour.",
+                "no": "Dersom varsling er aktivert er dette det seneste den vil varsle om forbruk. Dersom grensen overstiges senere vil den ikke varsle denne timen."
               }
             },
             {
               "id": "notification_consumption_enabled",
               "type": "checkbox",
               "label": {
-                "en": "Notification",
-                "no": "Varsling"
+                "en": "Notification enabled",
+                "no": "Varsling aktivert"
               },
               "value": true,
               "hint": {
-                "en": "Activates notification if the consumption limit is exceeded",
-                "no": "Aktiverer varsel dersom forbruksgrensen overstiges"
+                "en": "Activates consumption notification and triggers the flow card 'Consumption notification trigged' if the predicted consumption exceeds the limit set in the setting 'Consumption limit (Wh)'.",
+                "no": "Aktiverer forbruksvarsel og trigger flow-kortet 'Forbruksvarsel trigget' dersom estimert forbruk overstiger grensen satt i innstillingen 'Forbruksgrense (Wt)'."
               }
             }
           ]
@@ -332,15 +425,15 @@
               "id": "prediction_limit",
               "type": "number",
               "label": {
-                "en": "Notify at prediction over (Wh)",
-                "no": "Varsle ved estimat over (Wt)"
+                "en": "Prediction limit (Wh)",
+                "no": "Estimeringsgrense (Wt)"
               },
               "value": 4500,
               "min": 0,
               "step": 1,
               "hint": {
-                "en": "Limit that will be used to trigger notification if the predicted consumption exceeds it within this hour",
-                "no": "Grense som blir brukt til å trigge varsel dersom estimert forbruk overstiges innen denne timen"
+                "en": "Limit that will be used to trigger notification if the predicted consumption exceeds it.",
+                "no": "Grense som blir brukt til å trigge varsel dersom estimert forbruk overstiger den."
               }
             },
             {
@@ -355,8 +448,8 @@
               "max": 60,
               "step": 1,
               "hint": {
-                "en": "If the notication is activated this is the earliest it will notify about predicted consumption. If the limit is exceeded earlier it will not notify until it has reached these many minutes into the hour",
-                "no": "Dersom varsling er aktivert er dette det tidligste den vil varsle om estimert forbruk. Dersom grensen overstiges tidligere vil den ikke varsle før dette antallet minutter inn i timen"
+                "en": "If the notication is activated this is the earliest it will notify about predicted consumption. If the limit is exceeded earlier it will not notify until it has reached these many minutes into the hour.",
+                "no": "Dersom varsling er aktivert er dette det tidligste den vil varsle om estimert forbruk. Dersom grensen overstiges tidligere vil den ikke varsle før dette antallet minutter inn i timen."
               }
             },
             {
@@ -371,8 +464,8 @@
               "max": 60,
               "step": 1,
               "hint": {
-                "en": "If the notication is activated this is the latest it will notify about estimated consumption. If the limit is exceeded later it will not notify within this hour",
-                "no": "Dersom varsling er aktivert er dette det seneste den vil varsle om estimert forbruk. Dersom grensen overstiges senere vil den ikke varsle denne timen"
+                "en": "If the notication is activated this is the latest it will notify about estimated consumption. If the limit is exceeded later it will not notify within this hour.",
+                "no": "Dersom varsling er aktivert er dette det seneste den vil varsle om estimert forbruk. Dersom grensen overstiges senere vil den ikke varsle denne timen."
               }
             },
             {
@@ -384,49 +477,49 @@
               },
               "value": true,
               "hint": {
-                "en": "Activates notification if the predicted consumption limit is exceeded",
-                "no": "Aktiverer varsel dersom estimert forbruksgrense overstiges"
+                "en": "Activates prediction notification and triggers the flow card 'Prediction notification trigged' if the predicted consumption exceeds the limit set in the setting 'Prediction limit (Wh)'.",
+                "no": "Aktiverer estimeringsvarsel og trigger flow-kortet 'Estimeringsvarsel trigget' dersom estimert forbruk overstiger grensen satt i innstillingen 'Estimeringsgrense (Wt)'."
               }
             },
             {
               "id": "prediction_reset_limit",
               "type": "number",
               "label": {
-                "en": "Reset notification below (Wh)",
-                "no": "Nullstill varsel under (Wt)"
+                "en": "Reset below (Wh)",
+                "no": "Reset under (Wt)"
               },
               "value": 3500,
               "min": 0,
               "step": 1,
               "hint": {
-                "en": "Limit that will be used to reset the notification if the predicted consumption drops below it within this hour",
-                "no": "Grense som blir brukt til å resette varsel dersom estimert forbruk går under innen denne timen"
+                "en": "Resets the prediction notification if the predicted consumption drops below this limit after the notification has been trigged. Note that this functionality is enabled by the setting 'Reset activated'.",
+                "no": "Resetter estimeringsvarsel dersom estimert forbruk synker under denne grensen etter at varselet har blitt trigget. Merk at denne funksjonaliteten aktiveres av innstillingen 'Reset aktivert'."
               }
             },
             {
               "id": "prediction_reset_enabled",
               "type": "checkbox",
               "label": {
-                "en": "Reset notification",
-                "no": "Nullstill varsel"
+                "en": "Reset activated",
+                "no": "Reset aktivert"
               },
               "value": true,
               "hint": {
-                "en": "Activates notification if the predicted consumption limit is exceeded",
-                "no": "Aktiverer varsel dersom estimert forbruksgrense overstiges"
+                "en": "Resets the prediction notification and triggers the flow card 'Prediction notification reset' if the predicted consumptions drops below the 'Reset below (Wh)' limit.",
+                "no": "Resetter estimeringsvarselet og trigger flow-kortet 'Estimertingsvarsel resatt' dersom det estimerte forbruket går under 'Reset under (Wt)' grensen."
               }
             },
             {
               "id": "prediction_reset_new_hour_enabled",
               "type": "checkbox",
               "label": {
-                "en": "Reset notification on new hour",
-                "no": "Nullstill varsel ved ny time"
+                "en": "Notify reset on new hour",
+                "no": "Varsle reset ved ny time"
               },
               "value": false,
               "hint": {
-                "en": "Activates notification when the predicted consumption is reset when a new hour starts. It will then report a estimated consumption of 0 (zero).",
-                "no": "Aktiverer varsel når det estimerte forbruket blir resatt når en ny time starter. Den vil da rapportere om et estimert forbruk på 0 (null)"
+                "en": "Triggers the flow card 'Prediction notification reset' when a new hour starts (requires that the prediction notification is trigged). It will then report a estimated consumption of 0 (zero).",
+                "no": "Trigger flow-kortet 'Estimertingsvarsel resatt' når en ny time starter (krever at estimeringsvarselet er trigget). Den vil da rapportere om et estimert forbruk på 0 (null)."
               }
             }
           ]
@@ -463,8 +556,8 @@
                 }
               ],
               "hint": {
-                "en": "Select if the predictions should be done based on age of readings or a specific amount of readings",
-                "no": "Velg om estimeringen skal gjøres basert på alder av avlesninger eller et spesifikt antall avlesninger"
+                "en": "Select if the predictions should be done based on age of readings or a specific amount of readings.",
+                "no": "Velg om estimeringen skal gjøres basert på alder av avlesninger eller et spesifikt antall avlesninger."
               }
             },
             {
@@ -479,8 +572,8 @@
               "max": 1000,
               "step": 1,
               "hint": {
-                "en": "Maximum age or amount of readings which are used for predicting the consumption",
-                "no": "Maksimale alderen eller antall av målinger som brukes for estimere forbruk"
+                "en": "Maximum age or amount of readings which are used for predicting the consumption.",
+                "no": "Maksimale alderen eller antall av målinger som brukes for estimere forbruk."
               }
             },
             {
@@ -506,33 +599,51 @@
   "capabilities": {
     "alarm_consumption_notified": {
       "title": {
-        "en": "Consumption notification triggered",
+        "en": "Consumption notification trigged",
         "no": "Forbruksvarsel trigget"
       },
       "desc": {
-        "en": "Consumption notification has been triggered",
+        "en": "Consumption notification has been trigged",
         "no": "Forbruksvarsel har blitt trigget"
       },
       "type": "boolean",
       "getable": true,
       "setable": false,
       "greyout": true,
-      "icon": "/assets/alert.svg"
+      "insights": true,
+      "icon": "/assets/alert.svg",
+      "insightsTitleTrue": {
+        "en": "Consumption notification trigged",
+        "no": "Forbruksvarsel trigget"
+      },
+      "insightsTitleFalse": {
+        "en": "Consumption notification reset",
+        "no": "Forbruksvarsel resatt"
+      }
     },
     "alarm_prediction_notified": {
       "title": {
-        "en": "Prediction notification triggered",
+        "en": "Prediction notification trigged",
         "no": "Estimeringsvarsel trigget"
       },
       "desc": {
-        "en": "Prediction notification has been triggered",
+        "en": "Prediction notification has been trigged",
         "no": "Estimeringsvarsel har blitt trigget"
       },
       "type": "boolean",
       "getable": true,
       "setable": false,
       "greyout": true,
-      "icon": "/assets/alert.svg"
+      "insights": true,
+      "icon": "/assets/alert.svg",
+      "insightsTitleTrue": {
+        "en": "Predicted consumption notification trigged",
+        "no": "Estimeringsvarsel trigget"
+      },
+      "insightsTitleFalse": {
+        "en": "Predicted consumption notification reset",
+        "no": "Estimeringsvarsel resatt"
+      }
     },
     "meter_consumption": {
       "title": {

@@ -1,8 +1,12 @@
 {
     "id": "consumption_limit_reached",
     "title": {
-      "en": "Consumption limit exceeded",
-      "no": "Forbruksgrense oversteget"
+      "en": "Consumption notification trigged",
+      "no": "Forbruksvarsel trigget"
+    },
+    "hint": {
+      "en": "This card triggers when the actial consumption has exceeded the configured limit and the time of the hour is between the notification times set in settings.",
+      "no": "Dette kortet trigges når det faktiske forbruket har oversteget den konfigurerte grensen og klokkeslettet er mellom varseltidspunktet satt i innstillinger."
     },
     "highlight": true,
     "tokens": [{

@@ -1,8 +1,12 @@
 {
     "id": "prediction_limit_reached",
     "title": {
-      "en": "Prediction limit exceeded",
-      "no": "Estimert forbruksgrense oversteget"
+      "en": "Prediction notification trigged",
+      "no": "Estimeringsvarsel trigget"
+    },
+    "hint": {
+      "en": "This card triggers when the predicted consumption has exceeded the configured limit and the time of the hour is between the notification times set in settings.",
+      "no": "Dette kortet trigges når det estimerte forbruket har oversteget den konfigurerte grensen og klokkeslettet er mellom varseltidspunktet satt i innstillinger."
     },
     "highlight": true,
     "tokens": [{

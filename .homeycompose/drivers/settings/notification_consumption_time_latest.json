@@ -10,7 +10,7 @@
     "max": 60,
     "step": 1,
     "hint": {
-      "en": "If the notication is activated this is the latest it will notify about consumption. If the limit is exceeded later it will not notify within this hour",
-      "no": "Dersom varsling er aktivert er dette det seneste den vil varsle om forbruk. Dersom grensen overstiges senere vil den ikke varsle denne timen"
+      "en": "If the notication is activated this is the latest it will notify about consumption. If the limit is exceeded later it will not notify within this hour.",
+      "no": "Dersom varsling er aktivert er dette det seneste den vil varsle om forbruk. Dersom grensen overstiges senere vil den ikke varsle denne timen."
     }
 }

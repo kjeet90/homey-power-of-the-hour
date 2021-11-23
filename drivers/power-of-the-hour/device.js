@@ -13,20 +13,20 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   }
 
   setInitialValues() {
-      this.wattHours = 0;
-      this.wattPeak = 0;
-      this.referenceReadings = [];
-      this.totalPreviousHour = 0;
-      this.consumptionNotified = false;
-      this.predictionNotified = false;
-      this.predictedWattHours = 0;
-      this.previousTimestamp = undefined;
-      this.updateCapabilityValue('alarm_consumption_notified', this.consumptionNotified);
-      this.updateCapabilityValue('alarm_prediction_notified', this.predictionNotified);
-      this.updateCapabilityValue('meter_consumption', this.wattHours);
-      this.updateCapabilityValue('meter_consumption_peak', this.wattPeak);
-      this.updateCapabilityValue('meter_consumption_previous_hour', this.totalPreviousHour);
-      this.updateCapabilityValue('meter_predictor', this.predictedWattHours);
+    this.wattHours = 0;
+    this.wattPeak = 0;
+    this.referenceReadings = [];
+    this.totalPreviousHour = 0;
+    this.consumptionNotified = false;
+    this.predictionNotified = false;
+    this.predictedWattHours = 0;
+    this.previousTimestamp = undefined;
+    this.updateCapabilityValue('alarm_consumption_notified', this.consumptionNotified);
+    this.updateCapabilityValue('alarm_prediction_notified', this.predictionNotified);
+    this.updateCapabilityValue('meter_consumption', this.wattHours);
+    this.updateCapabilityValue('meter_consumption_peak', this.wattPeak);
+    this.updateCapabilityValue('meter_consumption_previous_hour', this.totalPreviousHour);
+    this.updateCapabilityValue('meter_predictor', this.predictedWattHours);
   }
 
   async onAdded() {
@@ -53,20 +53,19 @@ module.exports = class PowerOfTheHour extends Homey.Device {
       this.updateCapabilityValue('meter_consumption', this.getWattHours());
       this.previousTimestamp = timeNow;
       this.scheduleRecalculation(watt);
-      } catch(err) {
-        this.log('Failed to check readings: ', err);
-      }
+    } catch (err) {
+      this.log('Failed to check readings: ', err);
+    }
   }
 
   startNewHour(watt, timeNow) {
     this.setTotalPreviousHour(this.wattHours + (watt * calculations.getRemainingHour(this.previousTimestamp)));
-    this.consumptionNotified = false;
     this.setWattHours(watt * calculations.getElapsedHour(timeNow));
     this.setNewPeak(watt);
     this.predictedWattHours = 0;
     this.resetPredictionNotification(true);
+    this.resetConsumptionNotification();
     this.updateCapabilityValue('meter_consumption_previous_hour', this.totalPreviousHour);
-    this.updateCapabilityValue('alarm_consumption_notified', false);
     this.updateCapabilityValue('meter_consumption_peak', this.wattPeak);
     this.homey.flow.getDeviceTriggerCard('hour_reset').trigger(this, this.getFlowCardTokens('previous'));
   }
@@ -78,55 +77,60 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   checkIfPeak(watt) {
     if (watt > this.wattPeak) {
       this.setNewPeak(watt);
-      this.homey.flow.getDeviceTriggerCard('new_peak').trigger(this, this.getFlowCardTokens('peak'), {});
       this.updateCapabilityValue('meter_consumption_peak', this.wattPeak);
+      this.homey.flow.getDeviceTriggerCard('new_peak').trigger(this, this.getFlowCardTokens('peak'), {});
     }
   }
 
   checkNotify() {
     if (this.getWattHours() > this.settings.consumption_limit && this.isNotifyAllowed('consumption') && !this.consumptionNotified) {
-      this.homey.flow.getDeviceTriggerCard('consumption_limit_reached').trigger(this, this.getFlowCardTokens('consumption'), {});
       this.consumptionNotified = true;
       this.updateCapabilityValue('alarm_consumption_notified', this.consumptionNotified);
+      this.homey.flow.getDeviceTriggerCard('consumption_limit_reached').trigger(this, this.getFlowCardTokens('consumption'), {});
     }
     if (this.getPredictedWattHours() > this.settings.prediction_limit && this.isNotifyAllowed('prediction') && !this.predictionNotified) {
-      this.homey.flow.getDeviceTriggerCard('prediction_limit_reached').trigger(this, this.getFlowCardTokens('prediction'), {});
       this.predictionNotified = true;
       this.updateCapabilityValue('alarm_prediction_notified', this.predictionNotified);
+      this.homey.flow.getDeviceTriggerCard('prediction_limit_reached').trigger(this, this.getFlowCardTokens('prediction'), {});
     }
-    if (this.getPredictedWattHours() < this.settings.prediction_reset_limit) {
+    if (this.settings.prediction_reset_enabled && this.getPredictedWattHours() < this.settings.prediction_reset_limit) {
       this.resetPredictionNotification();
     }
   }
 
   resetPredictionNotification(isNewHour = false) {
-    if (this.predictionNotified && this.settings.prediction_reset_enabled) {
-      if(!isNewHour || (isNewHour && this.settings.prediction_reset_new_hour_enabled)) {
-        this.homey.flow.getDeviceTriggerCard('prediction_reset').trigger(this, this.getFlowCardTokens('prediction'), {});
-      }
+    this.updateCapabilityValue('alarm_prediction_notified', false);
+    if (this.predictionNotified && (!isNewHour || (isNewHour && this.settings.prediction_reset_new_hour_enabled))) {
+      this.homey.flow.getDeviceTriggerCard('prediction_reset').trigger(this, this.getFlowCardTokens('prediction'), {});
     }
     this.predictionNotified = false;
-    this.updateCapabilityValue('alarm_prediction_notified', this.predictionNotified);
+  }
+
+  resetConsumptionNotification() {
+    this.updateCapabilityValue('alarm_consumption_notified', false);
+    if (this.consumptionNotified) {
+      this.homey.flow.getDeviceTriggerCard('consumption_reset').trigger(this, this.getFlowCardTokens('previous'), {});
+    }
+    this.consumptionNotified = false;
   }
 
   getFlowCardTokens(type) {
     if (type === 'prediction') {
       return {
-        predicted: this.getPredictedWattHours()
-      }
-    } else if (type === 'peak') {
+        predicted: this.getPredictedWattHours(),
+      };
+    } if (type === 'peak') {
       return {
-        peak: this.getPeak()
-      }
-    } else if (type === 'previous') {
+        peak: this.getPeak(),
+      };
+    } if (type === 'previous') {
       return {
-        previous: this.getTotalPreviousHour()
-      }
-    } else {
-      return {
-        consumption: this.getWattHours()
+        previous: this.getTotalPreviousHour(),
       };
     }
+    return {
+      consumption: this.getWattHours(),
+    };
   }
 
   getTotalPreviousHour() {
@@ -177,7 +181,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   }
 
   updateReferenceReadings(watt, timeOfReading) {
-    const newReading = {consumption: watt, timestamp: timeOfReading}
+    const newReading = { consumption: watt, timestamp: timeOfReading };
     if (this.referenceReadings.length > this.settings.prediction_history_count) {
       this.referenceReadings.pop();
     }
@@ -188,9 +192,9 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     this.setCapabilityValue(parameter, value).then().catch(err => this.log(`Failed to set capability value ${parameter} with the value ${value}`));
   }
 
-  scheduleRecalculation(watt) {    
-    if(this.recalculationTimeout) {
-      this.homey.clearTimeout(this.recalculationTimeout)
+  scheduleRecalculation(watt) {
+    if (this.recalculationTimeout) {
+      this.homey.clearTimeout(this.recalculationTimeout);
     }
     this.recalculationTimeout = this.homey.setTimeout(() => {
       this.log(`No data received within the last 60 seconds. Recalculating with previous received value: ${watt}W`);
@@ -198,7 +202,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     }, 60 * 1000);
   }
 
-  async onSettings({oldSettings, newSettings, changedKeys}) {
+  async onSettings({ oldSettings, newSettings, changedKeys }) {
     this.settings = newSettings;
     if (changedKeys.includes('prediction_age')) {
       this.predict();
@@ -207,4 +211,5 @@ module.exports = class PowerOfTheHour extends Homey.Device {
       this.referenceReadings = this.referenceReadings.slice(0, newSettings.prediction_history_count);
     }
   }
-}
+
+};

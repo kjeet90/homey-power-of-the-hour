@@ -2,12 +2,12 @@
     "id": "prediction_reset_enabled",
     "type": "checkbox",
     "label": {
-      "en": "Reset notification",
-      "no": "Nullstill varsel"
+      "en": "Reset activated",
+      "no": "Reset aktivert"
     },
     "value": true,
     "hint": {
-      "en": "Activates notification if the predicted consumption limit is exceeded",
-      "no": "Aktiverer varsel dersom estimert forbruksgrense overstiges"
+      "en": "Resets the prediction notification and triggers the flow card 'Prediction notification reset' if the predicted consumptions drops below the 'Reset below (Wh)' limit.",
+      "no": "Resetter estimeringsvarselet og trigger flow-kortet 'Estimertingsvarsel resatt' dersom det estimerte forbruket går under 'Reset under (Wt)' grensen."
     }
 }

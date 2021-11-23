@@ -1,0 +1,19 @@
+{
+    "id": "is_prediction_trigged",
+    "title": {
+      "en": "Prediction notification is !{{|not}} triggered",
+      "no": "Estimeringsvarsel !{{|ikke}} er trigget"
+    },
+    "hint": {
+      "en": "This card can be used to check if the prediction notification has been trigged.",
+      "no": "Dette kortet kan brukes til å sjekke om estimeringsvarselet er trigget."
+    },
+    "highlight": true,
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      }
+    ]
+  }
