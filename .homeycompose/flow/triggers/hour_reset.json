@@ -4,6 +4,10 @@
       "en": "New hour started",
       "no": "Ny time startet"
     },
+    "hint": {
+      "en": "This card triggers when a new hour starts, even when no notifications have been trigged.",
+      "no": "Dette kortet trigges når en ny time starter, selv uten at noen varsler har vært trigget."
+    },
     "highlight": true,
     "tokens": [{
       "name": "previous",
@@ -24,4 +28,4 @@
         "filter": "driver_id=power-of-the-hour"
       }
     ]
-  }
+}

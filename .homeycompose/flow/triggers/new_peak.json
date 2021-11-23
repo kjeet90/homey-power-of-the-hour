@@ -4,6 +4,10 @@
       "en": "New consumption peak",
       "no": "Ny forbrukstopp"
     },
+    "hint": {
+      "en": "This card triggers when a new consumption peak is registered within the current hour.",
+      "no": "Dette kortet trigges når en ny forbrukstopp er registrert for den gjeldende timen."
+    },
     "highlight": true,
     "tokens": [{
       "name": "peak",

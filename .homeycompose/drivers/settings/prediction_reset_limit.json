@@ -2,14 +2,14 @@
     "id": "prediction_reset_limit",
     "type": "number",
     "label": {
-      "en": "Reset notification below (Wh)",
-      "no": "Nullstill varsel under (Wt)"
+      "en": "Reset below (Wh)",
+      "no": "Reset under (Wt)"
     },
     "value": 3500,
     "min": 0,
     "step": 1,
     "hint": {
-      "en": "Limit that will be used to reset the notification if the predicted consumption drops below it within this hour",
-      "no": "Grense som blir brukt til å resette varsel dersom estimert forbruk går under innen denne timen"
+      "en": "Resets the prediction notification if the predicted consumption drops below this limit after the notification has been trigged. Note that this functionality is enabled by the setting 'Reset activated'.",
+      "no": "Resetter estimeringsvarsel dersom estimert forbruk synker under denne grensen etter at varselet har blitt trigget. Merk at denne funksjonaliteten aktiveres av innstillingen 'Reset aktivert'."
     }
 }

@@ -10,7 +10,7 @@
     "max": 1000,
     "step": 1,
     "hint": {
-        "en": "Maximum age or amount of readings which are used for predicting the consumption",
-        "no": "Maksimale alderen eller antall av målinger som brukes for estimere forbruk"
+        "en": "Maximum age or amount of readings which are used for predicting the consumption.",
+        "no": "Maksimale alderen eller antall av målinger som brukes for estimere forbruk."
     }
 }

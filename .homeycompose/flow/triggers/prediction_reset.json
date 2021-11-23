@@ -2,7 +2,11 @@
     "id": "prediction_reset",
     "title": {
       "en": "Prediction notification reset",
-      "no": "Estimertingsvarsel resatt"
+      "no": "Estimeringsvarsel resatt"
+    },
+    "hint": {
+      "en": "This card triggers when the predicted consumption drops below the configured limit while the prediction notification is trigged and the setting 'Reset activated' is on. It can also be set to trigger on reset due to start of a new hour in the settings (still requires predicton notification to be trigged). Can be used to e.g. turn heaters back on if they were turned off by the prediction notification.",
+      "no": "Dette kortet trigges dersom det estimerte forbruket går under den konfigurerte grensen mens estimeringsvarselet er trigget og innstillingen 'Reset aktivert' er på. Det kan også bli satt til å trigge pga start av ny time i innstillinger (det krever likevel at estimeringsvarselet er trigget). Kan f.eks brukes til å skru på varmeovner igjen, dersom de ble skrudd av pga estimeringsvarselet. "
     },
     "highlight": true,
     "tokens": [{

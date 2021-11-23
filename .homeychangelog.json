@@ -1,4 +1,7 @@
 {
+  "0.2.0": {
+    "en": "Added timeline for trigger/reset of prediction and consumption notifications. Added one new trigger flow card: Consumption notification reset. Added two new condition flow cards: Consumption/Prediction notification trigged. Updated names, descriptions and hints of flow cards and settings to be more descriptive. Fixed issue where reset prediction would reset even with setting disabled."
+  },
   "0.1.3": {
     "en": "On restart of homey/app: This hours consumpion calculated on first reading and elapsed time. Internal check of notifications every 60 seconds if no readings are received."
   },

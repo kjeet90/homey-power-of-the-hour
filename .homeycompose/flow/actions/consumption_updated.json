@@ -4,13 +4,13 @@
       "en": "Update consumption",
       "no": "Oppdater forbruk"
     },
-    "titleFormatted": {
-      "en": "Update consumption with [[consumption]]",
-      "no": "Oppdater forbruk med [[consumption]]"
-    },
     "hint": {
       "en": "Register change in consumption",
       "no": "Registrer endring i forbruk"
+    },
+    "titleFormatted": {
+      "en": "Update consumption with [[consumption]]",
+      "no": "Oppdater forbruk med [[consumption]]"
     },
     "args": [
       {

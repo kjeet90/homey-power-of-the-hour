@@ -1,0 +1,19 @@
+{
+    "id": "is_consumption_trigged",
+    "title": {
+      "en": "Consumption notification is !{{|not}} trigged",
+      "no": "Forbruksvarsel !{{|ikke}} er trigget"
+    },
+    "hint": {
+      "en": "This card can be used to check if the consumption notification has been trigged.",
+      "no": "Dette kortet kan brukes til å sjekke om forbruksvarselet er trigget."
+    },
+    "highlight": true,
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      }
+    ]
+  }
