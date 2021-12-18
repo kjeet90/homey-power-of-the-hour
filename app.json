@@ -239,6 +239,35 @@
     ],
     "conditions": [
       {
+        "id": "is_consumption_limit_above",
+        "title": {
+          "en": "Consumption limit is !{{|not}} above",
+          "no": "Forbruksgrensen !{{|ikke}} er over"
+        },
+        "hint": {
+          "en": "This card can be used to check towards the consumption limit in settings.",
+          "no": "Dette kortet kan brukes til å sjekke mot forbruksgrensen i innstillinger."
+        },
+        "highlight": true,
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          },
+          {
+            "name": "limit",
+            "type": "number",
+            "min": 0,
+            "step": 1,
+            "title": {
+              "en": "Watt hours",
+              "no": "Watt-timer"
+            }
+          }
+        ]
+      },
+      {
         "id": "is_consumption_trigged",
         "title": {
           "en": "Consumption notification is !{{|not}} trigged",
@@ -254,6 +283,64 @@
             "name": "device",
             "type": "device",
             "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
+        "id": "is_prediction_limit_above",
+        "title": {
+          "en": "Prediction limit is !{{|not}} above",
+          "no": "Estimeringsgrensen !{{|ikke}} er over"
+        },
+        "hint": {
+          "en": "This card can be used to check towards the prediction limit in settings.",
+          "no": "Dette kortet kan brukes til å sjekke mot estimeringsgrensen i innstillinger."
+        },
+        "highlight": true,
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          },
+          {
+            "name": "limit",
+            "type": "number",
+            "min": 0,
+            "step": 1,
+            "title": {
+              "en": "Watt hours",
+              "no": "Watt-timer"
+            }
+          }
+        ]
+      },
+      {
+        "id": "is_prediction_reset_limit_above",
+        "title": {
+          "en": "'Reset blow' limit is !{{|not}} above",
+          "no": "'Reset under' grensen !{{|ikke}} er over"
+        },
+        "hint": {
+          "en": "This card can be used to check towards the 'Reset below' limit in settings.",
+          "no": "Dette kortet kan brukes til å sjekke mot 'Reset under' grensen i innstillinger."
+        },
+        "highlight": true,
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          },
+          {
+            "name": "limit",
+            "type": "number",
+            "min": 0,
+            "step": 1,
+            "title": {
+              "en": "Watt hours",
+              "no": "Watt-timer"
+            }
           }
         ]
       },
