@@ -49,6 +49,7 @@ Goal: Keep the consumption below 5000Wh
 - Action flow card: Set new consumption limit
 - Action flow card: Set new prediction limit
 - Action flow card: Set new 'Reset below' limit
+- Action flow card: Reset all values
 - Insight for consumption of previous hour
 - Insight for this hours peak
 
