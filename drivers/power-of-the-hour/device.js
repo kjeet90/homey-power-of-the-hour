@@ -33,8 +33,23 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     this.setInitialValues();
   }
 
-  onActionConsumptionChanged(args, state) {
+  async onActionConsumptionChanged(args, state) {
     this.checkReading(args.consumption);
+  }
+
+  async onActionSetConsumptionLimit(args, state) {
+    await this.setSettings({ consumption_limit: args.consumption_limit }).catch(this.error);
+    this.log(`Set new consumption limit to ${args.consumption_limit}`);
+  }
+
+  async onActionSetPredictionLimit(args, state) {
+    await this.setSettings({ prediction_limit: args.prediction_limit }).catch(this.error);
+    this.log(`Set new prediction limit to ${args.prediction_limit}`);
+  }
+
+  async onActionSetPredictionResetLimit(args, state) {
+    await this.setSettings({ prediction_reset_limit: args.prediction_reset_limit }).catch(this.error);
+    this.log(`Set new reset prediction limit to ${args.prediction_reset_limit}`);
   }
 
   async checkReading(watt) {
@@ -86,11 +101,13 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     if (this.getWattHours() > this.settings.consumption_limit && this.isNotifyAllowed('consumption') && !this.consumptionNotified) {
       this.consumptionNotified = true;
       this.updateCapabilityValue('alarm_consumption_notified', this.consumptionNotified);
+      this.log(`Triggering consumption with the value ${this.getFlowCardTokens('consumption')} and the limit was set to ${this.settings.consumption_limit}`);
       this.homey.flow.getDeviceTriggerCard('consumption_limit_reached').trigger(this, this.getFlowCardTokens('consumption'), {});
     }
     if (this.getPredictedWattHours() > this.settings.prediction_limit && this.isNotifyAllowed('prediction') && !this.predictionNotified) {
       this.predictionNotified = true;
       this.updateCapabilityValue('alarm_prediction_notified', this.predictionNotified);
+      this.log(`Triggering prediction with the value ${this.getFlowCardTokens('prediction')} and the limit was set to ${this.settings.prediction_limit}`);
       this.homey.flow.getDeviceTriggerCard('prediction_limit_reached').trigger(this, this.getFlowCardTokens('prediction'), {});
     }
     if (this.settings.prediction_reset_enabled && this.getPredictedWattHours() < this.settings.prediction_reset_limit) {
@@ -101,6 +118,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   resetPredictionNotification(isNewHour = false) {
     this.updateCapabilityValue('alarm_prediction_notified', false);
     if (this.predictionNotified && (!isNewHour || (isNewHour && this.settings.prediction_reset_new_hour_enabled))) {
+      this.log(`Triggering prediction reset with the value ${this.getFlowCardTokens('prediction_reset')} and the limit was set to ${this.settings.prediction_reset_limit}`);
       this.homey.flow.getDeviceTriggerCard('prediction_reset').trigger(this, this.getFlowCardTokens('prediction'), {});
     }
     this.predictionNotified = false;

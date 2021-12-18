@@ -1,0 +1,30 @@
+{
+    "id": "set_prediction_reset_limit",
+    "title": {
+      "en": "Set new 'Reset below' limit",
+      "no": "Sett ny 'Reset under' grense"
+    },
+    "hint": {
+      "en": "Set a new limit for trigger of notification for reset of predicted consumption",
+      "no": "Sett ny grense for trigger av varsel for reset av estimert forbruk"
+    },
+    "titleFormatted": {
+      "en": "Set 'Reset below' to [[prediction_reset_limit]]",
+      "no": "Sett 'Reset under' til [[prediction_reset_limit]]"
+    },
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      },
+      {
+        "name": "prediction_reset_limit",
+        "type": "number",
+        "title": {
+          "en": "Watt hours",
+          "no": "Watt-timer"
+        }
+      }
+    ]
+  }

@@ -29,5 +29,6 @@
     "getable": true,
     "setable": false,
     "greyout": true,
-    "icon": "/assets/previous.svg"
+    "icon": "/assets/previous.svg",
+    "insights": true
   }

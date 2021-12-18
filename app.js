@@ -3,6 +3,7 @@
 const Homey = require('homey');
 
 module.exports = class PowerOfTheHour extends Homey.App {
+
   async onInit() {
     await this.initFlows();
     this.log('Power of the hour is running...');
@@ -13,6 +14,12 @@ module.exports = class PowerOfTheHour extends Homey.App {
 
     this.homey.flow.getActionCard('consumption_updated')
       .registerRunListener((args, state) => args.device.onActionConsumptionChanged(args, state));
+    this.homey.flow.getActionCard('set_consumption_limit')
+      .registerRunListener((args, state) => args.device.onActionSetConsumptionLimit(args, state));
+    this.homey.flow.getActionCard('set_prediction_limit')
+      .registerRunListener((args, state) => args.device.onActionSetPredictionLimit(args, state));
+    this.homey.flow.getActionCard('set_prediction_reset_limit')
+      .registerRunListener((args, state) => args.device.onActionSetPredictionResetLimit(args, state));
     this.homey.flow.getConditionCard('is_prediction_trigged')
       .registerRunListener((args, state) => args.device.getCapabilityValue('alarm_prediction_notified'));
     this.homey.flow.getConditionCard('is_consumption_trigged')
