@@ -29,5 +29,6 @@
     "getable": true,
     "setable": false,
     "greyout": true,
-    "icon": "/assets/maximum.svg"
+    "icon": "/assets/maximum.svg",
+    "insights": true
   }
