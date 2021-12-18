@@ -38,21 +38,36 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   async onActionSetConsumptionLimit(args, state) {
     await this.setSettings({ consumption_limit: args.consumption_limit }).catch(this.error);
     this.log(`Set new consumption limit to ${args.consumption_limit}`);
+    this.settings = await this.getSettings();
   }
 
   async onActionSetPredictionLimit(args, state) {
     await this.setSettings({ prediction_limit: args.prediction_limit }).catch(this.error);
     this.log(`Set new prediction limit to ${args.prediction_limit}`);
+    this.settings = await this.getSettings();
   }
 
   async onActionSetPredictionResetLimit(args, state) {
     await this.setSettings({ prediction_reset_limit: args.prediction_reset_limit }).catch(this.error);
     this.log(`Set new reset prediction limit to ${args.prediction_reset_limit}`);
+    this.settings = await this.getSettings();
   }
 
   async onActionResetAllValues(args, state) {
     await this.setInitialValues();
     this.log('Reset all values');
+  }
+
+  async isConsumptionLimitAbove(args, state) {
+    return this.settings.consumption_limit > args.limit;
+  }
+
+  async isPredictionLimitAbove(args, state) {
+    return this.settings.prediction_limit > args.limit;
+  }
+
+  async isPredictionResetLimitAbove(args, state) {
+    return this.settings.prediction_reset_limit > args.limit;
   }
 
   async checkReading(watt) {

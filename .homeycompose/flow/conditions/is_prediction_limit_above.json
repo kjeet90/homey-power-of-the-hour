@@ -1,0 +1,29 @@
+{
+    "id": "is_prediction_limit_above",
+    "title": {
+      "en": "Prediction limit is !{{|not}} above",
+      "no": "Estimeringsgrensen !{{|ikke}} er over"
+    },
+    "hint": {
+      "en": "This card can be used to check towards the prediction limit in settings.",
+      "no": "Dette kortet kan brukes til å sjekke mot estimeringsgrensen i innstillinger."
+    },
+    "highlight": true,
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      },
+      {
+        "name": "limit",
+        "type": "number",
+        "min": 0,
+        "step": 1,
+        "title": {
+          "en": "Watt hours",
+          "no": "Watt-timer"
+        }
+      }
+    ]
+  }

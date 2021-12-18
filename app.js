@@ -26,6 +26,12 @@ module.exports = class PowerOfTheHour extends Homey.App {
       .registerRunListener((args, state) => args.device.getCapabilityValue('alarm_prediction_notified'));
     this.homey.flow.getConditionCard('is_consumption_trigged')
       .registerRunListener((args, state) => args.device.getCapabilityValue('alarm_consumption_notified'));
+    this.homey.flow.getConditionCard('is_consumption_limit_above')
+      .registerRunListener((args, state) => args.device.isConsumptionLimitAbove(args, state));
+    this.homey.flow.getConditionCard('is_prediction_limit_above')
+      .registerRunListener((args, state) => args.device.isPredictionLimitAbove(args, state));
+    this.homey.flow.getConditionCard('is_prediction_reset_limit_above')
+      .registerRunListener((args, state) => args.device.isPredictionResetLimitAbove(args, state));
   }
 
 };
