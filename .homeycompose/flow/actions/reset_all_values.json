@@ -1,0 +1,18 @@
+{
+    "id": "reset_all_values",
+    "title": {
+      "en": "Reset all values",
+      "no": "Reset alle verdier"
+    },
+    "hint": {
+      "en": "Resets all values and notifications without any flows triggering. Mainly to be used during testing and tuning when you don't want to wait for a new hour to reset.",
+      "no": "Resetter alle verdier og varsler uten at noen flower trigges. Hovedsaklig for bruk under testing og justering når man ikke vil vente på en ny time for reset."
+    },
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      }
+    ]
+  }
