@@ -6,21 +6,32 @@ const calculations = require('../../lib/calculations');
 module.exports = class PowerOfTheHour extends Homey.Device {
 
   async onInit() {
-    await this.setInitialValues();
+    this.latest = await this.getStoreValue('latest') || {};
+    const latestValid = (this.latest.timestamp !== undefined && !calculations.isNewHour(new Date(), this.latest.timestamp));
+    await this.setInitialValues(latestValid);
     this.settings = await this.getSettings();
     this.log('Initialized device', this.getName());
     this.predict();
   }
 
-  async setInitialValues() {
-    this.wattHours = 0;
-    this.wattPeak = 0;
+  async setInitialValues(latestValid = false) {
+    if (latestValid) {
+      this.previousTimestamp = this.latest.timestamp;
+      this.wattHours = this.latest.wattHours;
+      this.wattPeak = this.latest.wattPeak;
+      this.totalPreviousHour = this.latest.totalPreviousHour;
+      this.log(`Found valid values in store: time: ${this.latest.timestamp}, wattHours: ${this.latest.wattHours}`);
+    } else {
+      this.log('Did not find any valid values in store. Starting fresh');
+    }
+    this.wattHours = latestValid ? this.latest.wattHours : 0;
+    this.wattPeak = latestValid ? this.latest.wattPeak : 0;
     this.referenceReadings = [];
-    this.totalPreviousHour = 0;
+    this.totalPreviousHour = latestValid ? this.latest.totalPreviousHour : 0;
     this.predictedWattHours = 0;
-    this.previousTimestamp = undefined;
-    this.updateCapabilityValue('alarm_consumption_notified', false);
-    this.updateCapabilityValue('alarm_prediction_notified', false);
+    this.previousTimestamp = latestValid ? this.latest.timestamp : undefined;
+    this.updateCapabilityValue('alarm_consumption_notified', latestValid ? this.latest.consumption_trigged : false);
+    this.updateCapabilityValue('alarm_prediction_notified', latestValid ? this.latest.prediction_trigged : false);
     this.updateCapabilityValue('meter_consumption', this.wattHours);
     this.updateCapabilityValue('meter_consumption_peak', this.wattPeak);
     this.updateCapabilityValue('meter_consumption_previous_hour', this.totalPreviousHour);
@@ -70,7 +81,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     return this.settings.prediction_reset_limit > args.limit;
   }
 
-  async checkReading(watt) {
+  checkReading(watt) {
     try {
       const timeNow = new Date();
       const hoursSincePreviousReading = calculations.getHoursBetween(timeNow, this.previousTimestamp);
@@ -85,10 +96,23 @@ module.exports = class PowerOfTheHour extends Homey.Device {
       this.checkNotify();
       this.updateCapabilityValue('meter_consumption', this.getWattHours());
       this.previousTimestamp = timeNow;
+      this.storeLatest();
       this.scheduleRecalculation(watt);
     } catch (err) {
       this.log('Failed to check readings: ', err);
     }
+  }
+
+  async storeLatest() {
+    this.latest = {
+      timestamp: this.previousTimestamp,
+      wattHours: this.wattHours,
+      wattPeak: this.wattPeak,
+      totalPreviousHour: this.totalPreviousHour,
+      consumption_trigged: this.getCapabilityValue('alarm_consumption_notified'),
+      prediction_trigged: this.getCapabilityValue('alarm_prediction_notified'),
+    };
+    this.setStoreValue('latest', this.latest);
   }
 
   startNewHour(watt, timeNow) {
