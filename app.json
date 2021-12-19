@@ -248,6 +248,10 @@
           "en": "This card can be used to check towards the consumption limit in settings.",
           "no": "Dette kortet kan brukes til å sjekke mot forbruksgrensen i innstillinger."
         },
+        "titleFormatted": {
+          "en": "Consumption limit is !{{|not}} above [[limit]]",
+          "no": "Forbruksgrensen !{{|ikke}} er over [[limit]]"
+        },
         "highlight": true,
         "args": [
           {
@@ -296,6 +300,10 @@
           "en": "This card can be used to check towards the prediction limit in settings.",
           "no": "Dette kortet kan brukes til å sjekke mot estimeringsgrensen i innstillinger."
         },
+        "titleFormatted": {
+          "en": "Prediction limit is !{{|not}} above [[limit]]",
+          "no": "Estimeringsgrensen !{{|ikke}} er over [[limit]]"
+        },
         "highlight": true,
         "args": [
           {
@@ -324,6 +332,10 @@
         "hint": {
           "en": "This card can be used to check towards the 'Reset below' limit in settings.",
           "no": "Dette kortet kan brukes til å sjekke mot 'Reset under' grensen i innstillinger."
+        },
+        "titleFormatted": {
+          "en": "'Reset below' limit is !{{|not}} above [[limit]]",
+          "no": "'Reset under' grensen !{{|ikke}} er over [[limit]]"
         },
         "highlight": true,
         "args": [
@@ -402,8 +414,8 @@
           "no": "Reset alle verdier"
         },
         "hint": {
-          "en": "Resets all values and notifications without any flows triggering. Mainly to be used during testing and tuning when you don't want to wait for a new hour to reset.",
-          "no": "Resetter alle verdier og varsler uten at noen flower trigges. Hovedsaklig for bruk under testing og justering når man ikke vil vente på en ny time for reset."
+          "en": "Resets all values and notifications without any flows triggering. No settings are changed. Mainly to be used during testing and tuning when you don't want to wait for a new hour to reset.",
+          "no": "Resetter alle verdier og varsler uten at noen flower trigges. Ingen instillinger blir endret. Hovedsaklig for bruk under testing og justering når man ikke vil vente på en ny time for reset."
         },
         "args": [
           {

@@ -50,6 +50,9 @@ Goal: Keep the consumption below 5000Wh
 - Action flow card: Set new prediction limit
 - Action flow card: Set new 'Reset below' limit
 - Action flow card: Reset all values
+- Condition flow card: Consumption limit is above
+- Condition flow card: Prediction limit is above
+- Condition flow card: 'Reset below' limit is above
 - Insight for consumption of previous hour
 - Insight for this hours peak
 

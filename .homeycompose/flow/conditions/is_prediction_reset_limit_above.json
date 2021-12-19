@@ -8,6 +8,10 @@
       "en": "This card can be used to check towards the 'Reset below' limit in settings.",
       "no": "Dette kortet kan brukes til å sjekke mot 'Reset under' grensen i innstillinger."
     },
+    "titleFormatted": {
+      "en": "'Reset below' limit is !{{|not}} above [[limit]]",
+      "no": "'Reset under' grensen !{{|ikke}} er over [[limit]]"
+    },
     "highlight": true,
     "args": [
       {
