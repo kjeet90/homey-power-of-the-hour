@@ -1,9 +1,9 @@
 {
   "name": "no.kjeet90.powerofthehour",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "main": "app.js",
   "engines": {
-    "node": ">=14.18.1"
+    "node": ">=12.16.1"
   },
   "scripts": {
     "test": "jest"

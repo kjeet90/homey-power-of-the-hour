@@ -42,7 +42,7 @@ Goal: Keep the consumption below 5000Wh
 
 # Release notes:
 
-## Unreleased
+## 1.0.0
 
 ### Added
 
@@ -55,6 +55,7 @@ Goal: Keep the consumption below 5000Wh
 - Condition flow card: 'Reset below' limit is above
 - Insight for consumption of previous hour
 - Insight for this hours peak
+- Persistent values. Restarting app/Homey will no longer wipe data if started again within same hour.
 
 ## 0.2.0
 
