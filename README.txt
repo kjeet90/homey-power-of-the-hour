@@ -3,7 +3,7 @@ Power of the hour can predict what your total energy consumption will be at the 
 Get started:
 
 1. Install the app
-2. Add a ‘Power of the hour’ device from the app.
+2. Add one or more ‘Power of the hour’ device from the app.
 3. Go to ‘Settings‘ and select what to display in the status indicator.
 4. Go to ‘Advanced settings’ and adjust the trigger limits and notifications.
 5. Create flows (Examples below)

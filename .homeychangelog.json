@@ -1,4 +1,7 @@
 {
+  "1.0.0": {
+    "en": "Added four new action flow cards for setting new limits and reset values. Added three new condition flow card for checking against limits. Insights for peak and previous hours consumption. Persitent values, restarting homey/app will not clear consumption and triggers if started within same hour again."
+  },
   "0.2.0": {
     "en": "Added timeline for trigger/reset of prediction and consumption notifications. Added one new trigger flow card: Consumption notification reset. Added two new condition flow cards: Consumption/Prediction notification trigged. Updated names, descriptions and hints of flow cards and settings to be more descriptive. Fixed issue where reset prediction would reset even with setting disabled."
   },

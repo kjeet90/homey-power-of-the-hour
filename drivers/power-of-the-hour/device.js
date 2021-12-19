@@ -39,7 +39,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   }
 
   async onAdded() {
-    this.setInitialValues();
+    await this.setInitialValues();
   }
 
   async onActionConsumptionChanged(args, state) {
