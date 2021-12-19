@@ -5,8 +5,8 @@
       "no": "Reset alle verdier"
     },
     "hint": {
-      "en": "Resets all values and notifications without any flows triggering. Mainly to be used during testing and tuning when you don't want to wait for a new hour to reset.",
-      "no": "Resetter alle verdier og varsler uten at noen flower trigges. Hovedsaklig for bruk under testing og justering når man ikke vil vente på en ny time for reset."
+      "en": "Resets all values and notifications without any flows triggering. No settings are changed. Mainly to be used during testing and tuning when you don't want to wait for a new hour to reset.",
+      "no": "Resetter alle verdier og varsler uten at noen flower trigges. Ingen instillinger blir endret. Hovedsaklig for bruk under testing og justering når man ikke vil vente på en ny time for reset."
     },
     "args": [
       {

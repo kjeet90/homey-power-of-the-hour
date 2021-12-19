@@ -8,6 +8,10 @@
       "en": "This card can be used to check towards the consumption limit in settings.",
       "no": "Dette kortet kan brukes til å sjekke mot forbruksgrensen i innstillinger."
     },
+    "titleFormatted": {
+      "en": "Consumption limit is !{{|not}} above [[limit]]",
+      "no": "Forbruksgrensen !{{|ikke}} er over [[limit]]"
+    },
     "highlight": true,
     "args": [
       {

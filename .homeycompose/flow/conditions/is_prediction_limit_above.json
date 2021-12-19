@@ -8,6 +8,10 @@
       "en": "This card can be used to check towards the prediction limit in settings.",
       "no": "Dette kortet kan brukes til å sjekke mot estimeringsgrensen i innstillinger."
     },
+    "titleFormatted": {
+      "en": "Prediction limit is !{{|not}} above [[limit]]",
+      "no": "Estimeringsgrensen !{{|ikke}} er over [[limit]]"
+    },
     "highlight": true,
     "args": [
       {
