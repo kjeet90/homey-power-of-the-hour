@@ -72,17 +72,17 @@ module.exports = class PowerOfTheHour extends Homey.Device {
       this.setSettingsTimeout = null;
     }
     this.setSettingsTimeout = this.homey.setTimeout(() => {
-      if (Object.values(this.newSettings).length) {
-        this.writeNewSettings();
-      }
+      this.writeNewSettings();
     }, 500);
   }
 
   async writeNewSettings() {
-    this.log('Writing new settings');
-    await this.setSettings(this.newSettings).catch(this.error);
-    this.settings = await this.getSettings();
-    this.newSettings = {};
+    if (Object.values(this.newSettings).length) {
+      this.log('Writing new settings');
+      await this.setSettings(this.newSettings).catch(this.error);
+      this.settings = await this.getSettings();
+      this.newSettings = {};
+    }
   }
 
   async onActionResetAllValues(args, state) {
