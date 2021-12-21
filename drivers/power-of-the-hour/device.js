@@ -9,7 +9,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     this.latest = await this.getStoreValue('latest') || {};
     const latestValid = (this.latest.timestamp !== undefined && !calculations.isNewHour(new Date(), this.latest.timestamp));
     await this.setInitialValues(latestValid);
-    this.settings = await this.getSettings();
+    this.settings = await this.getSettings() || {};
     this.log('Initialized device', this.getName());
     this.predict();
   }
@@ -24,6 +24,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     } else {
       this.log('Did not find any valid values in store. Starting fresh');
     }
+    this.newSettings = {};
     this.wattHours = latestValid ? this.latest.wattHours : 0;
     this.wattPeak = latestValid ? this.latest.wattPeak : 0;
     this.referenceReadings = [];
@@ -47,32 +48,41 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   }
 
   async onActionSetConsumptionLimit(args, state) {
-    this.settings.consumption_limit = args.consumption_limit;
-    this.updateSettings();
+    this.newSettings['consumption_limit'] = args.consumption_limit;
+    this.queueSettings();
     this.log(`Got new setting: consumption limit: ${args.consumption_limit}`);
   }
 
   async onActionSetPredictionLimit(args, state) {
-    this.settings.prediction_limit = args.prediction_limit;
-    this.updateSettings();
+    this.newSettings['prediction_limit'] = args.prediction_limit;
+    this.queueSettings();
     this.log(`Got new setting: prediction limit: ${args.prediction_limit}`);
   }
 
   async onActionSetPredictionResetLimit(args, state) {
-    this.settings.prediction_reset_limit = args.prediction_reset_limit;
-    this.updateSettings();
+    this.newSettings['prediction_reset_limit'] = args.prediction_reset_limit;
+    this.queueSettings();
     this.log(`Got new setting: reset prediction limit: ${args.prediction_reset_limit}`);
   }
 
-  // To avoid calling setSettings three times if they update all three limits in the same flow, which would make sense to do.
-  async updateSettings() {
+  // To avoid calling setSettings three times if all three settings are updated in same flow. Found it not setting them correct every time then.
+  async queueSettings() {
     if (this.setSettingsTimeout) {
       this.homey.clearTimeout(this.setSettingsTimeout);
+      this.setSettingsTimeout = null;
     }
     this.setSettingsTimeout = this.homey.setTimeout(() => {
-      this.log('Settings new settings');
-      this.setSettings(this.settings).catch(this.error);
+      if (Object.values(this.newSettings).length) {
+        this.writeNewSettings();
+      }
     }, 500);
+  }
+
+  async writeNewSettings() {
+    this.log('Writing new settings');
+    await this.setSettings(this.newSettings).catch(this.error);
+    this.settings = await this.getSettings();
+    this.newSettings = {};
   }
 
   async onActionResetAllValues(args, state) {
