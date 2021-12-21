@@ -12,6 +12,7 @@
       "en": "Update consumption with [[consumption]]",
       "no": "Oppdater forbruk med [[consumption]]"
     },
+    "highlight": true,
     "args": [
       {
         "name": "device",

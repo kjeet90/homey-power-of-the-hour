@@ -1,13 +1,13 @@
 {
-    "id": "notification_prediction_enabled",
-    "type": "checkbox",
-    "label": {
-      "en": "Notification enabled",
-      "no": "Varsling aktivert"
-    },
-    "value": true,
-    "hint": {
-      "en": "Activates prediction notification and triggers the flow card 'Prediction notification trigged' if the predicted consumption exceeds the limit set in the setting 'Prediction limit (Wh)'.",
-      "no": "Aktiverer estimeringsvarsel og trigger flow-kortet 'Estimeringsvarsel trigget' dersom estimert forbruk overstiger grensen satt i innstillingen 'Estimeringsgrense (Wt)'."
-    }
+  "id": "notification_prediction_enabled",
+  "type": "checkbox",
+  "label": {
+    "en": "Notification enabled",
+    "no": "Varsling aktivert"
+  },
+  "value": true,
+  "hint": {
+    "en": "Activates prediction notification and triggers the flow card 'Prediction notification trigged' if the predicted consumption exceeds the limit set in the setting 'Prediction limit (Wh)'.",
+    "no": "Aktiverer estimeringsvarsel og trigger flow-kortet 'Estimeringsvarsel trigget' dersom estimert forbruk overstiger grensen satt i innstillingen 'Estimeringsgrense (Wh)'."
+  }
 }

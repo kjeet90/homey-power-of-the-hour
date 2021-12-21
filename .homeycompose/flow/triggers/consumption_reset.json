@@ -14,7 +14,7 @@
       "type": "number",
       "title": {
         "en": "Previous hours consumption (Watt hours)",
-        "no": "Forrige times forbruk (Watt-timer)"
+        "no": "Forrige times forbruk (Wattimer)"
       },
       "example": {
         "en": "4000",

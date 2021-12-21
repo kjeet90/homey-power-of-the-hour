@@ -34,5 +34,8 @@
   "author": {
     "name": "Kjetil Haugland",
     "email": "hauglandkjetil@gmail.com"
-  }
+  },
+  "platforms": [
+    "local"
+  ]
 }

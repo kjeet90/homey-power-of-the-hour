@@ -1,15 +1,15 @@
 {
-    "id": "consumption_limit",
-    "type": "number",
-    "label": {
-      "en": "Consumption limit (Wh)",
-      "no": "Forbruksgrense (Wt)"
-    },
-    "value": 4000,
-    "min": 0,
-    "step": 1,
-    "hint": {
-      "en": "Limit that will be used to trigger notification if the actual consumption exceeds it.",
-      "no": "Grense som blir brukt til å trigge varsel dersom faktisk forbruk overstiger den."
-    }
+  "id": "consumption_limit",
+  "type": "number",
+  "label": {
+    "en": "Consumption limit (Wh)",
+    "no": "Forbruksgrense (Wh)"
+  },
+  "value": 4000,
+  "min": 0,
+  "step": 1,
+  "hint": {
+    "en": "Limit that will be used to trigger notification if the actual consumption exceeds it.",
+    "no": "Grense som blir brukt til å trigge varsel dersom faktisk forbruk overstiger den."
+  }
 }

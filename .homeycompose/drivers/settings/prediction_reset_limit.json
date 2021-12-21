@@ -1,15 +1,15 @@
 {
-    "id": "prediction_reset_limit",
-    "type": "number",
-    "label": {
-      "en": "Reset below (Wh)",
-      "no": "Reset under (Wt)"
-    },
-    "value": 3500,
-    "min": 0,
-    "step": 1,
-    "hint": {
-      "en": "Resets the prediction notification if the predicted consumption drops below this limit after the notification has been trigged. Note that this functionality is enabled by the setting 'Reset activated'.",
-      "no": "Resetter estimeringsvarsel dersom estimert forbruk synker under denne grensen etter at varselet har blitt trigget. Merk at denne funksjonaliteten aktiveres av innstillingen 'Reset aktivert'."
-    }
+  "id": "prediction_reset_limit",
+  "type": "number",
+  "label": {
+    "en": "Reset below (Wh)",
+    "no": "Reset under (Wh)"
+  },
+  "value": 3500,
+  "min": 0,
+  "step": 1,
+  "hint": {
+    "en": "Resets the prediction notification if the predicted consumption drops below this limit after the notification has been trigged. Note that this functionality is enabled by the setting 'Reset activated'.",
+    "no": "Resetter estimeringsvarsel dersom estimert forbruk synker under denne grensen etter at varselet har blitt trigget. Merk at denne funksjonaliteten aktiveres av innstillingen 'Reset aktivert'."
+  }
 }

@@ -1,13 +1,13 @@
 {
-    "id": "prediction_reset_enabled",
-    "type": "checkbox",
-    "label": {
-      "en": "Reset activated",
-      "no": "Reset aktivert"
-    },
-    "value": true,
-    "hint": {
-      "en": "Resets the prediction notification and triggers the flow card 'Prediction notification reset' if the predicted consumptions drops below the 'Reset below (Wh)' limit.",
-      "no": "Resetter estimeringsvarselet og trigger flow-kortet 'Estimertingsvarsel resatt' dersom det estimerte forbruket går under 'Reset under (Wt)' grensen."
-    }
+  "id": "prediction_reset_enabled",
+  "type": "checkbox",
+  "label": {
+    "en": "Reset activated",
+    "no": "Reset aktivert"
+  },
+  "value": true,
+  "hint": {
+    "en": "Resets the prediction notification and triggers the flow card 'Prediction notification reset' if the predicted consumptions drops below the 'Reset below (Wh)' limit.",
+    "no": "Resetter estimeringsvarselet og trigger flow-kortet 'Estimertingsvarsel resatt' dersom det estimerte forbruket går under 'Reset under (Wh)' grensen."
+  }
 }
