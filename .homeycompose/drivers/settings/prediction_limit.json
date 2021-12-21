@@ -1,15 +1,15 @@
 {
-    "id": "prediction_limit",
-    "type": "number",
-    "label": {
-      "en": "Prediction limit (Wh)",
-      "no": "Estimeringsgrense (Wt)"
-    },
-    "value": 4500,
-    "min": 0,
-    "step": 1,
-    "hint": {
-      "en": "Limit that will be used to trigger notification if the predicted consumption exceeds it.",
-      "no": "Grense som blir brukt til å trigge varsel dersom estimert forbruk overstiger den."
-    }
+  "id": "prediction_limit",
+  "type": "number",
+  "label": {
+    "en": "Prediction limit (Wh)",
+    "no": "Estimeringsgrense (Wh)"
+  },
+  "value": 4500,
+  "min": 0,
+  "step": 1,
+  "hint": {
+    "en": "Limit that will be used to trigger notification if the predicted consumption exceeds it.",
+    "no": "Grense som blir brukt til å trigge varsel dersom estimert forbruk overstiger den."
+  }
 }

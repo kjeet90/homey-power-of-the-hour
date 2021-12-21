@@ -36,6 +36,9 @@
     "name": "Kjetil Haugland",
     "email": "hauglandkjetil@gmail.com"
   },
+  "platforms": [
+    "local"
+  ],
   "flow": {
     "triggers": [
       {
@@ -55,7 +58,7 @@
             "type": "number",
             "title": {
               "en": "Watt hours",
-              "no": "Watt-timer"
+              "no": "Wattimer"
             },
             "example": {
               "en": "4000",
@@ -88,7 +91,7 @@
             "type": "number",
             "title": {
               "en": "Previous hours consumption (Watt hours)",
-              "no": "Forrige times forbruk (Watt-timer)"
+              "no": "Forrige times forbruk (Wattimer)"
             },
             "example": {
               "en": "4000",
@@ -121,7 +124,7 @@
             "type": "number",
             "title": {
               "en": "Previous hours consumption (Watt hours)",
-              "no": "Forrige times forbruk (Watt-timer)"
+              "no": "Forrige times forbruk (Wattimer)"
             },
             "example": {
               "en": "4000",
@@ -187,7 +190,7 @@
             "type": "number",
             "title": {
               "en": "Watt hours",
-              "no": "Watt-timer"
+              "no": "Wattimer"
             },
             "example": {
               "en": "4000",
@@ -220,7 +223,7 @@
             "type": "number",
             "title": {
               "en": "Watt hours",
-              "no": "Watt-timer"
+              "no": "Wattimer"
             },
             "example": {
               "en": "1500",
@@ -266,7 +269,7 @@
             "step": 1,
             "title": {
               "en": "Watt hours",
-              "no": "Watt-timer"
+              "no": "Wattimer"
             }
           }
         ]
@@ -318,7 +321,7 @@
             "step": 1,
             "title": {
               "en": "Watt hours",
-              "no": "Watt-timer"
+              "no": "Wattimer"
             }
           }
         ]
@@ -351,7 +354,7 @@
             "step": 1,
             "title": {
               "en": "Watt hours",
-              "no": "Watt-timer"
+              "no": "Wattimer"
             }
           }
         ]
@@ -391,6 +394,7 @@
           "en": "Update consumption with [[consumption]]",
           "no": "Oppdater forbruk med [[consumption]]"
         },
+        "highlight": true,
         "args": [
           {
             "name": "device",
@@ -450,7 +454,7 @@
             "type": "number",
             "title": {
               "en": "Watt hours",
-              "no": "Watt-timer"
+              "no": "Wattimer"
             }
           }
         ]
@@ -480,7 +484,7 @@
             "type": "number",
             "title": {
               "en": "Watt hours",
-              "no": "Watt-timer"
+              "no": "Wattimer"
             }
           }
         ]
@@ -510,7 +514,7 @@
             "type": "number",
             "title": {
               "en": "Watt hours",
-              "no": "Watt-timer"
+              "no": "Wattimer"
             }
           }
         ]
@@ -564,7 +568,7 @@
               "type": "number",
               "label": {
                 "en": "Consumption limit (Wh)",
-                "no": "Forbruksgrense (Wt)"
+                "no": "Forbruksgrense (Wh)"
               },
               "value": 4000,
               "min": 0,
@@ -616,7 +620,7 @@
               "value": true,
               "hint": {
                 "en": "Activates consumption notification and triggers the flow card 'Consumption notification trigged' if the predicted consumption exceeds the limit set in the setting 'Consumption limit (Wh)'.",
-                "no": "Aktiverer forbruksvarsel og trigger flow-kortet 'Forbruksvarsel trigget' dersom estimert forbruk overstiger grensen satt i innstillingen 'Forbruksgrense (Wt)'."
+                "no": "Aktiverer forbruksvarsel og trigger flow-kortet 'Forbruksvarsel trigget' dersom estimert forbruk overstiger grensen satt i innstillingen 'Forbruksgrense (Wh)'."
               }
             }
           ]
@@ -633,7 +637,7 @@
               "type": "number",
               "label": {
                 "en": "Prediction limit (Wh)",
-                "no": "Estimeringsgrense (Wt)"
+                "no": "Estimeringsgrense (Wh)"
               },
               "value": 4500,
               "min": 0,
@@ -685,7 +689,7 @@
               "value": true,
               "hint": {
                 "en": "Activates prediction notification and triggers the flow card 'Prediction notification trigged' if the predicted consumption exceeds the limit set in the setting 'Prediction limit (Wh)'.",
-                "no": "Aktiverer estimeringsvarsel og trigger flow-kortet 'Estimeringsvarsel trigget' dersom estimert forbruk overstiger grensen satt i innstillingen 'Estimeringsgrense (Wt)'."
+                "no": "Aktiverer estimeringsvarsel og trigger flow-kortet 'Estimeringsvarsel trigget' dersom estimert forbruk overstiger grensen satt i innstillingen 'Estimeringsgrense (Wh)'."
               }
             },
             {
@@ -693,7 +697,7 @@
               "type": "number",
               "label": {
                 "en": "Reset below (Wh)",
-                "no": "Reset under (Wt)"
+                "no": "Reset under (Wh)"
               },
               "value": 3500,
               "min": 0,
@@ -713,7 +717,7 @@
               "value": true,
               "hint": {
                 "en": "Resets the prediction notification and triggers the flow card 'Prediction notification reset' if the predicted consumptions drops below the 'Reset below (Wh)' limit.",
-                "no": "Resetter estimeringsvarselet og trigger flow-kortet 'Estimertingsvarsel resatt' dersom det estimerte forbruket går under 'Reset under (Wt)' grensen."
+                "no": "Resetter estimeringsvarselet og trigger flow-kortet 'Estimertingsvarsel resatt' dersom det estimerte forbruket går under 'Reset under (Wh)' grensen."
               }
             },
             {
@@ -866,7 +870,7 @@
           "name": "value",
           "title": {
             "en": "Watt hours",
-            "no": "Watt-timer"
+            "no": "Wattimer"
           },
           "example": {
             "en": 1200,
@@ -879,7 +883,7 @@
       "decimals": 0,
       "units": {
         "en": "Wh",
-        "no": "Wt"
+        "no": "Wh"
       },
       "getable": true,
       "setable": false,
@@ -936,7 +940,7 @@
           "name": "value",
           "title": {
             "en": "Watt hours",
-            "no": "Watt-timer"
+            "no": "Wattimer"
           },
           "example": {
             "en": 4500,
@@ -949,7 +953,7 @@
       "decimals": 0,
       "units": {
         "en": "Wh",
-        "no": "Wt"
+        "no": "Wh"
       },
       "getable": true,
       "setable": false,
@@ -971,7 +975,7 @@
           "name": "value",
           "title": {
             "en": "Watt hours",
-            "no": "Watt-timer"
+            "no": "Wattimer"
           },
           "example": {
             "en": 1200,
@@ -984,7 +988,7 @@
       "decimals": 0,
       "units": {
         "en": "Wh",
-        "no": "Wt"
+        "no": "Wh"
       },
       "getable": true,
       "setable": false,

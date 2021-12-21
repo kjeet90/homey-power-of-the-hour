@@ -23,7 +23,7 @@
         "type": "number",
         "title": {
           "en": "Watt hours",
-          "no": "Watt-timer"
+          "no": "Wattimer"
         }
       }
     ]

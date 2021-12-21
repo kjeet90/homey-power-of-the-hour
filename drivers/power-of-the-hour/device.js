@@ -48,20 +48,31 @@ module.exports = class PowerOfTheHour extends Homey.Device {
 
   async onActionSetConsumptionLimit(args, state) {
     this.settings.consumption_limit = args.consumption_limit;
-    this.setSettings(this.settings).catch(this.error);
-    this.log(`Set new consumption limit to ${args.consumption_limit}`);
+    this.updateSettings();
+    this.log(`Got new setting: consumption limit: ${args.consumption_limit}`);
   }
 
   async onActionSetPredictionLimit(args, state) {
     this.settings.prediction_limit = args.prediction_limit;
-    this.setSettings(this.settings).catch(this.error);
-    this.log(`Set new prediction limit to ${args.prediction_limit}`);
+    this.updateSettings();
+    this.log(`Got new setting: prediction limit: ${args.prediction_limit}`);
   }
 
   async onActionSetPredictionResetLimit(args, state) {
     this.settings.prediction_reset_limit = args.prediction_reset_limit;
-    this.setSettings(this.settings).catch(this.error);
-    this.log(`Set new reset prediction limit to ${args.prediction_reset_limit}`);
+    this.updateSettings();
+    this.log(`Got new setting: reset prediction limit: ${args.prediction_reset_limit}`);
+  }
+
+  // To avoid calling setSettings three times if they update all three limits in the same flow, which would make sense to do.
+  async updateSettings() {
+    if (this.setSettingsTimeout) {
+      this.homey.clearTimeout(this.setSettingsTimeout);
+    }
+    this.setSettingsTimeout = this.homey.setTimeout(() => {
+      this.log('Settings new settings');
+      this.setSettings(this.settings).catch(this.error);
+    }, 500);
   }
 
   async onActionResetAllValues(args, state) {

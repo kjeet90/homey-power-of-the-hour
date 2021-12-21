@@ -57,6 +57,11 @@ Goal: Keep the consumption below 5000Wh
 - Insight for this hours peak
 - Persistent values. Restarting app/Homey will no longer wipe data if started again within same hour.
 
+### Changed
+
+- Application README to be easier to understand for the end user.
+- Units from Wt to Wh for Norwegian language.
+
 ## 0.2.0
 
 ### Added

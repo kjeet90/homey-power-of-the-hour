@@ -1,34 +1,35 @@
-
 {
-    "title": {
-      "en": "Consumption previous hour",
-      "no": "Forbruk forrige time"
-    },
-    "desc": {
-      "en": "Shows previous hours total consumption",
-      "no": "Viser forrige times totale forbruk"
-    },
-    "tokens": [{
+  "title": {
+    "en": "Consumption previous hour",
+    "no": "Forbruk forrige time"
+  },
+  "desc": {
+    "en": "Shows previous hours total consumption",
+    "no": "Viser forrige times totale forbruk"
+  },
+  "tokens": [
+    {
       "name": "value",
       "title": {
         "en": "Watt hours",
-        "no": "Watt-timer"
+        "no": "Wattimer"
       },
       "example": {
-       "en": 4500,
-       "no": 4500 
+        "en": 4500,
+        "no": 4500
       }
-    }],
-    "type": "number",
-    "min": 0,
-    "decimals": 0,
-    "units": {
-      "en": "Wh",
-      "no": "Wt"
-    },
-    "getable": true,
-    "setable": false,
-    "greyout": true,
-    "icon": "/assets/previous.svg",
-    "insights": true
-  }
+    }
+  ],
+  "type": "number",
+  "min": 0,
+  "decimals": 0,
+  "units": {
+    "en": "Wh",
+    "no": "Wh"
+  },
+  "getable": true,
+  "setable": false,
+  "greyout": true,
+  "icon": "/assets/previous.svg",
+  "insights": true
+}
