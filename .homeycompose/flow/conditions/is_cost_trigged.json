@@ -1,0 +1,19 @@
+{
+    "id": "is_cost_trigged",
+    "title": {
+      "en": "Cost notification is !{{|not}} trigged",
+      "no": "Kostnadsvarsel !{{|ikke}} er trigget"
+    },
+    "hint": {
+      "en": "This card can be used to check if the cost notification has been trigged.",
+      "no": "Dette kortet kan brukes til å sjekke om kostnadsvarselet er trigget."
+    },
+    "highlight": true,
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      }
+    ]
+  }

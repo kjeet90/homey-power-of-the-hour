@@ -1,16 +1,16 @@
 {
     "id": "is_prediction_limit_above",
     "title": {
-      "en": "Prediction limit is !{{|not}} above",
-      "no": "Estimeringsgrensen !{{|ikke}} er over"
+      "en": "Predicted consumption limit is !{{|not}} above",
+      "no": "Estimert forbruksgrense !{{|ikke}} er over"
     },
     "hint": {
-      "en": "This card can be used to check towards the prediction limit in settings.",
-      "no": "Dette kortet kan brukes til å sjekke mot estimeringsgrensen i innstillinger."
+      "en": "This card can be used to check towards the predicted consumption limit in settings.",
+      "no": "Dette kortet kan brukes til å sjekke mot estimert forbruksgrense i innstillinger."
     },
     "titleFormatted": {
-      "en": "Prediction limit is !{{|not}} above [[limit]]",
-      "no": "Estimeringsgrensen !{{|ikke}} er over [[limit]]"
+      "en": "Predicted consunption limit is !{{|not}} above [[limit]]",
+      "no": "Estimert forbruksgrense !{{|ikke}} er over [[limit]]"
     },
     "highlight": true,
     "args": [
@@ -25,8 +25,8 @@
         "min": 0,
         "step": 1,
         "title": {
-          "en": "Watt hours",
-          "no": "Wattimer"
+          "en": "Wh",
+          "no": "Wh"
         }
       }
     ]

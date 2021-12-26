@@ -8,6 +8,6 @@
   "value": true,
   "hint": {
     "en": "Activates consumption notification and triggers the flow card 'Consumption notification trigged' if the predicted consumption exceeds the limit set in the setting 'Consumption limit (Wh)'.",
-    "no": "Aktiverer forbruksvarsel og trigger flow-kortet 'Forbruksvarsel trigget' dersom estimert forbruk overstiger grensen satt i innstillingen 'Forbruksgrense (Wh)'."
+    "no": "Aktiverer forbruksvarsel og trigger flow-kortet 'Forbruksvarsel trigget' dersom faktisk forbruk overstiger grensen satt i innstillingen 'Forbruksgrense (Wh)'."
   }
 }

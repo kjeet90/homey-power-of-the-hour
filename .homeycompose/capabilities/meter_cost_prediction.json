@@ -1,0 +1,35 @@
+{
+  "title": {
+    "en": "Predicted cost",
+    "no": "Estimert kostnad"
+  },
+  "desc": {
+    "en": "Shows total predicted cost for this hour based on history",
+    "no": "Viser totalt estimert kostnad for denne timen basert på historikk"
+  },
+  "type": "number",
+  "min": 0,
+  "decimals": 2,
+  "tokens": [
+    {
+      "name": "value",
+      "title": {
+        "en": "Kroner",
+        "no": "Kroner"
+      },
+      "example": {
+        "en": 13.37,
+        "no": 13.37
+      }
+    }
+  ],
+  "units": {
+    "en": "kr",
+    "no": "kr"
+  },
+  "getable": true,
+  "setable": false,
+  "greyout": true,
+  "icon": "/assets/predicted_cost.svg",
+  "insights": true
+}

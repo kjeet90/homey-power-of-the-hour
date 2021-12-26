@@ -27,8 +27,8 @@
     {
         "type": "group",
         "label": {
-            "en": "Prediction notification",
-            "no": "Estimeringsvarsel"
+            "en": "Prediction notification - consumption",
+            "no": "Estimeringsvarsel - Forbruk"
         },
         "children": [ 
             {
@@ -58,9 +58,78 @@
             {
                 "$extends": "prediction_reset_new_hour_enabled",
                 "id": "prediction_reset_new_hour_enabled"
+            },
+            {
+                "$extends": "prediction_consumption_reset_transfer_enabled",
+                "id": "prediction_consumption_reset_transfer_enabled"
             }
         ]
-    }, {
+    },{
+        "type": "group",
+        "label": {
+            "en": "Cost notification",
+            "no": "Kostnadsvarsel"
+        },
+        "children": [
+            {
+                "$extends": "cost_limit",
+                "id": "cost_limit"
+            },
+            {
+                "$extends": "notification_cost_time_earliest",
+                "id": "notification_cost_time_earliest"
+            },
+            {
+                "$extends": "notification_cost_time_latest",
+                "id": "notification_cost_time_latest"
+            },
+            {
+                "$extends": "notification_cost_enabled",
+                "id": "notification_cost_enabled"
+            }
+        ]
+    },{
+        "type": "group",
+        "label": {
+            "en": "Prediction notification - cost",
+            "no": "Estimeringsvarsel - Kostnad"
+        },
+        "children": [ 
+            {
+                "$extends": "prediction_cost_limit",
+                "id": "prediction_cost_limit"
+            },
+            {
+                "$extends": "notification_cost_prediction_time_earliest",
+                "id": "notification_cost_prediction_time_earliest"
+            },
+            {
+                "$extends": "notification_cost_prediction_time_latest",
+                "id": "notification_cost_prediction_time_latest"
+            },
+            {
+                "$extends": "notification_cost_prediction_enabled",
+                "id": "notification_cost_prediction_enabled"
+            },
+            {
+                "$extends": "prediction_cost_reset_limit",
+                "id": "prediction_cost_reset_limit"
+            },
+            {
+                "$extends": "prediction_cost_reset_enabled",
+                "id": "prediction_cost_reset_enabled"
+            },
+            {
+                "$extends": "prediction_cost_reset_new_hour_enabled",
+                "id": "prediction_cost_reset_new_hour_enabled"
+            },
+            {
+                "$extends": "prediction_cost_reset_transfer_enabled",
+                "id": "prediction_cost_reset_transfer_enabled"
+            }
+        ]
+    }
+    , {
         "type": "group",
         "label": {
             "en": "Advanced",

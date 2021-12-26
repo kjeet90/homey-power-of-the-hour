@@ -1,8 +1,8 @@
 {
     "id": "set_prediction_limit",
     "title": {
-      "en": "Set new prediction limit",
-      "no": "Sett ny estimeringsgrense"
+      "en": "Set new predicted consumption limit",
+      "no": "Sett ny estimert forbruksgrense"
     },
     "hint": {
       "en": "Set a new limit for trigger of notification for predicted consumption",
@@ -22,8 +22,8 @@
         "name": "prediction_limit",
         "type": "number",
         "title": {
-          "en": "Watt hours",
-          "no": "Wattimer"
+          "en": "Wh",
+          "no": "Wh"
         }
       }
     ]

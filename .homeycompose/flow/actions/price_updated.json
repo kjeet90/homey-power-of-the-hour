@@ -1,0 +1,31 @@
+{
+    "id": "price_updated",
+    "title": {
+      "en": "Update price",
+      "no": "Oppdater pris"
+    },
+    "hint": {
+      "en": "Register change in price",
+      "no": "Registrer endring i pris"
+    },
+    "titleFormatted": {
+      "en": "Update price with [[price]]",
+      "no": "Oppdater pris med [[price]]"
+    },
+    "highlight": true,
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      },
+      {
+        "name": "price",
+        "type": "number",
+        "title": {
+          "en": "kr/kWh",
+          "no": "kr/kWh"
+        }
+      }
+    ]
+  }

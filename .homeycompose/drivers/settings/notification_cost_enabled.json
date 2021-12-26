@@ -1,0 +1,13 @@
+{
+  "id": "notification_cost_enabled",
+  "type": "checkbox",
+  "label": {
+    "en": "Notification enabled",
+    "no": "Varsling aktivert"
+  },
+  "value": true,
+  "hint": {
+    "en": "Activates cost notification and triggers the flow card 'Cost notification trigged' if the predicted cost exceeds the limit set in the setting 'Cost limit (kr)'.",
+    "no": "Aktiverer kostnadsvarsel og trigger flow-kortet 'Kostnadsvarsel trigget' dersom faktisk kostnad overstiger grensen satt i innstillingen 'Kostnadsgrense (kr)'."
+  }
+}

@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "no.kjeet90.powerofthehour",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
@@ -48,7 +48,7 @@
           "no": "Forbruksvarsel trigget"
         },
         "hint": {
-          "en": "This card triggers when the actial consumption has exceeded the configured limit and the time of the hour is between the notification times set in settings.",
+          "en": "This card triggers when the actual consumption has exceeded the configured limit and the time of the hour is between the notification times set in settings.",
           "no": "Dette kortet trigges når det faktiske forbruket har oversteget den konfigurerte grensen og klokkeslettet er mellom varseltidspunktet satt i innstillinger."
         },
         "highlight": true,
@@ -57,8 +57,8 @@
             "name": "consumption",
             "type": "number",
             "title": {
-              "en": "Watt hours",
-              "no": "Wattimer"
+              "en": "Wh",
+              "no": "Wh"
             },
             "example": {
               "en": "4000",
@@ -90,12 +90,78 @@
             "name": "previous",
             "type": "number",
             "title": {
-              "en": "Previous hours consumption (Watt hours)",
-              "no": "Forrige times forbruk (Wattimer)"
+              "en": "Previous hours consumption (Wh)",
+              "no": "Forrige times forbruk (Wh)"
             },
             "example": {
               "en": "4000",
               "no": "4000"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
+        "id": "cost_limit_reached",
+        "title": {
+          "en": "Cost notification trigged",
+          "no": "Kostnadsvarsel trigget"
+        },
+        "hint": {
+          "en": "This card triggers when the actual cost has exceeded the configured limit and the time of the hour is between the notification times set in settings.",
+          "no": "Dette kortet trigges når den faktiske kostnaden har oversteget den konfigurerte grensen og klokkeslettet er mellom varseltidspunktet satt i innstillinger."
+        },
+        "highlight": true,
+        "tokens": [
+          {
+            "name": "cost",
+            "type": "number",
+            "title": {
+              "en": "kr",
+              "no": "kr"
+            },
+            "example": {
+              "en": "7.52",
+              "no": "7.52"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
+        "id": "cost_reset",
+        "title": {
+          "en": "Cost notification reset",
+          "no": "Kostnadsvarsel resatt"
+        },
+        "hint": {
+          "en": "This card triggers when the cost notification is trigged and a new hour starts.",
+          "no": "Dette kortet trigges når kostnadsvarselet er trigget og en ny time starter."
+        },
+        "highlight": true,
+        "tokens": [
+          {
+            "name": "previousCost",
+            "type": "number",
+            "title": {
+              "en": "Previous hours cost (kr)",
+              "no": "Forrige times kostnad (kr)"
+            },
+            "example": {
+              "en": "2.52",
+              "no": "2.52"
             }
           }
         ],
@@ -123,12 +189,24 @@
             "name": "previous",
             "type": "number",
             "title": {
-              "en": "Previous hours consumption (Watt hours)",
-              "no": "Forrige times forbruk (Wattimer)"
+              "en": "Previous hours consumption (Wh)",
+              "no": "Forrige times forbruk (Wh)"
             },
             "example": {
               "en": "4000",
               "no": "4000"
+            }
+          },
+          {
+            "name": "previousCost",
+            "type": "number",
+            "title": {
+              "en": "Previous hours cost (kr)",
+              "no": "Forrige times kostnad (kr)"
+            },
+            "example": {
+              "en": "2.52",
+              "no": "2.52"
             }
           }
         ],
@@ -174,10 +252,76 @@
         ]
       },
       {
+        "id": "prediction_cost_limit_reached",
+        "title": {
+          "en": "Predicted cost notification trigged",
+          "no": "Estimert kostnadsvarsel trigget"
+        },
+        "hint": {
+          "en": "This card triggers when the predicted cost has exceeded the configured limit and the time of the hour is between the notification times set in settings.",
+          "no": "Dette kortet trigges når den estimerte kostnaden har oversteget den konfigurerte grensen og klokkeslettet er mellom varseltidspunktet satt i innstillinger."
+        },
+        "highlight": true,
+        "tokens": [
+          {
+            "name": "predicted",
+            "type": "number",
+            "title": {
+              "en": "kr",
+              "no": "kr"
+            },
+            "example": {
+              "en": "8.52",
+              "no": "8.52"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
+        "id": "prediction_cost_reset",
+        "title": {
+          "en": "Predicted cost notification reset",
+          "no": "Estimert kostnadsvarsel resatt"
+        },
+        "hint": {
+          "en": "This card triggers when the predicted cost drops below the configured limit while the predicted cost notification is trigged and the setting 'Reset activated' is on. It can also be set to trigger on reset due to start of a new hour in the settings (still requires cost predicton notification to be trigged).",
+          "no": "Dette kortet trigges dersom den estimerte kostnaden går under den konfigurerte grensen mens estimert kostnadsvarsel er trigget og innstillingen 'Reset aktivert' er på. Det kan også bli satt til å trigge pga start av ny time i innstillinger (det krever likevel at estimert kostnadsvarselet er trigget). "
+        },
+        "highlight": true,
+        "tokens": [
+          {
+            "name": "predicted",
+            "type": "number",
+            "title": {
+              "en": "kr",
+              "no": "kr"
+            },
+            "example": {
+              "en": "6.52",
+              "no": "6.52"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
         "id": "prediction_limit_reached",
         "title": {
-          "en": "Prediction notification trigged",
-          "no": "Estimeringsvarsel trigget"
+          "en": "Predicted consumption notification trigged",
+          "no": "Estimert forbruksvarsel trigget"
         },
         "hint": {
           "en": "This card triggers when the predicted consumption has exceeded the configured limit and the time of the hour is between the notification times set in settings.",
@@ -189,8 +333,8 @@
             "name": "predicted",
             "type": "number",
             "title": {
-              "en": "Watt hours",
-              "no": "Wattimer"
+              "en": "Wh",
+              "no": "Wh"
             },
             "example": {
               "en": "4000",
@@ -209,8 +353,8 @@
       {
         "id": "prediction_reset",
         "title": {
-          "en": "Prediction notification reset",
-          "no": "Estimeringsvarsel resatt"
+          "en": "Predicted consumption notification reset",
+          "no": "Estimert forbruksvarsel resatt"
         },
         "hint": {
           "en": "This card triggers when the predicted consumption drops below the configured limit while the prediction notification is trigged and the setting 'Reset activated' is on. It can also be set to trigger on reset due to start of a new hour in the settings (still requires predicton notification to be trigged). Can be used to e.g. turn heaters back on if they were turned off by the prediction notification.",
@@ -222,8 +366,8 @@
             "name": "predicted",
             "type": "number",
             "title": {
-              "en": "Watt hours",
-              "no": "Wattimer"
+              "en": "Wh",
+              "no": "Wh"
             },
             "example": {
               "en": "1500",
@@ -294,18 +438,155 @@
         ]
       },
       {
-        "id": "is_prediction_limit_above",
+        "id": "is_cost_limit_above",
         "title": {
-          "en": "Prediction limit is !{{|not}} above",
-          "no": "Estimeringsgrensen !{{|ikke}} er over"
+          "en": "Cost limit is !{{|not}} above",
+          "no": "Kostnadsgrensen !{{|ikke}} er over"
         },
         "hint": {
-          "en": "This card can be used to check towards the prediction limit in settings.",
-          "no": "Dette kortet kan brukes til å sjekke mot estimeringsgrensen i innstillinger."
+          "en": "This card can be used to check towards the cost limit in settings.",
+          "no": "Dette kortet kan brukes til å sjekke mot kostnadsgrensen i innstillinger."
         },
         "titleFormatted": {
-          "en": "Prediction limit is !{{|not}} above [[limit]]",
-          "no": "Estimeringsgrensen !{{|ikke}} er over [[limit]]"
+          "en": "Cost limit is !{{|not}} above [[limit]]",
+          "no": "Kostnadsgrensen !{{|ikke}} er over [[limit]]"
+        },
+        "highlight": true,
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          },
+          {
+            "name": "limit",
+            "type": "number",
+            "min": 0,
+            "step": 0.01,
+            "title": {
+              "en": "kr",
+              "no": "kr"
+            }
+          }
+        ]
+      },
+      {
+        "id": "is_cost_trigged",
+        "title": {
+          "en": "Cost notification is !{{|not}} trigged",
+          "no": "Kostnadsvarsel !{{|ikke}} er trigget"
+        },
+        "hint": {
+          "en": "This card can be used to check if the cost notification has been trigged.",
+          "no": "Dette kortet kan brukes til å sjekke om kostnadsvarselet er trigget."
+        },
+        "highlight": true,
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
+        "id": "is_prediction_cost_limit_above",
+        "title": {
+          "en": "Predicted cost limit is !{{|not}} above",
+          "no": "Estimert kostnadsgrense !{{|ikke}} er over"
+        },
+        "hint": {
+          "en": "This card can be used to check towards the predicted cost limit in settings.",
+          "no": "Dette kortet kan brukes til å sjekke mot estimert kostnadsgrense i innstillinger."
+        },
+        "titleFormatted": {
+          "en": "Predicted cost limit is !{{|not}} above [[limit]]",
+          "no": "Estimert kostnadsgrense !{{|ikke}} er over [[limit]]"
+        },
+        "highlight": true,
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          },
+          {
+            "name": "limit",
+            "type": "number",
+            "min": 0,
+            "step": 0.01,
+            "title": {
+              "en": "kr",
+              "no": "kr"
+            }
+          }
+        ]
+      },
+      {
+        "id": "is_prediction_cost_reset_limit_above",
+        "title": {
+          "en": "'Reset below (kr)' limit is !{{|not}} above",
+          "no": "'Reset under (kr)' grensen !{{|ikke}} er over"
+        },
+        "hint": {
+          "en": "This card can be used to check towards the 'Reset below (kr)' limit for cost in settings.",
+          "no": "Dette kortet kan brukes til å sjekke mot 'Reset under (kr)' grensen for kostnad i innstillinger."
+        },
+        "titleFormatted": {
+          "en": "'Reset below (kr)' limit is !{{|not}} above [[limit]]",
+          "no": "'Reset under (kr)' grensen !{{|ikke}} er over [[limit]]"
+        },
+        "highlight": true,
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          },
+          {
+            "name": "limit",
+            "type": "number",
+            "min": 0,
+            "step": 0.01,
+            "title": {
+              "en": "kr",
+              "no": "kr"
+            }
+          }
+        ]
+      },
+      {
+        "id": "is_prediction_cost_trigged",
+        "title": {
+          "en": "Predicted cost notification is !{{|not}} triggered",
+          "no": "Estimert kostnadsvarsel !{{|ikke}} er trigget"
+        },
+        "hint": {
+          "en": "This card can be used to check if the predicted cost notification has been trigged.",
+          "no": "Dette kortet kan brukes til å sjekke om estimert kostnadsvarsel er trigget."
+        },
+        "highlight": true,
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
+        "id": "is_prediction_limit_above",
+        "title": {
+          "en": "Predicted consumption limit is !{{|not}} above",
+          "no": "Estimert forbruksgrense !{{|ikke}} er over"
+        },
+        "hint": {
+          "en": "This card can be used to check towards the predicted consumption limit in settings.",
+          "no": "Dette kortet kan brukes til å sjekke mot estimert forbruksgrense i innstillinger."
+        },
+        "titleFormatted": {
+          "en": "Predicted consunption limit is !{{|not}} above [[limit]]",
+          "no": "Estimert forbruksgrense !{{|ikke}} er over [[limit]]"
         },
         "highlight": true,
         "args": [
@@ -320,8 +601,8 @@
             "min": 0,
             "step": 1,
             "title": {
-              "en": "Watt hours",
-              "no": "Wattimer"
+              "en": "Wh",
+              "no": "Wh"
             }
           }
         ]
@@ -329,16 +610,16 @@
       {
         "id": "is_prediction_reset_limit_above",
         "title": {
-          "en": "'Reset blow' limit is !{{|not}} above",
-          "no": "'Reset under' grensen !{{|ikke}} er over"
+          "en": "'Reset blow (Wh)' limit is !{{|not}} above",
+          "no": "'Reset under (Wh)' grensen !{{|ikke}} er over"
         },
         "hint": {
-          "en": "This card can be used to check towards the 'Reset below' limit in settings.",
-          "no": "Dette kortet kan brukes til å sjekke mot 'Reset under' grensen i innstillinger."
+          "en": "This card can be used to check towards the 'Reset below (Wh)' limit for consumption in settings.",
+          "no": "Dette kortet kan brukes til å sjekke mot 'Reset under (Wh)' grensen for forbruk i innstillinger."
         },
         "titleFormatted": {
-          "en": "'Reset below' limit is !{{|not}} above [[limit]]",
-          "no": "'Reset under' grensen !{{|ikke}} er over [[limit]]"
+          "en": "'Reset below (Wh)' limit is !{{|not}} above [[limit]]",
+          "no": "'Reset under (Wh)' grensen !{{|ikke}} er over [[limit]]"
         },
         "highlight": true,
         "args": [
@@ -353,8 +634,8 @@
             "min": 0,
             "step": 1,
             "title": {
-              "en": "Watt hours",
-              "no": "Wattimer"
+              "en": "Wh",
+              "no": "Wh"
             }
           }
         ]
@@ -362,12 +643,12 @@
       {
         "id": "is_prediction_trigged",
         "title": {
-          "en": "Prediction notification is !{{|not}} triggered",
-          "no": "Estimeringsvarsel !{{|ikke}} er trigget"
+          "en": "Predicted consumption notification is !{{|not}} triggered",
+          "no": "Estimert forbruksvarsel !{{|ikke}} er trigget"
         },
         "hint": {
-          "en": "This card can be used to check if the prediction notification has been trigged.",
-          "no": "Dette kortet kan brukes til å sjekke om estimeringsvarselet er trigget."
+          "en": "This card can be used to check if the predicted consumption notification has been trigged.",
+          "no": "Dette kortet kan brukes til å sjekke om estimert forbruksvarsel er trigget."
         },
         "highlight": true,
         "args": [
@@ -407,6 +688,37 @@
             "title": {
               "en": "Watt",
               "no": "Watt"
+            }
+          }
+        ]
+      },
+      {
+        "id": "price_updated",
+        "title": {
+          "en": "Update price",
+          "no": "Oppdater pris"
+        },
+        "hint": {
+          "en": "Register change in price",
+          "no": "Registrer endring i pris"
+        },
+        "titleFormatted": {
+          "en": "Update price with [[price]]",
+          "no": "Oppdater pris med [[price]]"
+        },
+        "highlight": true,
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          },
+          {
+            "name": "price",
+            "type": "number",
+            "title": {
+              "en": "kr/kWh",
+              "no": "kr/kWh"
             }
           }
         ]
@@ -460,10 +772,100 @@
         ]
       },
       {
+        "id": "set_cost_limit",
+        "title": {
+          "en": "Set new cost limit",
+          "no": "Sett ny kostnadsgrense"
+        },
+        "hint": {
+          "en": "Set a new limit for trigger of notification for actual cost",
+          "no": "Sett ny grense for trigger av varsel for faktisk kostnad"
+        },
+        "titleFormatted": {
+          "en": "Set new cost limit to [[cost_limit]]",
+          "no": "Sett ny kostnadsgrense til [[cost_limit]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          },
+          {
+            "name": "cost_limit",
+            "type": "number",
+            "title": {
+              "en": "kr",
+              "no": "kr"
+            }
+          }
+        ]
+      },
+      {
+        "id": "set_prediction_cost_limit",
+        "title": {
+          "en": "Set new prediction cost limit",
+          "no": "Sett ny estimert kostnadsgrense"
+        },
+        "hint": {
+          "en": "Set a new limit for trigger of notification for predicted cost",
+          "no": "Sett ny grense for trigger av varsel for estimert kostnad"
+        },
+        "titleFormatted": {
+          "en": "Set new predicted cost limit to [[prediction_cost_limit]]",
+          "no": "Sett ny estimert kostnadsgrense til [[prediction_cost_limit]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          },
+          {
+            "name": "prediction_cost_limit",
+            "type": "number",
+            "title": {
+              "en": "kr",
+              "no": "kr"
+            }
+          }
+        ]
+      },
+      {
+        "id": "set_prediction_cost_reset_limit",
+        "title": {
+          "en": "Set new 'Reset below (kr)'",
+          "no": "Sett ny 'Reset under (kr)'"
+        },
+        "hint": {
+          "en": "Set a new limit for trigger of notification for reset of predicted cost",
+          "no": "Sett ny grense for trigger av varsel for reset av estimert kostnad"
+        },
+        "titleFormatted": {
+          "en": "Set 'Reset below (kr)' limit to [[prediction_cost_reset_limit]]",
+          "no": "Sett 'Reset under (kr)' grense til [[prediction_cost_reset_limit]]"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          },
+          {
+            "name": "prediction_cost_reset_limit",
+            "type": "number",
+            "title": {
+              "en": "kr",
+              "no": "kr"
+            }
+          }
+        ]
+      },
+      {
         "id": "set_prediction_limit",
         "title": {
-          "en": "Set new prediction limit",
-          "no": "Sett ny estimeringsgrense"
+          "en": "Set new predicted consumption limit",
+          "no": "Sett ny estimert forbruksgrense"
         },
         "hint": {
           "en": "Set a new limit for trigger of notification for predicted consumption",
@@ -483,8 +885,8 @@
             "name": "prediction_limit",
             "type": "number",
             "title": {
-              "en": "Watt hours",
-              "no": "Wattimer"
+              "en": "Wh",
+              "no": "Wh"
             }
           }
         ]
@@ -492,16 +894,16 @@
       {
         "id": "set_prediction_reset_limit",
         "title": {
-          "en": "Set new 'Reset below' limit",
-          "no": "Sett ny 'Reset under' grense"
+          "en": "Set new 'Reset below (Wh)'",
+          "no": "Sett ny 'Reset under (Wh)'"
         },
         "hint": {
           "en": "Set a new limit for trigger of notification for reset of predicted consumption",
           "no": "Sett ny grense for trigger av varsel for reset av estimert forbruk"
         },
         "titleFormatted": {
-          "en": "Set 'Reset below' to [[prediction_reset_limit]]",
-          "no": "Sett 'Reset under' til [[prediction_reset_limit]]"
+          "en": "Set 'Reset below (Wh)' limit to [[prediction_reset_limit]]",
+          "no": "Sett 'Reset under (Wh)' grense til [[prediction_reset_limit]]"
         },
         "args": [
           {
@@ -513,8 +915,8 @@
             "name": "prediction_reset_limit",
             "type": "number",
             "title": {
-              "en": "Watt hours",
-              "no": "Wattimer"
+              "en": "Wh",
+              "no": "Wh"
             }
           }
         ]
@@ -535,7 +937,13 @@
         "meter_predictor",
         "alarm_prediction_notified",
         "meter_consumption_peak",
-        "meter_consumption_previous_hour"
+        "meter_consumption_previous_hour",
+        "meter_cost",
+        "alarm_cost_notified",
+        "meter_cost_prediction",
+        "alarm_cost_prediction_notified",
+        "meter_price",
+        "meter_cost_previous_hour"
       ],
       "images": {
         "large": "/drivers/power-of-the-hour/assets/images/large.png",
@@ -620,7 +1028,7 @@
               "value": true,
               "hint": {
                 "en": "Activates consumption notification and triggers the flow card 'Consumption notification trigged' if the predicted consumption exceeds the limit set in the setting 'Consumption limit (Wh)'.",
-                "no": "Aktiverer forbruksvarsel og trigger flow-kortet 'Forbruksvarsel trigget' dersom estimert forbruk overstiger grensen satt i innstillingen 'Forbruksgrense (Wh)'."
+                "no": "Aktiverer forbruksvarsel og trigger flow-kortet 'Forbruksvarsel trigget' dersom faktisk forbruk overstiger grensen satt i innstillingen 'Forbruksgrense (Wh)'."
               }
             }
           ]
@@ -628,16 +1036,16 @@
         {
           "type": "group",
           "label": {
-            "en": "Prediction notification",
-            "no": "Estimeringsvarsel"
+            "en": "Prediction notification - consumption",
+            "no": "Estimeringsvarsel - Forbruk"
           },
           "children": [
             {
               "id": "prediction_limit",
               "type": "number",
               "label": {
-                "en": "Prediction limit (Wh)",
-                "no": "Estimeringsgrense (Wh)"
+                "en": "Predicted consumption limit (Wh)",
+                "no": "Estimert forbruksgrense (Wh)"
               },
               "value": 4500,
               "min": 0,
@@ -688,8 +1096,8 @@
               },
               "value": true,
               "hint": {
-                "en": "Activates prediction notification and triggers the flow card 'Prediction notification trigged' if the predicted consumption exceeds the limit set in the setting 'Prediction limit (Wh)'.",
-                "no": "Aktiverer estimeringsvarsel og trigger flow-kortet 'Estimeringsvarsel trigget' dersom estimert forbruk overstiger grensen satt i innstillingen 'Estimeringsgrense (Wh)'."
+                "en": "Activates predicted consumption notification and triggers the flow card 'Predicted consumption notification trigged' if the predicted consumption exceeds the limit set in the setting 'Predicted consumption limit (Wh)'.",
+                "no": "Aktiverer estimert forbruksvarsel og trigger flow-kortet 'Estimert forbruksvarsel trigget' dersom estimert forbruk overstiger grensen satt i innstillingen 'Estimert forbruksgrense (Wh)'."
               }
             },
             {
@@ -727,10 +1135,215 @@
                 "en": "Notify reset on new hour",
                 "no": "Varsle reset ved ny time"
               },
+              "value": true,
+              "hint": {
+                "en": "Triggers the flow card 'Predicted consumption notification reset' when a new hour starts (requires that the predicted cost notification is trigged and that 'Transfer to next hour' is not activated). It will then report a estimated cost of 0 (zero).",
+                "no": "Trigger flow-kortet 'Estimert kostnadsvarsel resatt' når en ny time starter (krever at estimert kostnadsvarsel er trigget og at 'Overfør til neste time' ikke er aktivert). Den vil da rapportere om en estimert kostnad på 0 (null)."
+              }
+            },
+            {
+              "id": "prediction_consumption_reset_transfer_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Transfer to next hour",
+                "no": "Overfør til neste time"
+              },
               "value": false,
               "hint": {
-                "en": "Triggers the flow card 'Prediction notification reset' when a new hour starts (requires that the prediction notification is trigged). It will then report a estimated consumption of 0 (zero).",
-                "no": "Trigger flow-kortet 'Estimertingsvarsel resatt' når en ny time starter (krever at estimeringsvarselet er trigget). Den vil da rapportere om et estimert forbruk på 0 (null)."
+                "en": "Lets the predicted consumption notification be active until it actually drops below the 'Reset below (Wh)' limit, even if that means it has to follow to a new hour.",
+                "no": "Lar estimert forbruksvarsel være aktivt helt til det faktisk går under 'Reset under (Wh)' grensen, selv om det betyr at det må følge over i en ny time."
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Cost notification",
+            "no": "Kostnadsvarsel"
+          },
+          "children": [
+            {
+              "id": "cost_limit",
+              "type": "number",
+              "label": {
+                "en": "Cost limit (kr)",
+                "no": "Kostnadsgrense (kr)"
+              },
+              "value": 2.5,
+              "min": 0,
+              "step": 0.01,
+              "hint": {
+                "en": "Limit that will be used to trigger notification if the actual cost exceeds it.",
+                "no": "Grense som blir brukt til å trigge varsel dersom faktisk kostnad overstiger den."
+              }
+            },
+            {
+              "id": "notification_cost_time_earliest",
+              "type": "number",
+              "label": {
+                "en": "Earliest after (minutes)",
+                "no": "Tidligst etter (minutter)"
+              },
+              "value": 0,
+              "min": 0,
+              "max": 60,
+              "step": 1,
+              "hint": {
+                "en": "If the notication is activated this is the earliest it will notify about cost. If the limit is exceeded earlier it will not notify until it has reached these many minutes into the hour.",
+                "no": "Dersom varsling er aktivert er dette det tidligste den vil varsle om kostnad. Dersom grensen overstiges tidligere vil den ikke varsle før dette antallet minutter inn i timen."
+              }
+            },
+            {
+              "id": "notification_cost_time_latest",
+              "type": "number",
+              "label": {
+                "en": "Latest before (minutes)",
+                "no": "Senest før (minutter)"
+              },
+              "value": 60,
+              "min": 0,
+              "max": 60,
+              "step": 1,
+              "hint": {
+                "en": "If the notication is activated this is the latest it will notify about cost. If the limit is exceeded later it will not notify within this hour.",
+                "no": "Dersom varsling er aktivert er dette det seneste den vil varsle om kostnad. Dersom grensen overstiges senere vil den ikke varsle denne timen."
+              }
+            },
+            {
+              "id": "notification_cost_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Notification enabled",
+                "no": "Varsling aktivert"
+              },
+              "value": true,
+              "hint": {
+                "en": "Activates cost notification and triggers the flow card 'Cost notification trigged' if the predicted cost exceeds the limit set in the setting 'Cost limit (kr)'.",
+                "no": "Aktiverer kostnadsvarsel og trigger flow-kortet 'Kostnadsvarsel trigget' dersom faktisk kostnad overstiger grensen satt i innstillingen 'Kostnadsgrense (kr)'."
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Prediction notification - cost",
+            "no": "Estimeringsvarsel - Kostnad"
+          },
+          "children": [
+            {
+              "id": "prediction_cost_limit",
+              "type": "number",
+              "label": {
+                "en": "Prediction cost limit (kr)",
+                "no": "Estimert kostnadsgrense (kr)"
+              },
+              "value": 3,
+              "min": 0,
+              "step": 0.01,
+              "hint": {
+                "en": "Limit that will be used to trigger notification if the predicted cost exceeds it.",
+                "no": "Grense som blir brukt til å trigge varsel dersom estimert kostnad overstiger den."
+              }
+            },
+            {
+              "id": "notification_cost_prediction_time_earliest",
+              "type": "number",
+              "label": {
+                "en": "Earliest after (minutes)",
+                "no": "Tidligst etter (minutter)"
+              },
+              "value": 30,
+              "min": 0,
+              "max": 60,
+              "step": 1,
+              "hint": {
+                "en": "If the notication is activated this is the earliest it will notify about predicted cost. If the limit is exceeded earlier it will not notify until it has reached these many minutes into the hour.",
+                "no": "Dersom varsling er aktivert er dette det tidligste den vil varsle om estimert kostnad. Dersom grensen overstiges tidligere vil den ikke varsle før dette antallet minutter inn i timen."
+              }
+            },
+            {
+              "id": "notification_cost_prediction_time_latest",
+              "type": "number",
+              "label": {
+                "en": "Latest before (minutes)",
+                "no": "Senest før (minutter)"
+              },
+              "value": 60,
+              "min": 0,
+              "max": 60,
+              "step": 1,
+              "hint": {
+                "en": "If the notication is activated this is the latest it will notify about estimated cost. If the limit is exceeded later it will not notify within this hour.",
+                "no": "Dersom varsling er aktivert er dette det seneste den vil varsle om estimert kostnad. Dersom grensen overstiges senere vil den ikke varsle denne timen."
+              }
+            },
+            {
+              "id": "notification_cost_prediction_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Notification enabled",
+                "no": "Varsling aktivert"
+              },
+              "value": true,
+              "hint": {
+                "en": "Activates predicted cost notification and triggers the flow card 'Predicted cost notification trigged' if the predicted cost exceeds the limit set in the setting 'Prediction cost limit (kr)'.",
+                "no": "Aktiverer estimert kostnadsvarsel og trigger flow-kortet 'Estimert kostnadsvarsel trigget' dersom estimert forbruk overstiger grensen satt i innstillingen 'Estimert kostnadsgrense (kr)'."
+              }
+            },
+            {
+              "id": "prediction_cost_reset_limit",
+              "type": "number",
+              "label": {
+                "en": "Reset below (kr)",
+                "no": "Reset under (kr)"
+              },
+              "value": 1,
+              "min": 0,
+              "step": 0.01,
+              "hint": {
+                "en": "Resets the predicted cost notification if the predicted cost drops below this limit after the notification has been trigged. Note that this functionality is enabled by the setting 'Reset activated'.",
+                "no": "Resetter estimert kostnadsvarsel dersom estimert kostnad synker under denne grensen etter at varselet har blitt trigget. Merk at denne funksjonaliteten aktiveres av innstillingen 'Reset aktivert'."
+              }
+            },
+            {
+              "id": "prediction_cost_reset_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Reset activated",
+                "no": "Reset aktivert"
+              },
+              "value": true,
+              "hint": {
+                "en": "Resets the predicted cost notification and triggers the flow card 'Predicted cost notification reset' if the predicted consumptions drops below the 'Reset below (kr)' limit.",
+                "no": "Resetter estimert kostnadsvarsel og trigger flow-kortet 'Estimert kostnadsvarsel resatt' dersom den estimerte kostnaden går under 'Reset under (kr)' grensen."
+              }
+            },
+            {
+              "id": "prediction_cost_reset_new_hour_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Notify reset on new hour",
+                "no": "Varsle reset ved ny time"
+              },
+              "value": true,
+              "hint": {
+                "en": "Triggers the flow card 'Predicted cost notification reset' when a new hour starts (requires that the predicted cost notification is trigged and that 'Transfer to next hour' is not activated). It will then report a estimated cost of 0 (zero).",
+                "no": "Trigger flow-kortet 'Estimert kostnadsvarsel resatt' når en ny time starter (krever at estimert kostnadsvarsel er trigget og at 'Overfør til neste time' ikke er aktivert). Den vil da rapportere om en estimert kostnad på 0 (null)."
+              }
+            },
+            {
+              "id": "prediction_cost_reset_transfer_enabled",
+              "type": "checkbox",
+              "label": {
+                "en": "Transfer to next hour",
+                "no": "Overfør til neste time"
+              },
+              "value": false,
+              "hint": {
+                "en": "Lets the predicted cost notification be active until it actually drops below the 'Reset below (kr)' limit, even if that means it has to follow to a new hour.",
+                "no": "Lar estimert kostnadsvarsel være aktivt helt til det faktisk går under 'Reset under (kr)' grensen, selv om det betyr at det må følge over i en ny time."
               }
             }
           ]
@@ -832,14 +1445,62 @@
         "no": "Forbruksvarsel resatt"
       }
     },
-    "alarm_prediction_notified": {
+    "alarm_cost_notified": {
       "title": {
-        "en": "Prediction notification trigged",
-        "no": "Estimeringsvarsel trigget"
+        "en": "Cost notification trigged",
+        "no": "Kostnadsvarsel trigget"
       },
       "desc": {
-        "en": "Prediction notification has been trigged",
-        "no": "Estimeringsvarsel har blitt trigget"
+        "en": "Cost notification has been trigged",
+        "no": "Kostnadsvarsel har blitt trigget"
+      },
+      "type": "boolean",
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "insights": true,
+      "icon": "/assets/alert.svg",
+      "insightsTitleTrue": {
+        "en": "Cost notification trigged",
+        "no": "Kostnadsvarsel trigget"
+      },
+      "insightsTitleFalse": {
+        "en": "Cost notification reset",
+        "no": "Kostnadsvarsel resatt"
+      }
+    },
+    "alarm_cost_prediction_notified": {
+      "title": {
+        "en": "Predicted cost notification trigged",
+        "no": "Estimert kostnadsvarsel trigget"
+      },
+      "desc": {
+        "en": "Predicted cost notification has been trigged",
+        "no": "Estimert kostnadsvarsel har blitt trigget"
+      },
+      "type": "boolean",
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "insights": true,
+      "icon": "/assets/alert.svg",
+      "insightsTitleTrue": {
+        "en": "Predicted cost notification trigged",
+        "no": "Estimert kostnadsvarsel trigget"
+      },
+      "insightsTitleFalse": {
+        "en": "Predicted cost notification reset",
+        "no": "Estimert kostnadsvarsel resatt"
+      }
+    },
+    "alarm_prediction_notified": {
+      "title": {
+        "en": "Predicted consumption notification trigged",
+        "no": "Estimert forbruksvarsel trigget"
+      },
+      "desc": {
+        "en": "Prediction consumption notification has been trigged",
+        "no": "Estimert forbruksvarsel har blitt trigget"
       },
       "type": "boolean",
       "getable": true,
@@ -849,11 +1510,11 @@
       "icon": "/assets/alert.svg",
       "insightsTitleTrue": {
         "en": "Predicted consumption notification trigged",
-        "no": "Estimeringsvarsel trigget"
+        "no": "Estimert forbruksvarsel trigget"
       },
       "insightsTitleFalse": {
         "en": "Predicted consumption notification reset",
-        "no": "Estimeringsvarsel resatt"
+        "no": "Estimert forbruksvarsel resatt"
       }
     },
     "meter_consumption": {
@@ -939,8 +1600,8 @@
         {
           "name": "value",
           "title": {
-            "en": "Watt hours",
-            "no": "Wattimer"
+            "en": "Wh",
+            "no": "Wh"
           },
           "example": {
             "en": 4500,
@@ -958,7 +1619,112 @@
       "getable": true,
       "setable": false,
       "greyout": true,
-      "icon": "/assets/previous.svg",
+      "icon": "/assets/previous_consumption.svg",
+      "insights": true
+    },
+    "meter_cost": {
+      "title": {
+        "en": "Cost this hour",
+        "no": "Kostnad denne timen"
+      },
+      "desc": {
+        "en": "Shows total cost so far this hour",
+        "no": "Viser total kostnad så langt denne timen"
+      },
+      "type": "number",
+      "min": 0,
+      "decimals": 2,
+      "tokens": [
+        {
+          "name": "value",
+          "title": {
+            "en": "Kroner",
+            "no": "Kroner"
+          },
+          "example": {
+            "en": 13.37,
+            "no": 13.37
+          }
+        }
+      ],
+      "units": {
+        "en": "kr",
+        "no": "kr"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/cost.svg",
+      "insights": true
+    },
+    "meter_cost_prediction": {
+      "title": {
+        "en": "Predicted cost",
+        "no": "Estimert kostnad"
+      },
+      "desc": {
+        "en": "Shows total predicted cost for this hour based on history",
+        "no": "Viser totalt estimert kostnad for denne timen basert på historikk"
+      },
+      "type": "number",
+      "min": 0,
+      "decimals": 2,
+      "tokens": [
+        {
+          "name": "value",
+          "title": {
+            "en": "Kroner",
+            "no": "Kroner"
+          },
+          "example": {
+            "en": 13.37,
+            "no": 13.37
+          }
+        }
+      ],
+      "units": {
+        "en": "kr",
+        "no": "kr"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/predicted_cost.svg",
+      "insights": true
+    },
+    "meter_cost_previous_hour": {
+      "title": {
+        "en": "Cost previous hour",
+        "no": "Kostnad forrige time"
+      },
+      "desc": {
+        "en": "Shows previous hours total cost",
+        "no": "Viser forrige times totale kostnad"
+      },
+      "tokens": [
+        {
+          "name": "value",
+          "title": {
+            "en": "kr",
+            "no": "kr"
+          },
+          "example": {
+            "en": 2.52,
+            "no": 2.52
+          }
+        }
+      ],
+      "type": "number",
+      "min": 0,
+      "decimals": 2,
+      "units": {
+        "en": "kr",
+        "no": "kr"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/previous_cost.svg",
       "insights": true
     },
     "meter_predictor": {
@@ -994,6 +1760,41 @@
       "setable": false,
       "greyout": true,
       "icon": "/assets/predicted.svg",
+      "insights": true
+    },
+    "meter_price": {
+      "title": {
+        "en": "Price",
+        "no": "Pris"
+      },
+      "desc": {
+        "en": "Shows current price",
+        "no": "Viser gjeldende pris"
+      },
+      "type": "number",
+      "min": 0,
+      "decimals": 5,
+      "tokens": [
+        {
+          "name": "value",
+          "title": {
+            "en": "kr/kWh",
+            "no": "kr/kWh"
+          },
+          "example": {
+            "en": 0.92345,
+            "no": 0.92345
+          }
+        }
+      ],
+      "units": {
+        "en": "kr/kWh",
+        "no": "kr/kWh"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/price.svg",
       "insights": true
     }
   }

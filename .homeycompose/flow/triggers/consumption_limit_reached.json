@@ -5,7 +5,7 @@
       "no": "Forbruksvarsel trigget"
     },
     "hint": {
-      "en": "This card triggers when the actial consumption has exceeded the configured limit and the time of the hour is between the notification times set in settings.",
+      "en": "This card triggers when the actual consumption has exceeded the configured limit and the time of the hour is between the notification times set in settings.",
       "no": "Dette kortet trigges når det faktiske forbruket har oversteget den konfigurerte grensen og klokkeslettet er mellom varseltidspunktet satt i innstillinger."
     },
     "highlight": true,
@@ -13,8 +13,8 @@
       "name": "consumption",
       "type": "number",
       "title": {
-        "en": "Watt hours",
-        "no": "Wattimer"
+        "en": "Wh",
+        "no": "Wh"
       },
       "example": {
         "en": "4000",

@@ -1,16 +1,16 @@
 {
     "id": "set_prediction_reset_limit",
     "title": {
-      "en": "Set new 'Reset below' limit",
-      "no": "Sett ny 'Reset under' grense"
+      "en": "Set new 'Reset below (Wh)'",
+      "no": "Sett ny 'Reset under (Wh)'"
     },
     "hint": {
       "en": "Set a new limit for trigger of notification for reset of predicted consumption",
       "no": "Sett ny grense for trigger av varsel for reset av estimert forbruk"
     },
     "titleFormatted": {
-      "en": "Set 'Reset below' to [[prediction_reset_limit]]",
-      "no": "Sett 'Reset under' til [[prediction_reset_limit]]"
+      "en": "Set 'Reset below (Wh)' limit to [[prediction_reset_limit]]",
+      "no": "Sett 'Reset under (Wh)' grense til [[prediction_reset_limit]]"
     },
     "args": [
       {
@@ -22,8 +22,8 @@
         "name": "prediction_reset_limit",
         "type": "number",
         "title": {
-          "en": "Watt hours",
-          "no": "Wattimer"
+          "en": "Wh",
+          "no": "Wh"
         }
       }
     ]

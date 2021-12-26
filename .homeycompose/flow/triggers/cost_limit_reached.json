@@ -1,0 +1,31 @@
+{
+    "id": "cost_limit_reached",
+    "title": {
+      "en": "Cost notification trigged",
+      "no": "Kostnadsvarsel trigget"
+    },
+    "hint": {
+      "en": "This card triggers when the actual cost has exceeded the configured limit and the time of the hour is between the notification times set in settings.",
+      "no": "Dette kortet trigges når den faktiske kostnaden har oversteget den konfigurerte grensen og klokkeslettet er mellom varseltidspunktet satt i innstillinger."
+    },
+    "highlight": true,
+    "tokens": [{
+      "name": "cost",
+      "type": "number",
+      "title": {
+        "en": "kr",
+        "no": "kr"
+      },
+      "example": {
+        "en": "7.52",
+        "no": "7.52"
+      }
+    }],
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      }
+    ]
+  }

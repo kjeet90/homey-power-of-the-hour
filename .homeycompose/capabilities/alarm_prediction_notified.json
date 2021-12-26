@@ -1,12 +1,12 @@
 
 {
     "title": {
-      "en": "Prediction notification trigged",
-      "no": "Estimeringsvarsel trigget"
+      "en": "Predicted consumption notification trigged",
+      "no": "Estimert forbruksvarsel trigget"
     },
     "desc": {
-      "en": "Prediction notification has been trigged",
-      "no": "Estimeringsvarsel har blitt trigget"
+      "en": "Prediction consumption notification has been trigged",
+      "no": "Estimert forbruksvarsel har blitt trigget"
     },
     "type": "boolean",
     "getable": true,
@@ -16,10 +16,10 @@
     "icon": "/assets/alert.svg",
     "insightsTitleTrue": {
       "en": "Predicted consumption notification trigged",
-      "no": "Estimeringsvarsel trigget"
+      "no": "Estimert forbruksvarsel trigget"
     },
     "insightsTitleFalse": {
       "en": "Predicted consumption notification reset",
-      "no": "Estimeringsvarsel resatt"
+      "no": "Estimert forbruksvarsel resatt"
     }
   }

@@ -1,0 +1,13 @@
+{
+  "id": "prediction_cost_reset_enabled",
+  "type": "checkbox",
+  "label": {
+    "en": "Reset activated",
+    "no": "Reset aktivert"
+  },
+  "value": true,
+  "hint": {
+    "en": "Resets the predicted cost notification and triggers the flow card 'Predicted cost notification reset' if the predicted consumptions drops below the 'Reset below (kr)' limit.",
+    "no": "Resetter estimert kostnadsvarsel og trigger flow-kortet 'Estimert kostnadsvarsel resatt' dersom den estimerte kostnaden går under 'Reset under (kr)' grensen."
+  }
+}

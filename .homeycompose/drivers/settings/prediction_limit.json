@@ -2,8 +2,8 @@
   "id": "prediction_limit",
   "type": "number",
   "label": {
-    "en": "Prediction limit (Wh)",
-    "no": "Estimeringsgrense (Wh)"
+    "en": "Predicted consumption limit (Wh)",
+    "no": "Estimert forbruksgrense (Wh)"
   },
   "value": 4500,
   "min": 0,

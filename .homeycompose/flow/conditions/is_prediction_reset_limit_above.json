@@ -1,16 +1,16 @@
 {
     "id": "is_prediction_reset_limit_above",
     "title": {
-      "en": "'Reset blow' limit is !{{|not}} above",
-      "no": "'Reset under' grensen !{{|ikke}} er over"
+      "en": "'Reset blow (Wh)' limit is !{{|not}} above",
+      "no": "'Reset under (Wh)' grensen !{{|ikke}} er over"
     },
     "hint": {
-      "en": "This card can be used to check towards the 'Reset below' limit in settings.",
-      "no": "Dette kortet kan brukes til å sjekke mot 'Reset under' grensen i innstillinger."
+      "en": "This card can be used to check towards the 'Reset below (Wh)' limit for consumption in settings.",
+      "no": "Dette kortet kan brukes til å sjekke mot 'Reset under (Wh)' grensen for forbruk i innstillinger."
     },
     "titleFormatted": {
-      "en": "'Reset below' limit is !{{|not}} above [[limit]]",
-      "no": "'Reset under' grensen !{{|ikke}} er over [[limit]]"
+      "en": "'Reset below (Wh)' limit is !{{|not}} above [[limit]]",
+      "no": "'Reset under (Wh)' grensen !{{|ikke}} er over [[limit]]"
     },
     "highlight": true,
     "args": [
@@ -25,8 +25,8 @@
         "min": 0,
         "step": 1,
         "title": {
-          "en": "Watt hours",
-          "no": "Wattimer"
+          "en": "Wh",
+          "no": "Wh"
         }
       }
     ]

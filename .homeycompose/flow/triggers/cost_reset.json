@@ -1,0 +1,31 @@
+{
+    "id": "cost_reset",
+    "title": {
+      "en": "Cost notification reset",
+      "no": "Kostnadsvarsel resatt"
+    },
+    "hint": {
+      "en": "This card triggers when the cost notification is trigged and a new hour starts.",
+      "no": "Dette kortet trigges når kostnadsvarselet er trigget og en ny time starter."
+    },
+    "highlight": true,
+    "tokens": [{
+      "name": "previousCost",
+      "type": "number",
+      "title": {
+        "en": "Previous hours cost (kr)",
+        "no": "Forrige times kostnad (kr)"
+      },
+      "example": {
+        "en": "2.52",
+        "no": "2.52"
+      }
+    }],
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      }
+    ]
+  }

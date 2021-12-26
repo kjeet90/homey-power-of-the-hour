@@ -7,62 +7,78 @@ module.exports = class PowerOfTheHour extends Homey.Device {
 
   async onInit() {
     this.latest = await this.getStoreValue('latest') || {};
-    const latestValid = (this.latest.timestamp !== undefined && !calculations.isNewHour(new Date(), this.latest.timestamp));
-    await this.setInitialValues(latestValid);
+    const validTimeStamp = this.latest.timestamp && !calculations.isNewHour(new Date(), this.latest.timestamp);
+    await this.upgradeExistingDevice();
+    await this.setInitialValues(validTimeStamp);
     this.settings = await this.getSettings() || {};
     this.log('Initialized device', this.getName());
     this.predict();
   }
 
-  async setInitialValues(latestValid = false) {
-    if (latestValid) {
+  async upgradeExistingDevice() {
+    if (!this.hasCapability('meter_cost')) await this.addCapability('meter_cost');
+    if (!this.hasCapability('alarm_cost_notified')) {
+      await this.addCapability('alarm_cost_notified');
+    }
+    if (!this.hasCapability('meter_cost_prediction')) await this.addCapability('meter_cost_prediction');
+    if (!this.hasCapability('alarm_cost_prediction_notified')) {
+      await this.addCapability('alarm_cost_prediction_notified');
+    }
+    if (!this.hasCapability('meter_price')) await this.addCapability('meter_price');
+    if (!this.hasCapability('meter_cost_previous_hour')) await this.addCapability('meter_cost_previous_hour');
+  }
+
+  async setInitialValues(validTimeStamp = false) {
+    if (validTimeStamp) {
+      this.log('Found valid timestamp in store, using existing capabilities.');
       this.previousTimestamp = this.latest.timestamp;
-      this.wattHours = this.latest.wattHours;
-      this.wattPeak = this.latest.wattPeak;
-      this.totalPreviousHour = this.latest.totalPreviousHour;
-      this.log(`Found valid values in store: time: ${this.latest.timestamp}, wattHours: ${this.latest.wattHours}`);
     } else {
-      this.log('Did not find any valid values in store. Starting fresh');
+      this.log('Did not find any valid timestamp in store. Clearing capabilities.');
+      await this.updateCapabilityValue('alarm_consumption_notified', false);
+      await this.updateCapabilityValue('alarm_prediction_notified', false);
+      await this.updateCapabilityValue('alarm_cost_notified', false);
+      await this.updateCapabilityValue('alarm_cost_prediction_notified', false);
+      await this.updateCapabilityValue('meter_consumption', null);
+      await this.updateCapabilityValue('meter_predictor', null);
+      await this.updateCapabilityValue('meter_consumption_peak', null);
+      await this.updateCapabilityValue('meter_consumption_previous_hour', null);
+      await this.updateCapabilityValue('meter_cost', null);
+      await this.updateCapabilityValue('meter_cost_prediction', null);
+      await this.updateCapabilityValue('meter_price', null);
     }
     this.newSettings = {};
-    this.wattHours = latestValid ? this.latest.wattHours : 0;
-    this.wattPeak = latestValid ? this.latest.wattPeak : 0;
-    this.referenceReadings = [];
-    this.totalPreviousHour = latestValid ? this.latest.totalPreviousHour : 0;
-    this.predictedWattHours = 0;
-    this.previousTimestamp = latestValid ? this.latest.timestamp : undefined;
-    this.updateCapabilityValue('alarm_consumption_notified', latestValid ? this.latest.consumption_trigged : false);
-    this.updateCapabilityValue('alarm_prediction_notified', latestValid ? this.latest.prediction_trigged : false);
-    this.updateCapabilityValue('meter_consumption', this.wattHours);
-    this.updateCapabilityValue('meter_consumption_peak', this.wattPeak);
-    this.updateCapabilityValue('meter_consumption_previous_hour', this.totalPreviousHour);
-    this.updateCapabilityValue('meter_predictor', this.predictedWattHours);
+    this.history = [];
   }
 
   async onAdded() {
     await this.setInitialValues();
   }
 
+  onDeleted() {
+    this.log('Deleting device');
+    if (this.recalculationTimeout) {
+      this.homey.clearTimeout(this.recalculationTimeout);
+      this.recalculationTimeout = null;
+      this.log('Cleared timeout on device removal');
+    }
+  }
+
+  async onActionPriceChanged(args, state) {
+    if(this.previousConsumption) await this.checkReading(this.previousConsumption); // To calculate cost so far before new price is applied
+    await this.updateCapabilityValue('meter_price', args.price);
+    this.predict();
+  }
+
   async onActionConsumptionChanged(args, state) {
     this.checkReading(args.consumption);
   }
 
-  async onActionSetConsumptionLimit(args, state) {
-    this.newSettings['consumption_limit'] = args.consumption_limit;
-    this.queueSettings();
-    this.log(`Got new setting: consumption limit: ${args.consumption_limit}`);
-  }
-
-  async onActionSetPredictionLimit(args, state) {
-    this.newSettings['prediction_limit'] = args.prediction_limit;
-    this.queueSettings();
-    this.log(`Got new setting: prediction limit: ${args.prediction_limit}`);
-  }
-
-  async onActionSetPredictionResetLimit(args, state) {
-    this.newSettings['prediction_reset_limit'] = args.prediction_reset_limit;
-    this.queueSettings();
-    this.log(`Got new setting: reset prediction limit: ${args.prediction_reset_limit}`);
+  async onActionSettingChanged(args, state, setting) {
+    if(setting) {
+      this.newSettings[setting] = args[setting];
+      this.queueSettings();
+      this.log(`Got new setting: ${setting}: ${args[setting]}`);
+    }
   }
 
   // To avoid calling setSettings three times if all three settings are updated in same flow. Found it not setting them correct every time then.
@@ -90,129 +106,135 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     this.log('Reset all values');
   }
 
-  async isConsumptionLimitAbove(args, state) {
-    return this.settings.consumption_limit > args.limit;
+  async isLimitAbove(args, state, capability) {
+    return this.settings[capability] > args.limit;
   }
 
-  async isPredictionLimitAbove(args, state) {
-    return this.settings.prediction_limit > args.limit;
-  }
-
-  async isPredictionResetLimitAbove(args, state) {
-    return this.settings.prediction_reset_limit > args.limit;
-  }
-
-  checkReading(watt) {
+  async checkReading(watt) {
     try {
       const timeNow = new Date();
       const hoursSincePreviousReading = calculations.getHoursBetween(timeNow, this.previousTimestamp);
       if (calculations.isNewHour(timeNow, this.previousTimestamp)) {
-        this.startNewHour(watt, timeNow);
+        await this.startNewHour(watt, timeNow);
       } else {
-        this.setWattHours(this.wattHours + (watt * hoursSincePreviousReading));
+        const wattHours = watt * hoursSincePreviousReading;
+        await this.updateCapabilityValue('meter_consumption', this.getCapabilityValue('meter_consumption') + wattHours);
+        await this.updateCapabilityValue('meter_cost', this.getCapabilityValue('meter_cost') + (((wattHours) / 1000) * this.getCapabilityValue('meter_price')));
         this.checkIfPeak(watt);
       }
-      this.updateReferenceReadings(watt, timeNow);
-      this.predict();
-      this.checkNotify();
-      this.updateCapabilityValue('meter_consumption', this.getWattHours());
-      this.previousTimestamp = timeNow;
-      this.storeLatest();
+      this.updateHistory(watt, timeNow);
+      await this.predict();
+      await this.checkNotify();
+      this.storeLatest(timeNow, watt);
       this.scheduleRecalculation(watt);
     } catch (err) {
       this.log('Failed to check readings: ', err);
     }
   }
 
-  async storeLatest() {
-    this.latest = {
-      timestamp: this.previousTimestamp,
-      wattHours: this.wattHours,
-      wattPeak: this.wattPeak,
-      totalPreviousHour: this.totalPreviousHour,
-      consumption_trigged: this.getCapabilityValue('alarm_consumption_notified'),
-      prediction_trigged: this.getCapabilityValue('alarm_prediction_notified'),
-    };
-    this.setStoreValue('latest', this.latest);
+  async storeLatest(timeNow, watt) {
+    this.previousTimestamp = timeNow;
+    this.previousConsumption = watt;
+    this.setStoreValue('latest', { timestamp: this.previousTimestamp }); // Object to keep open for future implementations and also to support v1.0.0 implementation
   }
 
-  startNewHour(watt, timeNow) {
-    this.setTotalPreviousHour(this.wattHours + (watt * calculations.getRemainingHour(this.previousTimestamp)));
-    this.setWattHours(watt * calculations.getElapsedHour(timeNow));
-    this.setNewPeak(watt);
-    this.predictedWattHours = 0;
-    this.resetPredictionNotification(true);
+  async startNewHour(watt, timeNow) {
+    const remainingWattHours = watt * calculations.getRemainingHour(this.previousTimestamp);
+    await this.updateCapabilityValue('meter_consumption_previous_hour', this.getCapabilityValue('meter_consumption') + remainingWattHours);
+    await this.updateCapabilityValue('meter_cost_previous_hour', this.getCapabilityValue('meter_cost') + ((remainingWattHours / 1000) * this.getCapabilityValue('meter_price')));
+    await this.updateCapabilityValue('meter_consumption_peak', watt);
+    const wattHours = watt * calculations.getElapsedHour(timeNow);
+    await this.updateCapabilityValue('meter_consumption', wattHours);
+    await this.updateCapabilityValue('meter_cost', (wattHours / 1000) * this.getCapabilityValue('meter_price'));
+    if (!this.settings.prediction_consumption_reset_transfer_enabled) {
+      await this.updateCapabilityValue('meter_predictor', 0);
+      this.resetPredictionNotification(true);
+    }
+    if (!this.settings.prediction_cost_reset_transfer_enabled) {
+      await this.updateCapabilityValue('meter_cost_prediction', 0);
+      this.resetCostPredictionNotification(true);
+    }
     this.resetConsumptionNotification();
-    this.updateCapabilityValue('meter_consumption_previous_hour', this.totalPreviousHour);
-    this.updateCapabilityValue('meter_consumption_peak', this.wattPeak);
-    this.homey.flow.getDeviceTriggerCard('hour_reset').trigger(this, { previous: this.getTotalPreviousHour() }, {});
+    this.resetCostNotification();
+    this.homey.flow.getDeviceTriggerCard('hour_reset').trigger(this, { previous: this.decimals(this.getCapabilityValue('meter_consumption_previous_hour'),0), previousCost: this.decimals(this.getCapabilityValue('meter_cost_previous_hour'), 2)}, {});
   }
 
-  setTotalPreviousHour(watt) {
-    this.totalPreviousHour = watt;
-  }
-
-  checkIfPeak(watt) {
-    if (watt > this.wattPeak) {
-      this.setNewPeak(watt);
-      this.updateCapabilityValue('meter_consumption_peak', this.wattPeak);
-      this.homey.flow.getDeviceTriggerCard('new_peak').trigger(this, { peak: this.getPeak() }, {});
+  async checkIfPeak(watt) {
+    if (watt > this.getCapabilityValue('meter_consumption_peak')) {
+      await this.updateCapabilityValue('meter_consumption_peak', watt);
+      this.homey.flow.getDeviceTriggerCard('new_peak').trigger(this, { peak: this.decimals(this.getCapabilityValue('meter_consumption_peak'),0) }, {});
     }
   }
 
-  checkNotify() {
-    if (this.getWattHours() > this.settings.consumption_limit && this.isNotifyAllowed('consumption') && !this.getCapabilityValue('alarm_consumption_notified')) {
-      this.updateCapabilityValue('alarm_consumption_notified', true);
-      this.homey.flow.getDeviceTriggerCard('consumption_limit_reached').trigger(this, { consumption: this.getWattHours() }, {});
-      this.log(`Triggering consumption with the value ${this.getWattHours()} and the limit was set to ${this.settings.consumption_limit}`);
+  async checkNotify() {
+    // Predicted consumption
+    if (this.getCapabilityValue('meter_predictor') > this.settings.prediction_limit && this.isNotifyAllowed('prediction') && !this.getCapabilityValue('alarm_prediction_notified')) {
+      await this.updateCapabilityValue('alarm_prediction_notified', true);
+      this.homey.flow.getDeviceTriggerCard('prediction_limit_reached').trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_predictor'),0) }, {});
+      this.log(`Triggering prediction with the value ${this.decimals(this.getCapabilityValue('meter_predictor'),0)} and the limit was set to ${this.settings.prediction_limit}`);
     }
-    if (this.getPredictedWattHours() > this.settings.prediction_limit && this.isNotifyAllowed('prediction') && !this.getCapabilityValue('alarm_prediction_notified')) {
-      this.updateCapabilityValue('alarm_prediction_notified', true);
-      this.log(`Triggering prediction with the value ${this.getPredictedWattHours()} and the limit was set to ${this.settings.prediction_limit}`);
-      this.homey.flow.getDeviceTriggerCard('prediction_limit_reached').trigger(this, { predicted: this.getPredictedWattHours() }, {});
+    // Consumption
+    if (this.getCapabilityValue('meter_consumption') > this.settings.consumption_limit && this.isNotifyAllowed('consumption') && !this.getCapabilityValue('alarm_consumption_notified')) {
+      await this.updateCapabilityValue('alarm_consumption_notified', true);
+      this.homey.flow.getDeviceTriggerCard('consumption_limit_reached').trigger(this, { consumption: this.decimals(this.getCapabilityValue('meter_consumption'),0) }, {});
+      this.log(`Triggering consumption with the value ${this.decimals(this.getCapabilityValue('meter_consumption'),0)} and the limit was set to ${this.settings.consumption_limit}`);
     }
-    if (this.settings.prediction_reset_enabled && this.getPredictedWattHours() < this.settings.prediction_reset_limit) {
+    // Reset predicted consumption
+    if (this.settings.prediction_reset_enabled && this.getCapabilityValue('meter_predictor') < this.settings.prediction_reset_limit) {
       this.resetPredictionNotification();
     }
+    // Predicted cost
+    if (this.getCapabilityValue('meter_cost_prediction') > this.settings.prediction_cost_limit && this.isNotifyAllowed('cost_prediction') && !this.getCapabilityValue('alarm_cost_prediction_notified')) {
+      await this.updateCapabilityValue('alarm_cost_prediction_notified', true);
+      this.homey.flow.getDeviceTriggerCard('prediction_cost_limit_reached').trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_cost_prediction'),2) }, {});
+      this.log(`Triggering cost prediction with the value ${ this.decimals(this.getCapabilityValue('meter_cost_prediction'), 2) } and the limit was set to ${this.settings.prediction_cost_limit}`);
+    }
+    // Cost
+    if (this.getCapabilityValue('meter_cost') > this.settings.cost_limit && this.isNotifyAllowed('cost') && !this.getCapabilityValue('alarm_cost_notified')) {
+      await this.updateCapabilityValue('alarm_cost_notified', true);
+      this.homey.flow.getDeviceTriggerCard('cost_limit_reached').trigger(this, { cost: this.decimals(this.getCapabilityValue('meter_cost'), 2) }, {});
+      this.log(`Triggering cost with the value ${this.decimals(this.getCapabilityValue('meter_cost'), 2)} and the limit was set to ${this.settings.cost_limit}`);
+    }
+    // Reset predicted cost
+    if (this.settings.prediction_cost_reset_enabled && this.getCapabilityValue('meter_cost_prediction') < this.settings.prediction_cost_reset_limit) {
+      this.resetCostPredictionNotification();
+    }
   }
 
-  resetPredictionNotification(isNewHour = false) {
+  async resetPredictionNotification(isNewHour = false) {
     if (this.getCapabilityValue('alarm_prediction_notified') && (!isNewHour || (isNewHour && this.settings.prediction_reset_new_hour_enabled))) {
-      this.log(`Triggering prediction reset with the value ${this.getPredictedWattHours()} and the limit was set to ${this.settings.prediction_reset_limit}`);
-      this.homey.flow.getDeviceTriggerCard('prediction_reset').trigger(this, { predicted: this.getPredictedWattHours() }, {});
+      this.homey.flow.getDeviceTriggerCard('prediction_reset').trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_predictor'),0) }, {});
+      this.log(`Triggering prediction reset with the value ${this.decimals(this.getCapabilityValue('meter_predictor'),0)} and the limit was set to ${this.settings.prediction_reset_limit}`);
     }
-    this.updateCapabilityValue('alarm_prediction_notified', false);
+    await this.updateCapabilityValue('alarm_prediction_notified', false);
   }
 
-  resetConsumptionNotification() {
+  async resetCostPredictionNotification(isNewHour = false) {
+    if (this.getCapabilityValue('alarm_cost_prediction_notified') && (!isNewHour || (isNewHour && this.settings.prediction_cost_reset_new_hour_enabled))) {
+      this.homey.flow.getDeviceTriggerCard('prediction_cost_reset').trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_cost_prediction'), 2) }, {});
+      this.log(`Triggering cost prediction reset with the value ${this.decimals(this.getCapabilityValue('meter_cost_prediction'), 2) } and the limit was set to ${this.settings.prediction_cost_reset_limit}`);
+    }
+    await this.updateCapabilityValue('alarm_cost_prediction_notified', false);
+  }
+
+  async resetConsumptionNotification() {
     if (this.getCapabilityValue('alarm_consumption_notified')) {
-      this.homey.flow.getDeviceTriggerCard('consumption_reset').trigger(this, { previous: this.getTotalPreviousHour() }, {});
+      this.log(`Triggering consumption reset with the value ${this.decimals(this.getCapabilityValue('meter_consumption'),0)}`);
+      this.homey.flow.getDeviceTriggerCard('consumption_reset').trigger(this, { previous: this.decimals(this.getCapabilityValue('meter_consumption_previous_hour'), 0) }, {});
     }
-    this.updateCapabilityValue('alarm_consumption_notified', false);
+    await this.updateCapabilityValue('alarm_consumption_notified', false);
   }
 
-  getTotalPreviousHour() {
-    return Math.ceil(this.totalPreviousHour);
+  async resetCostNotification() {
+    if (this.getCapabilityValue('alarm_cost_notified')) {
+      this.log(`Triggering cost reset with the value ${this.decimals(this.getCapabilityValue('meter_cost'),2)}`);
+      this.homey.flow.getDeviceTriggerCard('cost_reset').trigger(this, { previousCost: this.decimals(this.getCapabilityValue('meter_cost_previous_hour'), 2) }, {});
+    }
+    await this.updateCapabilityValue('alarm_cost_notified', false);
   }
 
-  getPredictedWattHours() {
-    return Math.ceil(this.predictedWattHours);
-  }
-
-  getWattHours() {
-    return Math.ceil(this.wattHours);
-  }
-
-  getPeak() {
-    return Math.ceil(this.wattPeak);
-  }
-
-  setNewPeak(watt) {
-    this.wattPeak = watt;
-  }
-
-  setWattHours(watt) {
-    this.wattHours = watt;
+  decimals(value, decimals) {
+    return Number(value.toFixed(decimals));
   }
 
   isNotifyAllowed(setting) {
@@ -223,31 +245,41 @@ module.exports = class PowerOfTheHour extends Homey.Device {
       earliest = this.settings.notification_prediction_time_earliest;
       latest = this.settings.notification_prediction_time_latest;
       enabled = this.settings.notification_prediction_enabled;
-    } else {
+    } else if (setting === 'consumption') {
       earliest = this.settings.notification_consumption_time_earliest;
       latest = this.settings.notification_consumption_time_latest;
       enabled = this.settings.notification_consumption_enabled;
+    } else if (setting === 'cost') {
+      earliest = this.settings.notification_cost_time_earliest;
+      latest = this.settings.notification_cost_time_latest;
+      enabled = this.settings.notification_cost_enabled;
+    } else if (setting === 'cost_prediction') {
+      earliest = this.settings.notification_cost_prediction_time_earliest;
+      latest = this.settings.notification_cost_prediction_time_latest;
+      enabled = this.settings.notification_cost_prediction_enabled;
+    } else {
+      return false;
     }
     const currentTime = new Date().getMinutes();
     return enabled && currentTime <= Number(latest) && currentTime >= Number(earliest);
   }
 
-  predict() {
-    const prediction = calculations.getPrediction(this.referenceReadings, this.settings.prediction_age, this.settings.prediction_type);
-    this.predictedWattHours = this.wattHours + prediction;
-    this.updateCapabilityValue('meter_predictor', this.predictedWattHours);
+  async predict() {
+    const prediction = calculations.getPrediction(this.history, this.settings.prediction_age, this.settings.prediction_type);
+    await this.updateCapabilityValue('meter_predictor', this.getCapabilityValue('meter_consumption') + prediction);
+    await this.updateCapabilityValue('meter_cost_prediction', this.getCapabilityValue('meter_cost') + ((prediction / 1000) * this.getCapabilityValue('meter_price')));
   }
 
-  updateReferenceReadings(watt, timeOfReading) {
+  updateHistory(watt, timeOfReading) {
     const newReading = { consumption: watt, timestamp: timeOfReading };
-    if (this.referenceReadings.length > this.settings.prediction_history_count) {
-      this.referenceReadings.pop();
+    if (this.history.length > this.settings.prediction_history_count) {
+      this.history.pop();
     }
-    this.referenceReadings.unshift(newReading);
+    this.history.unshift(newReading);
   }
 
-  async updateCapabilityValue(parameter, value) {
-    this.setCapabilityValue(parameter, value).then().catch(err => this.log(`Failed to set capability value ${parameter} with the value ${value}`));
+  updateCapabilityValue(parameter, value) {
+    return this.setCapabilityValue(parameter, value).then().catch(err => this.log(`Failed to set capability value ${parameter} with the value ${value}`));
   }
 
   scheduleRecalculation(watt) {
@@ -266,7 +298,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
       this.predict();
     }
     if (changedKeys.includes('prediction_history_count')) {
-      this.referenceReadings = this.referenceReadings.slice(0, newSettings.prediction_history_count);
+      this.history = this.history.slice(0, newSettings.prediction_history_count);
     }
   }
 

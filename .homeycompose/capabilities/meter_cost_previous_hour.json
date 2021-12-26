@@ -1,0 +1,35 @@
+{
+  "title": {
+    "en": "Cost previous hour",
+    "no": "Kostnad forrige time"
+  },
+  "desc": {
+    "en": "Shows previous hours total cost",
+    "no": "Viser forrige times totale kostnad"
+  },
+  "tokens": [
+    {
+      "name": "value",
+      "title": {
+        "en": "kr",
+        "no": "kr"
+      },
+      "example": {
+        "en": 2.52,
+        "no": 2.52
+      }
+    }
+  ],
+  "type": "number",
+  "min": 0,
+  "decimals": 2,
+  "units": {
+    "en": "kr",
+    "no": "kr"
+  },
+  "getable": true,
+  "setable": false,
+  "greyout": true,
+  "icon": "/assets/previous_cost.svg",
+  "insights": true
+}

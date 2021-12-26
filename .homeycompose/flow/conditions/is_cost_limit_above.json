@@ -1,0 +1,33 @@
+{
+    "id": "is_cost_limit_above",
+    "title": {
+      "en": "Cost limit is !{{|not}} above",
+      "no": "Kostnadsgrensen !{{|ikke}} er over"
+    },
+    "hint": {
+      "en": "This card can be used to check towards the cost limit in settings.",
+      "no": "Dette kortet kan brukes til å sjekke mot kostnadsgrensen i innstillinger."
+    },
+    "titleFormatted": {
+      "en": "Cost limit is !{{|not}} above [[limit]]",
+      "no": "Kostnadsgrensen !{{|ikke}} er over [[limit]]"
+    },
+    "highlight": true,
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      },
+      {
+        "name": "limit",
+        "type": "number",
+        "min": 0,
+        "step": 0.01,
+        "title": {
+          "en": "kr",
+          "no": "kr"
+        }
+      }
+    ]
+  }

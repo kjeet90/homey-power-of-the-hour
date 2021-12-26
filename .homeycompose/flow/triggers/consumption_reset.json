@@ -13,8 +13,8 @@
       "name": "previous",
       "type": "number",
       "title": {
-        "en": "Previous hours consumption (Watt hours)",
-        "no": "Forrige times forbruk (Wattimer)"
+        "en": "Previous hours consumption (Wh)",
+        "no": "Forrige times forbruk (Wh)"
       },
       "example": {
         "en": "4000",

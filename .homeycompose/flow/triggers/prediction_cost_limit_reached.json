@@ -1,0 +1,31 @@
+{
+    "id": "prediction_cost_limit_reached",
+    "title": {
+      "en": "Predicted cost notification trigged",
+      "no": "Estimert kostnadsvarsel trigget"
+    },
+    "hint": {
+      "en": "This card triggers when the predicted cost has exceeded the configured limit and the time of the hour is between the notification times set in settings.",
+      "no": "Dette kortet trigges når den estimerte kostnaden har oversteget den konfigurerte grensen og klokkeslettet er mellom varseltidspunktet satt i innstillinger."
+    },
+    "highlight": true,
+    "tokens": [{
+      "name": "predicted",
+      "type": "number",
+      "title": {
+        "en": "kr",
+        "no": "kr"
+      },
+      "example": {
+        "en": "8.52",
+        "no": "8.52"
+      }
+    }],
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      }
+    ]
+  }

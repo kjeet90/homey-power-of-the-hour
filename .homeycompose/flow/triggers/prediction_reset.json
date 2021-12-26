@@ -1,8 +1,8 @@
 {
     "id": "prediction_reset",
     "title": {
-      "en": "Prediction notification reset",
-      "no": "Estimeringsvarsel resatt"
+      "en": "Predicted consumption notification reset",
+      "no": "Estimert forbruksvarsel resatt"
     },
     "hint": {
       "en": "This card triggers when the predicted consumption drops below the configured limit while the prediction notification is trigged and the setting 'Reset activated' is on. It can also be set to trigger on reset due to start of a new hour in the settings (still requires predicton notification to be trigged). Can be used to e.g. turn heaters back on if they were turned off by the prediction notification.",
@@ -13,8 +13,8 @@
       "name": "predicted",
       "type": "number",
       "title": {
-        "en": "Watt hours",
-        "no": "Wattimer"
+        "en": "Wh",
+        "no": "Wh"
       },
       "example": {
         "en": "1500",

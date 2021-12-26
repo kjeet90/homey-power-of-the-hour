@@ -5,7 +5,7 @@
     "no": "Power of the hour"
   },
   "class": "sensor",
-  "capabilities": ["meter_consumption", "alarm_consumption_notified","meter_predictor", "alarm_prediction_notified", "meter_consumption_peak", "meter_consumption_previous_hour"],
+  "capabilities": ["meter_consumption", "alarm_consumption_notified","meter_predictor", "alarm_prediction_notified","meter_consumption_peak", "meter_consumption_previous_hour", "meter_cost", "alarm_cost_notified", "meter_cost_prediction", "alarm_cost_prediction_notified", "meter_price", "meter_cost_previous_hour" ],
   "images": {
     "large": "{{driverAssetsPath}}/images/large.png",
     "small": "{{driverAssetsPath}}/images/small.png"

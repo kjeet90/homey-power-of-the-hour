@@ -1,8 +1,8 @@
 {
     "id": "prediction_limit_reached",
     "title": {
-      "en": "Prediction notification trigged",
-      "no": "Estimeringsvarsel trigget"
+      "en": "Predicted consumption notification trigged",
+      "no": "Estimert forbruksvarsel trigget"
     },
     "hint": {
       "en": "This card triggers when the predicted consumption has exceeded the configured limit and the time of the hour is between the notification times set in settings.",
@@ -13,8 +13,8 @@
       "name": "predicted",
       "type": "number",
       "title": {
-        "en": "Watt hours",
-        "no": "Wattimer"
+        "en": "Wh",
+        "no": "Wh"
       },
       "example": {
         "en": "4000",

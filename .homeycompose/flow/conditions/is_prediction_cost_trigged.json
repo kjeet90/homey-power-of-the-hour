@@ -1,0 +1,19 @@
+{
+    "id": "is_prediction_cost_trigged",
+    "title": {
+      "en": "Predicted cost notification is !{{|not}} triggered",
+      "no": "Estimert kostnadsvarsel !{{|ikke}} er trigget"
+    },
+    "hint": {
+      "en": "This card can be used to check if the predicted cost notification has been trigged.",
+      "no": "Dette kortet kan brukes til å sjekke om estimert kostnadsvarsel er trigget."
+    },
+    "highlight": true,
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      }
+    ]
+  }
