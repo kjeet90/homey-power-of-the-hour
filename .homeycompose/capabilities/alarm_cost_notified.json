@@ -1,0 +1,25 @@
+
+{
+    "title": {
+      "en": "Cost notification trigged",
+      "no": "Kostnadsvarsel trigget"
+    },
+    "desc": {
+      "en": "Cost notification has been trigged",
+      "no": "Kostnadsvarsel har blitt trigget"
+    },
+    "type": "boolean",
+    "getable": true,
+    "setable": false,
+    "greyout": true,
+    "insights": true,
+    "icon": "/assets/alert.svg",
+    "insightsTitleTrue": {
+      "en": "Cost notification trigged",
+      "no": "Kostnadsvarsel trigget"
+    },
+    "insightsTitleFalse": {
+      "en": "Cost notification reset",
+      "no": "Kostnadsvarsel resatt"
+    }
+  }

@@ -1,0 +1,35 @@
+{
+  "title": {
+    "en": "Price",
+    "no": "Pris"
+  },
+  "desc": {
+    "en": "Shows current price",
+    "no": "Viser gjeldende pris"
+  },
+  "type": "number",
+  "min": 0,
+  "decimals": 5,
+  "tokens": [
+    {
+      "name": "value",
+      "title": {
+        "en": "kr/kWh",
+        "no": "kr/kWh"
+      },
+      "example": {
+        "en": 0.92345,
+        "no": 0.92345
+      }
+    }
+  ],
+  "units": {
+    "en": "kr/kWh",
+    "no": "kr/kWh"
+  },
+  "getable": true,
+  "setable": false,
+  "greyout": true,
+  "icon": "/assets/price.svg",
+  "insights": true
+}

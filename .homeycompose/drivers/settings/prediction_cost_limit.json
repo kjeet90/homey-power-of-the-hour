@@ -1,0 +1,15 @@
+{
+  "id": "prediction_cost_limit",
+  "type": "number",
+  "label": {
+    "en": "Prediction cost limit (kr)",
+    "no": "Estimert kostnadsgrense (kr)"
+  },
+  "value": 3,
+  "min": 0,
+  "step": 0.01,
+  "hint": {
+    "en": "Limit that will be used to trigger notification if the predicted cost exceeds it.",
+    "no": "Grense som blir brukt til å trigge varsel dersom estimert kostnad overstiger den."
+  }
+}

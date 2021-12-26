@@ -1,0 +1,35 @@
+{
+  "title": {
+    "en": "Cost this hour",
+    "no": "Kostnad denne timen"
+  },
+  "desc": {
+    "en": "Shows total cost so far this hour",
+    "no": "Viser total kostnad så langt denne timen"
+  },
+  "type": "number",
+  "min": 0,
+  "decimals": 2,
+  "tokens": [
+    {
+      "name": "value",
+      "title": {
+        "en": "Kroner",
+        "no": "Kroner"
+      },
+      "example": {
+        "en": 13.37,
+        "no": 13.37
+      }
+    }
+  ],
+  "units": {
+    "en": "kr",
+    "no": "kr"
+  },
+  "getable": true,
+  "setable": false,
+  "greyout": true,
+  "icon": "/assets/cost.svg",
+  "insights": true
+}

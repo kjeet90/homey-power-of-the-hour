@@ -13,12 +13,24 @@
       "name": "previous",
       "type": "number",
       "title": {
-        "en": "Previous hours consumption (Watt hours)",
-        "no": "Forrige times forbruk (Wattimer)"
+        "en": "Previous hours consumption (Wh)",
+        "no": "Forrige times forbruk (Wh)"
       },
       "example": {
         "en": "4000",
         "no": "4000"
+      }
+    },
+    {
+      "name": "previousCost",
+      "type": "number",
+      "title": {
+        "en": "Previous hours cost (kr)",
+        "no": "Forrige times kostnad (kr)"
+      },
+      "example": {
+        "en": "2.52",
+        "no": "2.52"
       }
     }],
     "args": [

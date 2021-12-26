@@ -1,0 +1,13 @@
+{
+  "id": "prediction_cost_reset_transfer_enabled",
+  "type": "checkbox",
+  "label": {
+    "en": "Transfer to next hour",
+    "no": "Overfør til neste time"
+  },
+  "value": false,
+  "hint": {
+    "en": "Lets the predicted cost notification be active until it actually drops below the 'Reset below (kr)' limit, even if that means it has to follow to a new hour.",
+    "no": "Lar estimert kostnadsvarsel være aktivt helt til det faktisk går under 'Reset under (kr)' grensen, selv om det betyr at det må følge over i en ny time."
+  }
+}

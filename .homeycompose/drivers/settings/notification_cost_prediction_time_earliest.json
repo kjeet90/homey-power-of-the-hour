@@ -1,0 +1,16 @@
+{
+    "id": "notification_cost_prediction_time_earliest",
+    "type": "number",
+    "label": {
+      "en": "Earliest after (minutes)",
+      "no": "Tidligst etter (minutter)"
+    },
+    "value": 30,
+    "min": 0,
+    "max": 60,
+    "step": 1,
+    "hint": {
+      "en": "If the notication is activated this is the earliest it will notify about predicted cost. If the limit is exceeded earlier it will not notify until it has reached these many minutes into the hour.",
+      "no": "Dersom varsling er aktivert er dette det tidligste den vil varsle om estimert kostnad. Dersom grensen overstiges tidligere vil den ikke varsle før dette antallet minutter inn i timen."
+    }
+}

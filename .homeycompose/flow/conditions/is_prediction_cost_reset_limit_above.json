@@ -1,0 +1,33 @@
+{
+    "id": "is_prediction_cost_reset_limit_above",
+    "title": {
+      "en": "'Reset below (kr)' limit is !{{|not}} above",
+      "no": "'Reset under (kr)' grensen !{{|ikke}} er over"
+    },
+    "hint": {
+      "en": "This card can be used to check towards the 'Reset below (kr)' limit for cost in settings.",
+      "no": "Dette kortet kan brukes til å sjekke mot 'Reset under (kr)' grensen for kostnad i innstillinger."
+    },
+    "titleFormatted": {
+      "en": "'Reset below (kr)' limit is !{{|not}} above [[limit]]",
+      "no": "'Reset under (kr)' grensen !{{|ikke}} er over [[limit]]"
+    },
+    "highlight": true,
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      },
+      {
+        "name": "limit",
+        "type": "number",
+        "min": 0,
+        "step": 0.01,
+        "title": {
+          "en": "kr",
+          "no": "kr"
+        }
+      }
+    ]
+  }

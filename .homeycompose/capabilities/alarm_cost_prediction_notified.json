@@ -1,0 +1,25 @@
+
+{
+    "title": {
+      "en": "Predicted cost notification trigged",
+      "no": "Estimert kostnadsvarsel trigget"
+    },
+    "desc": {
+      "en": "Predicted cost notification has been trigged",
+      "no": "Estimert kostnadsvarsel har blitt trigget"
+    },
+    "type": "boolean",
+    "getable": true,
+    "setable": false,
+    "greyout": true,
+    "insights": true,
+    "icon": "/assets/alert.svg",
+    "insightsTitleTrue": {
+      "en": "Predicted cost notification trigged",
+      "no": "Estimert kostnadsvarsel trigget"
+    },
+    "insightsTitleFalse": {
+      "en": "Predicted cost notification reset",
+      "no": "Estimert kostnadsvarsel resatt"
+    }
+  }

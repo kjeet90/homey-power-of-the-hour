@@ -1,0 +1,33 @@
+{
+    "id": "is_prediction_cost_limit_above",
+    "title": {
+      "en": "Predicted cost limit is !{{|not}} above",
+      "no": "Estimert kostnadsgrense !{{|ikke}} er over"
+    },
+    "hint": {
+      "en": "This card can be used to check towards the predicted cost limit in settings.",
+      "no": "Dette kortet kan brukes til å sjekke mot estimert kostnadsgrense i innstillinger."
+    },
+    "titleFormatted": {
+      "en": "Predicted cost limit is !{{|not}} above [[limit]]",
+      "no": "Estimert kostnadsgrense !{{|ikke}} er over [[limit]]"
+    },
+    "highlight": true,
+    "args": [
+      {
+        "name": "device",
+        "type": "device",
+        "filter": "driver_id=power-of-the-hour"
+      },
+      {
+        "name": "limit",
+        "type": "number",
+        "min": 0,
+        "step": 0.01,
+        "title": {
+          "en": "kr",
+          "no": "kr"
+        }
+      }
+    ]
+  }

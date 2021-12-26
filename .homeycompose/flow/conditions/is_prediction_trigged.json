@@ -1,12 +1,12 @@
 {
     "id": "is_prediction_trigged",
     "title": {
-      "en": "Prediction notification is !{{|not}} triggered",
-      "no": "Estimeringsvarsel !{{|ikke}} er trigget"
+      "en": "Predicted consumption notification is !{{|not}} triggered",
+      "no": "Estimert forbruksvarsel !{{|ikke}} er trigget"
     },
     "hint": {
-      "en": "This card can be used to check if the prediction notification has been trigged.",
-      "no": "Dette kortet kan brukes til å sjekke om estimeringsvarselet er trigget."
+      "en": "This card can be used to check if the predicted consumption notification has been trigged.",
+      "no": "Dette kortet kan brukes til å sjekke om estimert forbruksvarsel er trigget."
     },
     "highlight": true,
     "args": [

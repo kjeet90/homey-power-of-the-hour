@@ -1,0 +1,15 @@
+{
+  "id": "prediction_cost_reset_limit",
+  "type": "number",
+  "label": {
+    "en": "Reset below (kr)",
+    "no": "Reset under (kr)"
+  },
+  "value": 1,
+  "min": 0,
+  "step": 0.01,
+  "hint": {
+    "en": "Resets the predicted cost notification if the predicted cost drops below this limit after the notification has been trigged. Note that this functionality is enabled by the setting 'Reset activated'.",
+    "no": "Resetter estimert kostnadsvarsel dersom estimert kostnad synker under denne grensen etter at varselet har blitt trigget. Merk at denne funksjonaliteten aktiveres av innstillingen 'Reset aktivert'."
+  }
+}

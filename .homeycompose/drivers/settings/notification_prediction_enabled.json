@@ -7,7 +7,7 @@
   },
   "value": true,
   "hint": {
-    "en": "Activates prediction notification and triggers the flow card 'Prediction notification trigged' if the predicted consumption exceeds the limit set in the setting 'Prediction limit (Wh)'.",
-    "no": "Aktiverer estimeringsvarsel og trigger flow-kortet 'Estimeringsvarsel trigget' dersom estimert forbruk overstiger grensen satt i innstillingen 'Estimeringsgrense (Wh)'."
+    "en": "Activates predicted consumption notification and triggers the flow card 'Predicted consumption notification trigged' if the predicted consumption exceeds the limit set in the setting 'Predicted consumption limit (Wh)'.",
+    "no": "Aktiverer estimert forbruksvarsel og trigger flow-kortet 'Estimert forbruksvarsel trigget' dersom estimert forbruk overstiger grensen satt i innstillingen 'Estimert forbruksgrense (Wh)'."
   }
 }
