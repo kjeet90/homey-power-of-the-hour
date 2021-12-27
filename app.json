@@ -412,8 +412,8 @@
             "min": 0,
             "step": 1,
             "title": {
-              "en": "Watt hours",
-              "no": "Wattimer"
+              "en": "Wh",
+              "no": "Wh"
             }
           }
         ]
@@ -765,8 +765,8 @@
             "name": "consumption_limit",
             "type": "number",
             "title": {
-              "en": "Watt hours",
-              "no": "Wattimer"
+              "en": "Wh",
+              "no": "Wh"
             }
           }
         ]
@@ -1530,8 +1530,8 @@
         {
           "name": "value",
           "title": {
-            "en": "Watt hours",
-            "no": "Wattimer"
+            "en": "Wh",
+            "no": "Wh"
           },
           "example": {
             "en": 1200,
@@ -1638,8 +1638,8 @@
         {
           "name": "value",
           "title": {
-            "en": "Kroner",
-            "no": "Kroner"
+            "en": "kr",
+            "no": "kr"
           },
           "example": {
             "en": 13.37,
@@ -1673,8 +1673,8 @@
         {
           "name": "value",
           "title": {
-            "en": "Kroner",
-            "no": "Kroner"
+            "en": "kr",
+            "no": "kr"
           },
           "example": {
             "en": 13.37,
@@ -1740,8 +1740,8 @@
         {
           "name": "value",
           "title": {
-            "en": "Watt hours",
-            "no": "Wattimer"
+            "en": "Wh",
+            "no": "Wh"
           },
           "example": {
             "en": 1200,

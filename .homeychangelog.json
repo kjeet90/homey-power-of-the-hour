@@ -1,4 +1,7 @@
 {
+  "1.1.0": {
+    "en": "Added prediction of cost."
+  },
   "1.0.0": {
     "en": "Added four new action flow cards for setting new limits and reset values. Added three new condition flow card for checking against limits. Insights for peak and previous hours consumption. Changed from Wt to Wh for Norwegian langauge. Persitent values, restarting homey/app will not clear consumption and triggers if started within same hour again."
   },

@@ -42,6 +42,12 @@ Goal: Keep the consumption below 5000Wh
 
 # Release notes:
 
+## 1.1.0
+
+### Added
+
+- Predicted and actual cost with same type of flow-cards as consumption
+
 ## 1.0.0
 
 ### Added

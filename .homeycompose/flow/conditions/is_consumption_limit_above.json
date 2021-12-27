@@ -25,8 +25,8 @@
         "min": 0,
         "step": 1,
         "title": {
-          "en": "Watt hours",
-          "no": "Wattimer"
+          "en": "Wh",
+          "no": "Wh"
         }
       }
     ]
