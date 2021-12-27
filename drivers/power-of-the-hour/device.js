@@ -64,7 +64,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   }
 
   async onActionPriceChanged(args, state) {
-    if(this.previousConsumption) await this.checkReading(this.previousConsumption); // To calculate cost so far before new price is applied
+    if (this.previousConsumption) await this.checkReading(this.previousConsumption); // To calculate cost so far before new price is applied
     await this.updateCapabilityValue('meter_price', args.price);
     this.predict();
   }
@@ -74,7 +74,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   }
 
   async onActionSettingChanged(args, state, setting) {
-    if(setting) {
+    if (setting) {
       this.newSettings[setting] = args[setting];
       this.queueSettings();
       this.log(`Got new setting: ${setting}: ${args[setting]}`);
@@ -156,13 +156,13 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     }
     this.resetConsumptionNotification();
     this.resetCostNotification();
-    this.homey.flow.getDeviceTriggerCard('hour_reset').trigger(this, { previous: this.decimals(this.getCapabilityValue('meter_consumption_previous_hour'),0), previousCost: this.decimals(this.getCapabilityValue('meter_cost_previous_hour'), 2)}, {});
+    this.homey.flow.getDeviceTriggerCard('hour_reset').trigger(this, { previous: this.decimals(this.getCapabilityValue('meter_consumption_previous_hour'), 0), previousCost: this.decimals(this.getCapabilityValue('meter_cost_previous_hour'), 2) }, {});
   }
 
   async checkIfPeak(watt) {
     if (watt > this.getCapabilityValue('meter_consumption_peak')) {
       await this.updateCapabilityValue('meter_consumption_peak', watt);
-      this.homey.flow.getDeviceTriggerCard('new_peak').trigger(this, { peak: this.decimals(this.getCapabilityValue('meter_consumption_peak'),0) }, {});
+      this.homey.flow.getDeviceTriggerCard('new_peak').trigger(this, { peak: this.decimals(this.getCapabilityValue('meter_consumption_peak'), 0) }, {});
     }
   }
 
@@ -170,14 +170,14 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     // Predicted consumption
     if (this.getCapabilityValue('meter_predictor') > this.settings.prediction_limit && this.isNotifyAllowed('prediction') && !this.getCapabilityValue('alarm_prediction_notified')) {
       await this.updateCapabilityValue('alarm_prediction_notified', true);
-      this.homey.flow.getDeviceTriggerCard('prediction_limit_reached').trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_predictor'),0) }, {});
-      this.log(`Triggering prediction with the value ${this.decimals(this.getCapabilityValue('meter_predictor'),0)} and the limit was set to ${this.settings.prediction_limit}`);
+      this.homey.flow.getDeviceTriggerCard('prediction_limit_reached').trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_predictor'), 0) }, {});
+      this.log(`Triggering prediction with the value ${this.decimals(this.getCapabilityValue('meter_predictor'), 0)} and the limit was set to ${this.settings.prediction_limit}`);
     }
     // Consumption
     if (this.getCapabilityValue('meter_consumption') > this.settings.consumption_limit && this.isNotifyAllowed('consumption') && !this.getCapabilityValue('alarm_consumption_notified')) {
       await this.updateCapabilityValue('alarm_consumption_notified', true);
-      this.homey.flow.getDeviceTriggerCard('consumption_limit_reached').trigger(this, { consumption: this.decimals(this.getCapabilityValue('meter_consumption'),0) }, {});
-      this.log(`Triggering consumption with the value ${this.decimals(this.getCapabilityValue('meter_consumption'),0)} and the limit was set to ${this.settings.consumption_limit}`);
+      this.homey.flow.getDeviceTriggerCard('consumption_limit_reached').trigger(this, { consumption: this.decimals(this.getCapabilityValue('meter_consumption'), 0) }, {});
+      this.log(`Triggering consumption with the value ${this.decimals(this.getCapabilityValue('meter_consumption'), 0)} and the limit was set to ${this.settings.consumption_limit}`);
     }
     // Reset predicted consumption
     if (this.settings.prediction_reset_enabled && this.getCapabilityValue('meter_predictor') < this.settings.prediction_reset_limit) {
@@ -186,8 +186,8 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     // Predicted cost
     if (this.getCapabilityValue('meter_cost_prediction') > this.settings.prediction_cost_limit && this.isNotifyAllowed('cost_prediction') && !this.getCapabilityValue('alarm_cost_prediction_notified')) {
       await this.updateCapabilityValue('alarm_cost_prediction_notified', true);
-      this.homey.flow.getDeviceTriggerCard('prediction_cost_limit_reached').trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_cost_prediction'),2) }, {});
-      this.log(`Triggering cost prediction with the value ${ this.decimals(this.getCapabilityValue('meter_cost_prediction'), 2) } and the limit was set to ${this.settings.prediction_cost_limit}`);
+      this.homey.flow.getDeviceTriggerCard('prediction_cost_limit_reached').trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_cost_prediction'), 2) }, {});
+      this.log(`Triggering cost prediction with the value ${this.decimals(this.getCapabilityValue('meter_cost_prediction'), 2)} and the limit was set to ${this.settings.prediction_cost_limit}`);
     }
     // Cost
     if (this.getCapabilityValue('meter_cost') > this.settings.cost_limit && this.isNotifyAllowed('cost') && !this.getCapabilityValue('alarm_cost_notified')) {
@@ -203,8 +203,8 @@ module.exports = class PowerOfTheHour extends Homey.Device {
 
   async resetPredictionNotification(isNewHour = false) {
     if (this.getCapabilityValue('alarm_prediction_notified') && (!isNewHour || (isNewHour && this.settings.prediction_reset_new_hour_enabled))) {
-      this.homey.flow.getDeviceTriggerCard('prediction_reset').trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_predictor'),0) }, {});
-      this.log(`Triggering prediction reset with the value ${this.decimals(this.getCapabilityValue('meter_predictor'),0)} and the limit was set to ${this.settings.prediction_reset_limit}`);
+      this.homey.flow.getDeviceTriggerCard('prediction_reset').trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_predictor'), 0) }, {});
+      this.log(`Triggering prediction reset with the value ${this.decimals(this.getCapabilityValue('meter_predictor'), 0)} and the limit was set to ${this.settings.prediction_reset_limit}`);
     }
     await this.updateCapabilityValue('alarm_prediction_notified', false);
   }
@@ -212,14 +212,14 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   async resetCostPredictionNotification(isNewHour = false) {
     if (this.getCapabilityValue('alarm_cost_prediction_notified') && (!isNewHour || (isNewHour && this.settings.prediction_cost_reset_new_hour_enabled))) {
       this.homey.flow.getDeviceTriggerCard('prediction_cost_reset').trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_cost_prediction'), 2) }, {});
-      this.log(`Triggering cost prediction reset with the value ${this.decimals(this.getCapabilityValue('meter_cost_prediction'), 2) } and the limit was set to ${this.settings.prediction_cost_reset_limit}`);
+      this.log(`Triggering cost prediction reset with the value ${this.decimals(this.getCapabilityValue('meter_cost_prediction'), 2)} and the limit was set to ${this.settings.prediction_cost_reset_limit}`);
     }
     await this.updateCapabilityValue('alarm_cost_prediction_notified', false);
   }
 
   async resetConsumptionNotification() {
     if (this.getCapabilityValue('alarm_consumption_notified')) {
-      this.log(`Triggering consumption reset with the value ${this.decimals(this.getCapabilityValue('meter_consumption'),0)}`);
+      this.log(`Triggering consumption reset with the value ${this.decimals(this.getCapabilityValue('meter_consumption'), 0)}`);
       this.homey.flow.getDeviceTriggerCard('consumption_reset').trigger(this, { previous: this.decimals(this.getCapabilityValue('meter_consumption_previous_hour'), 0) }, {});
     }
     await this.updateCapabilityValue('alarm_consumption_notified', false);
@@ -227,7 +227,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
 
   async resetCostNotification() {
     if (this.getCapabilityValue('alarm_cost_notified')) {
-      this.log(`Triggering cost reset with the value ${this.decimals(this.getCapabilityValue('meter_cost'),2)}`);
+      this.log(`Triggering cost reset with the value ${this.decimals(this.getCapabilityValue('meter_cost'), 2)}`);
       this.homey.flow.getDeviceTriggerCard('cost_reset').trigger(this, { previousCost: this.decimals(this.getCapabilityValue('meter_cost_previous_hour'), 2) }, {});
     }
     await this.updateCapabilityValue('alarm_cost_notified', false);

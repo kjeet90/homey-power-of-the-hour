@@ -14,8 +14,8 @@
     {
       "name": "value",
       "title": {
-        "en": "Kroner",
-        "no": "Kroner"
+        "en": "kr",
+        "no": "kr"
       },
       "example": {
         "en": 13.37,

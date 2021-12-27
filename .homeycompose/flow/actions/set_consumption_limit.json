@@ -22,8 +22,8 @@
         "name": "consumption_limit",
         "type": "number",
         "title": {
-          "en": "Watt hours",
-          "no": "Wattimer"
+          "en": "Wh",
+          "no": "Wh"
         }
       }
     ]
