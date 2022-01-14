@@ -8,7 +8,6 @@
     "no": "Viser totalt estimert kostnad for denne timen basert på historikk"
   },
   "type": "number",
-  "min": 0,
   "decimals": 2,
   "tokens": [
     {

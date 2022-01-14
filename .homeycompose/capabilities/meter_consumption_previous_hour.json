@@ -21,7 +21,6 @@
     }
   ],
   "type": "number",
-  "min": 0,
   "decimals": 0,
   "units": {
     "en": "Wh",

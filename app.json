@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "no.kjeet90.powerofthehour",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
@@ -668,12 +668,12 @@
           "no": "Oppdater forbruk"
         },
         "hint": {
-          "en": "Register change in consumption",
-          "no": "Registrer endring i forbruk"
+          "en": "Register change in consumption with W or kW",
+          "no": "Registrer endring i forbruk i W eller kW"
         },
         "titleFormatted": {
-          "en": "Update consumption with [[consumption]]",
-          "no": "Oppdater forbruk med [[consumption]]"
+          "en": "Update consumption with [[consumption]] [[unit]]",
+          "no": "Oppdater forbruk med [[consumption]] [[unit]]"
         },
         "highlight": true,
         "args": [
@@ -686,9 +686,32 @@
             "name": "consumption",
             "type": "number",
             "title": {
-              "en": "Watt",
-              "no": "Watt"
+              "en": "Power",
+              "no": "Effekt"
             }
+          },
+          {
+            "name": "unit",
+            "type": "dropdown",
+            "title": {
+              "en": "Unit",
+              "no": "Enhet"
+            },
+            "required": false,
+            "values": [
+              {
+                "id": "W",
+                "label": {
+                  "en": "W"
+                }
+              },
+              {
+                "id": "kW",
+                "label": {
+                  "en": "kW"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1540,7 +1563,6 @@
         }
       ],
       "type": "number",
-      "min": 0,
       "decimals": 0,
       "units": {
         "en": "Wh",
@@ -1575,7 +1597,6 @@
         }
       ],
       "type": "number",
-      "min": 0,
       "decimals": 0,
       "units": {
         "en": "W",
@@ -1610,7 +1631,6 @@
         }
       ],
       "type": "number",
-      "min": 0,
       "decimals": 0,
       "units": {
         "en": "Wh",
@@ -1632,7 +1652,6 @@
         "no": "Viser total kostnad så langt denne timen"
       },
       "type": "number",
-      "min": 0,
       "decimals": 2,
       "tokens": [
         {
@@ -1667,7 +1686,6 @@
         "no": "Viser totalt estimert kostnad for denne timen basert på historikk"
       },
       "type": "number",
-      "min": 0,
       "decimals": 2,
       "tokens": [
         {
@@ -1715,7 +1733,6 @@
         }
       ],
       "type": "number",
-      "min": 0,
       "decimals": 2,
       "units": {
         "en": "kr",
@@ -1750,7 +1767,6 @@
         }
       ],
       "type": "number",
-      "min": 0,
       "decimals": 0,
       "units": {
         "en": "Wh",
@@ -1772,7 +1788,6 @@
         "no": "Viser gjeldende pris"
       },
       "type": "number",
-      "min": 0,
       "decimals": 5,
       "tokens": [
         {

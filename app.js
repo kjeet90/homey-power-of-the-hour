@@ -53,4 +53,5 @@ module.exports = class PowerOfTheHour extends Homey.App {
     this.homey.flow.getConditionCard('is_prediction_cost_reset_limit_above')
       .registerRunListener((args, state) => args.device.isLimitAbove(args, state, 'prediction_cost_reset_limit'));
   }
+
 };

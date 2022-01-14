@@ -8,7 +8,6 @@
     "no": "Viser gjeldende pris"
   },
   "type": "number",
-  "min": 0,
   "decimals": 5,
   "tokens": [
     {

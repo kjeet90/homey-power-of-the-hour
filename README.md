@@ -42,6 +42,13 @@ Goal: Keep the consumption below 5000Wh
 
 # Release notes:
 
+## 1.2.0
+
+### Added
+
+- Support for updating consumption with both W and kW
+- Support for negative values in case user delivers back to the grid.
+
 ## 1.1.0
 
 ### Added

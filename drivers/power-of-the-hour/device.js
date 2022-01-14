@@ -70,7 +70,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   }
 
   async onActionConsumptionChanged(args, state) {
-    this.checkReading(args.consumption);
+    this.checkReading(args.unit === 'kW' ? (args.consumption * 1000) : args.consumption);
   }
 
   async onActionSettingChanged(args, state, setting) {
@@ -257,8 +257,6 @@ module.exports = class PowerOfTheHour extends Homey.Device {
       earliest = this.settings.notification_cost_prediction_time_earliest;
       latest = this.settings.notification_cost_prediction_time_latest;
       enabled = this.settings.notification_cost_prediction_enabled;
-    } else {
-      return false;
     }
     const currentTime = new Date().getMinutes();
     return enabled && currentTime <= Number(latest) && currentTime >= Number(earliest);
