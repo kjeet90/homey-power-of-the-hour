@@ -1,4 +1,7 @@
 {
+  "1.2.0": {
+    "en": "Added support for updating consumption in kW. Added support for negative values in case the user delivers back to the grid."
+  },
   "1.1.0": {
     "en": "Added prediction of cost."
   },

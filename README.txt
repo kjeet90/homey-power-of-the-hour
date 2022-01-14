@@ -1,4 +1,4 @@
-Power of the hour can predict what your total energy consumption will be at the end of the hour and notify you if the predictions or the actual consumptions are getting above your preferred limits.
+Power of the hour can predict what your total energy consumption and cost will be at the end of the hour and notify you if the predictions or the actual consumptions/cost are getting above your preferred limits.
 
 Example of overview of consumption from a smart energy meter:
 

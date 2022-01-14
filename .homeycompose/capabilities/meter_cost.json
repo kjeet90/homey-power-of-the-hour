@@ -8,7 +8,6 @@
     "no": "Viser total kostnad så langt denne timen"
   },
   "type": "number",
-  "min": 0,
   "decimals": 2,
   "tokens": [
     {

@@ -5,12 +5,12 @@
       "no": "Oppdater forbruk"
     },
     "hint": {
-      "en": "Register change in consumption",
-      "no": "Registrer endring i forbruk"
+      "en": "Register change in consumption with W or kW",
+      "no": "Registrer endring i forbruk i W eller kW"
     },
     "titleFormatted": {
-      "en": "Update consumption with [[consumption]]",
-      "no": "Oppdater forbruk med [[consumption]]"
+      "en": "Update consumption with [[consumption]] [[unit]]",
+      "no": "Oppdater forbruk med [[consumption]] [[unit]]"
     },
     "highlight": true,
     "args": [
@@ -23,9 +23,19 @@
         "name": "consumption",
         "type": "number",
         "title": {
-          "en": "Watt",
-          "no": "Watt"
+          "en": "Power",
+          "no": "Effekt"
         }
+      },
+      {
+        "name": "unit",
+        "type": "dropdown",
+        "title": { "en": "Unit", "no": "Enhet" },
+        "required": false,
+        "values": [
+        { "id": "W", "label": { "en": "W" } },
+        { "id": "kW", "label": { "en": "kW" } }
+        ]
       }
     ]
   }
