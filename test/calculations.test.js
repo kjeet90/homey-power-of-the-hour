@@ -139,6 +139,28 @@ test('Is new hour between 12:15 and 13:10 the next day to equal true', () => {
     expect(calculations.isNewHour(newest,oldest)).toBe(true);
 })
 
+// prediction
+test('Prediction: no valid values', () => {
+    expect(calculations.getPrediction(undefined,undefined, undefined)).toBe(0);
+});
+
+test('Prediction: only valid history', () => {
+    const readings = [
+        {consumption: 1000, timestamp: '2020-10-21T12:00:00.000Z'},
+    ]
+    expect(calculations.getPrediction(readings,undefined, undefined)).toBe(1000);
+});
+
+test('Prediction: only valid number', () => {
+    const number = 1;
+    expect(calculations.getPrediction(undefined,number, undefined)).toBe(0);
+});
+
+test('Prediction: only valid time', () => {
+    const time = 'time';
+    expect(calculations.getPrediction(undefined,undefined, time)).toBe(0);
+});
+
 test('Prediction: 1 minute history, 1 reading, 1 valid, at 12:00 to equal 1000W', () => {
     const readings = [
         {consumption: 1000, timestamp: '2020-10-21T12:00:00.000Z'},

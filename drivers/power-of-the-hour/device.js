@@ -6,11 +6,24 @@ const calculations = require('../../lib/calculations');
 module.exports = class PowerOfTheHour extends Homey.Device {
 
   async onInit() {
-    this.latest = await this.getStoreValue('latest') || {};
+    try {
+      this.latest = await this.getStoreValue('latest');
+    } catch (err) {
+      this.latest = {};
+      this.log('Failed to get latest: ', err);
+      this.error(err);
+    }
     const validTimeStamp = this.latest.timestamp && !calculations.isNewHour(new Date(), this.latest.timestamp);
     await this.upgradeExistingDevice();
     await this.setInitialValues(validTimeStamp);
-    this.settings = await this.getSettings() || {};
+    try {
+      this.settings = await this.getSettings();
+    } catch (err) {
+      this.settings = {};
+      this.error(err);
+      this.log('Failed to get settings onInit: ', err);
+    }
+
     this.log('Initialized device', this.getName());
     this.predict();
   }
@@ -96,7 +109,12 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     if (Object.values(this.newSettings).length) {
       this.log('Writing new settings');
       await this.setSettings(this.newSettings).catch(this.error);
-      this.settings = await this.getSettings();
+      try {
+        this.settings = await this.getSettings();
+      } catch (err) {
+        this.error(err);
+        this.log('Failed get new settings after writing new ones: ', err);
+      }
       this.newSettings = {};
     }
   }
