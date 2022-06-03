@@ -42,6 +42,16 @@ Goal: Keep the consumption below 5000Wh
 
 # Release notes:
 
+## 1.2.1
+
+### Bugfix
+
+- Fixed issue where it would crash on a few occations.
+
+### Upgrade
+
+- Upgraded to use node 16.15.0
+
 ## 1.2.0
 
 ### Added
