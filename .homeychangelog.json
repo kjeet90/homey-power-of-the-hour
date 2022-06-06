@@ -1,4 +1,7 @@
 {
+  "1.2.2": {
+    "en": "Fixed issue where app could crash on startup."
+  },
   "1.2.1": {
     "en": "Bugfix: Fixed issue where app could crash. Updated to node 16, used from Homey firmware 7.4.0."
   },

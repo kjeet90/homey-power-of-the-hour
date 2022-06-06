@@ -42,6 +42,12 @@ Goal: Keep the consumption below 5000Wh
 
 # Release notes:
 
+## 1.2.2
+
+### Bugfix
+
+- Fixed issue where it could crash on startup.
+
 ## 1.2.1
 
 ### Bugfix
