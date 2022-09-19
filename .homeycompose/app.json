@@ -1,6 +1,6 @@
 {
   "id": "no.kjeet90.powerofthehour",
-  "version": "1.2.2",
+  "version": "1.3.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
@@ -10,9 +10,7 @@
   "description": {
     "en": "Keep your energy consumption below your desired limit"
   },
-  "category": [
-    "energy"
-  ],
+  "category": ["energy"],
   "permissions": [],
   "images": {
     "large": "/assets/images/large.png",
@@ -35,7 +33,5 @@
     "name": "Kjetil Haugland",
     "email": "hauglandkjetil@gmail.com"
   },
-  "platforms": [
-    "local"
-  ]
+  "platforms": ["local"]
 }

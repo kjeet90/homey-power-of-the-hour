@@ -42,6 +42,12 @@ Goal: Keep the consumption below 5000Wh
 
 # Release notes:
 
+## 1.3.0
+### Added
+- Power available to consumption and predicted consumption limit is reached.
+   - Two new trigger cards for when these values changes.
+   - As long as your consumption stays below these values, you should not exceed the limits.
+
 ## 1.2.2
 
 ### Bugfix

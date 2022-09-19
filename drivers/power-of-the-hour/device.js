@@ -38,6 +38,8 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     }
     if (!this.hasCapability('meter_price')) await this.addCapability('meter_price');
     if (!this.hasCapability('meter_cost_previous_hour')) await this.addCapability('meter_cost_previous_hour');
+    if (!this.hasCapability('meter_consumption_remaining')) await this.addCapability('meter_consumption_remaining');
+    if (!this.hasCapability('meter_prediction_remaining')) await this.addCapability('meter_prediction_remaining');
   }
 
   async setInitialValues(validTimeStamp = false) {
@@ -57,6 +59,8 @@ module.exports = class PowerOfTheHour extends Homey.Device {
       await this.updateCapabilityValue('meter_cost', null);
       await this.updateCapabilityValue('meter_cost_prediction', null);
       await this.updateCapabilityValue('meter_price', null);
+      await this.updateCapabilityValue('meter_consumption_remaining', null);
+      await this.updateCapabilityValue('meter_prediction_remaining', null);
     }
     this.newSettings = {};
     this.history = [];
@@ -141,11 +145,27 @@ module.exports = class PowerOfTheHour extends Homey.Device {
       }
       this.updateHistory(watt, timeNow);
       await this.predict();
+      await this.updateRemaining(timeNow);
       await this.checkNotify();
       this.storeLatest(timeNow, watt);
       this.scheduleRecalculation(watt);
     } catch (err) {
       this.log('Failed to check readings: ', err);
+    }
+  }
+
+  async updateRemaining(timeNow) {
+    const consumptionRemaining = this.getCapabilityValue('meter_consumption_remaining');
+    const predictionRemaining = this.getCapabilityValue('meter_prediction_remaining');
+    const newConsumption = (this.settings.consumption_limit - this.getCapabilityValue('meter_consumption')) / calculations.getRemainingHour(timeNow);
+    const newPrediction = (this.settings.prediction_limit - this.getCapabilityValue('meter_consumption')) / calculations.getRemainingHour(timeNow);
+    if (consumptionRemaining !== newConsumption) {
+      await this.updateCapabilityValue('meter_consumption_remaining', newConsumption);
+      this.homey.flow.getDeviceTriggerCard('meter_consumption_remaining_changed').trigger(this, { remaining: this.decimals(this.getCapabilityValue('meter_consumption_remaining'), 0) }, {});
+    }
+    if (predictionRemaining !== newPrediction) {
+      await this.updateCapabilityValue('meter_prediction_remaining', newPrediction);
+      this.homey.flow.getDeviceTriggerCard('meter_prediction_remaining_changed').trigger(this, { remaining: this.decimals(this.getCapabilityValue('meter_prediction_remaining'), 0) }, {});
     }
   }
 
@@ -294,7 +314,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   }
 
   updateCapabilityValue(parameter, value) {
-    return this.setCapabilityValue(parameter, value).then().catch(err => this.log(`Failed to set capability value ${parameter} with the value ${value}`));
+    return this.setCapabilityValue(parameter, value).then().catch((err) => this.log(`Failed to set capability value ${parameter} with the value ${value}`));
   }
 
   scheduleRecalculation(watt) {
