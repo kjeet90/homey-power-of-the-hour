@@ -1,0 +1,34 @@
+{
+  "title": {
+    "en": "Power available - Predicted consumption limit",
+    "no": "Tilgjengelig effekt - Estimert forbruksgrense"
+  },
+  "desc": {
+    "en": "How much power you can use for the rest of the hour before reaching the predicted consumption limit.",
+    "no": "Hvor mye effekt du kan bruke resten av timen før du når den estimerte forbruksgrensen."
+  },
+  "tokens": [
+    {
+      "name": "value",
+      "title": {
+        "en": "W",
+        "no": "W"
+      },
+      "example": {
+        "en": 1200,
+        "no": 1200
+      }
+    }
+  ],
+  "type": "number",
+  "decimals": 0,
+  "units": {
+    "en": "W",
+    "no": "W"
+  },
+  "getable": true,
+  "setable": false,
+  "greyout": true,
+  "icon": "/assets/lightning-bolt-circle.svg",
+  "insights": true
+}

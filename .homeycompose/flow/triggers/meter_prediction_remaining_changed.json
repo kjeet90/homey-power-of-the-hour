@@ -1,0 +1,33 @@
+{
+  "id": "meter_prediction_remaining_changed",
+  "title": {
+    "en": "Power available changed - Predicted consumption limit",
+    "no": "Tilgjengelig effekt endret - Estimert forbruksgrense"
+  },
+  "hint": {
+    "en": "This card triggers when the power available up to the prediced consumption limit is changed. This tells you at what consumption you need to stay below to keep under the limit. ",
+    "no": "Dette kortet trigges når tilgjengelig effekt opp til estimert forbruksgrense blir endret. Dette forteller deg hvilket forbruk du må ligge under for å holde deg under grensen."
+  },
+  "highlight": true,
+  "tokens": [
+    {
+      "name": "remaining",
+      "type": "number",
+      "title": {
+        "en": "Watt",
+        "no": "Watt"
+      },
+      "example": {
+        "en": "4000",
+        "no": "4000"
+      }
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=power-of-the-hour"
+    }
+  ]
+}

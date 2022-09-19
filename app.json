@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "no.kjeet90.powerofthehour",
-  "version": "1.2.2",
+  "version": "1.3.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
@@ -207,6 +207,72 @@
             "example": {
               "en": "2.52",
               "no": "2.52"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
+        "id": "meter_consumption_remaining_changed",
+        "title": {
+          "en": "Power available changed - Consumption limit",
+          "no": "Tilgjengelig effekt endret - Forbruksgrense"
+        },
+        "hint": {
+          "en": "This card triggers when the power available up to the consumption limit is changed. This tells you at what consumption you need to stay below to keep under the limit. ",
+          "no": "Dette kortet trigges når tilgjengelig effekt opp til forbruksgrense blir endret. Dette forteller deg hvilket forbruk du må ligge under for å holde deg under grensen."
+        },
+        "highlight": true,
+        "tokens": [
+          {
+            "name": "remaining",
+            "type": "number",
+            "title": {
+              "en": "Watt",
+              "no": "Watt"
+            },
+            "example": {
+              "en": "4000",
+              "no": "4000"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=power-of-the-hour"
+          }
+        ]
+      },
+      {
+        "id": "meter_prediction_remaining_changed",
+        "title": {
+          "en": "Power available changed - Predicted consumption limit",
+          "no": "Tilgjengelig effekt endret - Estimert forbruksgrense"
+        },
+        "hint": {
+          "en": "This card triggers when the power available up to the prediced consumption limit is changed. This tells you at what consumption you need to stay below to keep under the limit. ",
+          "no": "Dette kortet trigges når tilgjengelig effekt opp til estimert forbruksgrense blir endret. Dette forteller deg hvilket forbruk du må ligge under for å holde deg under grensen."
+        },
+        "highlight": true,
+        "tokens": [
+          {
+            "name": "remaining",
+            "type": "number",
+            "title": {
+              "en": "Watt",
+              "no": "Watt"
+            },
+            "example": {
+              "en": "4000",
+              "no": "4000"
             }
           }
         ],
@@ -1642,6 +1708,40 @@
       "icon": "/assets/previous_consumption.svg",
       "insights": true
     },
+    "meter_consumption_remaining": {
+      "title": {
+        "en": "Power available - Consumption limit",
+        "no": "Tilgjengelig effekt - Forbruksgrense"
+      },
+      "desc": {
+        "en": "How much power you can use for the rest of the hour before reaching the consumption limit.",
+        "no": "Hvor mye effekt du kan bruke resten av timen før du når forbruksgrensen."
+      },
+      "tokens": [
+        {
+          "name": "value",
+          "title": {
+            "en": "W",
+            "no": "W"
+          },
+          "example": {
+            "en": 1200,
+            "no": 1200
+          }
+        }
+      ],
+      "type": "number",
+      "decimals": 0,
+      "units": {
+        "en": "W",
+        "no": "W"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/lightning-bolt-outline.svg",
+      "insights": true
+    },
     "meter_cost": {
       "title": {
         "en": "Cost this hour",
@@ -1742,6 +1842,40 @@
       "setable": false,
       "greyout": true,
       "icon": "/assets/previous_cost.svg",
+      "insights": true
+    },
+    "meter_prediction_remaining": {
+      "title": {
+        "en": "Power available - Predicted consumption limit",
+        "no": "Tilgjengelig effekt - Estimert forbruksgrense"
+      },
+      "desc": {
+        "en": "How much power you can use for the rest of the hour before reaching the predicted consumption limit.",
+        "no": "Hvor mye effekt du kan bruke resten av timen før du når den estimerte forbruksgrensen."
+      },
+      "tokens": [
+        {
+          "name": "value",
+          "title": {
+            "en": "W",
+            "no": "W"
+          },
+          "example": {
+            "en": 1200,
+            "no": 1200
+          }
+        }
+      ],
+      "type": "number",
+      "decimals": 0,
+      "units": {
+        "en": "W",
+        "no": "W"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/lightning-bolt-circle.svg",
       "insights": true
     },
     "meter_predictor": {
