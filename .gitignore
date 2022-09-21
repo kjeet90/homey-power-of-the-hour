@@ -1,7 +1,7 @@
 node_modules/
 .vscode
 build
-
+coverage
 
 # Added by Homey CLI
 /.homeybuild/
