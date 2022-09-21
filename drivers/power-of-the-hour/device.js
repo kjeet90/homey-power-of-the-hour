@@ -157,8 +157,8 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   async updateRemaining(timeNow) {
     const consumptionRemaining = this.getCapabilityValue('meter_consumption_remaining');
     const predictionRemaining = this.getCapabilityValue('meter_prediction_remaining');
-    const newConsumption = (this.settings.consumption_limit - this.getCapabilityValue('meter_consumption')) / calculations.getRemainingHour(timeNow);
-    const newPrediction = (this.settings.prediction_limit - this.getCapabilityValue('meter_consumption')) / calculations.getRemainingHour(timeNow);
+    const newConsumption = calculations.getPowerAvailable(this.settings.consumption_limit, this.getCapabilityValue('meter_consumption'), timeNow);
+    const newPrediction = calculations.getPowerAvailable(this.settings.prediction_limit, this.getCapabilityValue('meter_consumption'), timeNow);
     if (consumptionRemaining !== newConsumption) {
       await this.updateCapabilityValue('meter_consumption_remaining', newConsumption);
       this.homey.flow.getDeviceTriggerCard('meter_consumption_remaining_changed').trigger(this, { remaining: this.decimals(this.getCapabilityValue('meter_consumption_remaining'), 0) }, {});
