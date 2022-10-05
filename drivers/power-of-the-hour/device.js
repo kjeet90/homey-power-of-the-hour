@@ -6,6 +6,7 @@ const calculations = require('../../lib/calculations');
 module.exports = class PowerOfTheHour extends Homey.Device {
 
   async onInit() {
+    this.queue = [];
     try {
       this.latest = await this.getStoreValue('latest');
     } catch (err) {
@@ -80,13 +81,13 @@ module.exports = class PowerOfTheHour extends Homey.Device {
   }
 
   async onActionPriceChanged(args, state) {
-    if (this.previousConsumption) await this.checkReading(this.previousConsumption); // To calculate cost so far before new price is applied
+    if (this.previousConsumption) await this.checkReading(this.previousConsumption, new Date()); // To calculate cost so far before new price is applied
     await this.updateCapabilityValue('meter_price', args.price);
     this.predict();
   }
 
   async onActionConsumptionChanged(args, state) {
-    this.checkReading(args.unit === 'kW' ? (args.consumption * 1000) : args.consumption);
+    this.checkReading(args.unit === 'kW' ? (args.consumption * 1000) : args.consumption, new Date());
   }
 
   async onActionSettingChanged(args, state, setting) {
@@ -131,26 +132,37 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     return this.settings[capability] > args.limit;
   }
 
-  async checkReading(watt) {
-    try {
-      const timeNow = new Date();
-      const hoursSincePreviousReading = calculations.getHoursBetween(timeNow, this.previousTimestamp);
-      if (calculations.isNewHour(timeNow, this.previousTimestamp)) {
-        await this.startNewHour(watt, timeNow);
-      } else {
-        const wattHours = watt * hoursSincePreviousReading;
-        await this.updateCapabilityValue('meter_consumption', this.getCapabilityValue('meter_consumption') + wattHours);
-        await this.updateCapabilityValue('meter_cost', this.getCapabilityValue('meter_cost') + (((wattHours) / 1000) * this.getCapabilityValue('meter_price')));
-        this.checkIfPeak(watt);
+  async checkReading(watt, timeNow) {
+    if (!this.isProcessing) {
+      this.isProcessing = true;
+      try {
+        const hoursSincePreviousReading = calculations.getHoursBetween(timeNow, this.previousTimestamp);
+        if (calculations.isNewHour(timeNow, this.previousTimestamp)) {
+          await this.startNewHour(watt, timeNow);
+        } else {
+          const wattHours = watt * hoursSincePreviousReading;
+          await this.updateCapabilityValue('meter_consumption', this.getCapabilityValue('meter_consumption') + wattHours);
+          await this.updateCapabilityValue('meter_cost', this.getCapabilityValue('meter_cost') + (((wattHours) / 1000) * this.getCapabilityValue('meter_price')));
+          this.checkIfPeak(watt);
+        }
+        this.updateHistory(watt, timeNow);
+        await this.predict();
+        await this.updateRemaining(timeNow);
+        await this.checkNotify();
+        this.storeLatest(timeNow, watt);
+        this.scheduleRecalculation(watt);
+      } catch (err) {
+        this.log('Failed to check readings: ', err);
       }
-      this.updateHistory(watt, timeNow);
-      await this.predict();
-      await this.updateRemaining(timeNow);
-      await this.checkNotify();
-      this.storeLatest(timeNow, watt);
-      this.scheduleRecalculation(watt);
-    } catch (err) {
-      this.log('Failed to check readings: ', err);
+      this.isProcessing = false;
+      if (this.queue.length > 0) {
+        const reading = this.queue.shift();
+        this.log('Processing reading from queue', reading);
+        this.checkReading(reading.watt, reading.timeNow);
+      }
+    } else {
+      this.log('Adding reading to queue', { watt, timeNow });
+      this.queue.push({ watt, timeNow });
     }
   }
 
@@ -323,7 +335,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     }
     this.recalculationTimeout = this.homey.setTimeout(() => {
       this.log(`No data received within the last 60 seconds. Recalculating with previous received value: ${watt}W`);
-      this.checkReading(watt);
+      this.checkReading(watt, new Date());
     }, 60 * 1000);
   }
 
