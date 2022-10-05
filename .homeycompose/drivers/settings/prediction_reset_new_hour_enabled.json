@@ -1,13 +1,13 @@
 {
-    "id": "prediction_reset_new_hour_enabled",
-    "type": "checkbox",
-    "label": {
-      "en": "Notify reset on new hour",
-      "no": "Varsle reset ved ny time"
-    },
-    "value": true,
-    "hint": {
-      "en": "Triggers the flow card 'Predicted consumption notification reset' when a new hour starts (requires that the predicted cost notification is trigged and that 'Transfer to next hour' is not activated). It will then report a estimated cost of 0 (zero).",
-      "no": "Trigger flow-kortet 'Estimert kostnadsvarsel resatt' når en ny time starter (krever at estimert kostnadsvarsel er trigget og at 'Overfør til neste time' ikke er aktivert). Den vil da rapportere om en estimert kostnad på 0 (null)."
-    }
+  "id": "prediction_reset_new_hour_enabled",
+  "type": "checkbox",
+  "label": {
+    "en": "Notify reset on new hour",
+    "no": "Varsle reset ved ny time"
+  },
+  "value": true,
+  "hint": {
+    "en": "Triggers the flow card 'Predicted consumption notification reset' when a new hour starts (requires that the predicted cost notification is trigged and that 'Transfer to next hour' is not activated). It will then report a estimated cost of 0 (zero).",
+    "no": "Trigger flow-kortet 'Estimert forbruksvarsel resatt' når en ny time starter (krever at estimert forbruksvarsel er trigget og at 'Overfør til neste time' ikke er aktivert). Den vil da rapportere om et estimert forbruk på 0 (null)."
+  }
 }
