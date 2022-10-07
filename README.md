@@ -42,6 +42,10 @@ Goal: Keep the consumption below 5000Wh
 
 # Release notes:
 
+## 1.3.1
+### Bugfix
+- Fixed issue where transition to new hour sometimes reported too low consumption/price.
+- Fixed incorrect reference to flow card on 'Notify reset on new hour' setting.
 ## 1.3.0
 ### Added
 - Power available to consumption and predicted consumption limit is reached.
