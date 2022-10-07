@@ -163,6 +163,7 @@ module.exports = class PowerOfTheHour extends Homey.Device {
     } else {
       this.log('Adding reading to queue', { watt, timeNow });
       this.queue.push({ watt, timeNow });
+      this.queue.sort((a, b) => a.timeNow - b.timeNow);
     }
   }
 
