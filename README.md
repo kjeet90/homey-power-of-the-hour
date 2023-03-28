@@ -42,15 +42,30 @@ Goal: Keep the consumption below 5000Wh
 
 # Release notes:
 
-## 1.3.1
+## 1.3.2
+
 ### Bugfix
+
+- Fixed issue where Homey Pro (Early 2023) would not list any devices
+
+### Upgrade
+
+- Updated dependencies
+
+## 1.3.1
+
+### Bugfix
+
 - Fixed issue where transition to new hour sometimes reported too low consumption/price.
 - Fixed incorrect reference to flow card on 'Notify reset on new hour' setting.
+
 ## 1.3.0
+
 ### Added
+
 - Power available to consumption and predicted consumption limit is reached.
-   - Two new trigger cards for when these values changes.
-   - As long as your consumption stays below these values, you should not exceed the limits.
+  - Two new trigger cards for when these values changes.
+  - As long as your consumption stays below these values, you should not exceed the limits.
 
 ## 1.2.2
 
