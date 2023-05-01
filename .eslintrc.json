@@ -1,3 +1,28 @@
 {
-  "extends": "athom"
+  "extends": ["plugin:@typescript-eslint/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "ignorePatterns": ["alarms.ts"],
+  "rules": {
+    "@typescript-eslint/no-var-requires": "off",
+    "quotes": ["error", "single"],
+    "comma-dangle": ["error", "never"],
+    "camelcase": "error",
+    "eqeqeq": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ]
+  }
 }
