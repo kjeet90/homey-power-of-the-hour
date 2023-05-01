@@ -8,7 +8,7 @@
   "devDependencies": {
     "eslint-config-athom": "^3.1.1",
     "jest": "^29.5.0",
-    "homey": "^2.33.10"
+    "homey": "^2.33.13"
   },
   "dependencies": {
     "uuid": "^9.0.0"
