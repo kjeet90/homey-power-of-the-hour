@@ -1,41 +1,44 @@
 {
-  "1.3.2": {
-    "en": "Fixed issue where Homey Pro (Early 2023) would not list any devices."
-  },
-  "1.3.1": {
-    "en": "Fixed issue where transition to new hour sometimes reported too low consumption/price. Fixed incorrect reference to flow card on 'Notify reset on new hour' setting."
-  },
-  "1.3.0": {
-    "en": "Added power available to consumption and predicted consumption limit is reached. Added two new trigger cards for when these values changes. As long as your consumption stays below these values, you should not exceed the limits."
-  },
-  "1.2.2": {
-    "en": "Fixed issue where app could crash on startup."
-  },
-  "1.2.1": {
-    "en": "Bugfix: Fixed issue where app could crash. Updated to node 16, used from Homey firmware 7.4.0."
-  },
-  "1.2.0": {
-    "en": "Added support for updating consumption in kW. Added support for negative values in case the user delivers back to the grid."
-  },
-  "1.1.0": {
-    "en": "Added prediction of cost."
-  },
-  "1.0.0": {
-    "en": "Added four new action flow cards for setting new limits and reset values. Added three new condition flow card for checking against limits. Insights for peak and previous hours consumption. Changed from Wt to Wh for Norwegian langauge. Persitent values, restarting homey/app will not clear consumption and triggers if started within same hour again."
-  },
-  "0.2.0": {
-    "en": "Added timeline for trigger/reset of prediction and consumption notifications. Added one new trigger flow card: Consumption notification reset. Added two new condition flow cards: Consumption/Prediction notification trigged. Updated names, descriptions and hints of flow cards and settings to be more descriptive. Fixed issue where reset prediction would reset even with setting disabled."
-  },
-  "0.1.3": {
-    "en": "On restart of homey/app: This hours consumpion calculated on first reading and elapsed time. Internal check of notifications every 60 seconds if no readings are received."
-  },
-  "0.1.2": {
-    "en": "Added insight for consumption and predicted"
-  },
-  "0.1.1": {
-    "en": "Peristent values"
-  },
-  "0.1.0": {
-    "en": "Initial version"
-  }
+    "1.3.3": {
+        "en": "Code improvements"
+    },
+    "1.3.2": {
+        "en": "Fixed issue where Homey Pro (Early 2023) would not list any devices."
+    },
+    "1.3.1": {
+        "en": "Fixed issue where transition to new hour sometimes reported too low consumption/price. Fixed incorrect reference to flow card on 'Notify reset on new hour' setting."
+    },
+    "1.3.0": {
+        "en": "Added power available to consumption and predicted consumption limit is reached. Added two new trigger cards for when these values changes. As long as your consumption stays below these values, you should not exceed the limits."
+    },
+    "1.2.2": {
+        "en": "Fixed issue where app could crash on startup."
+    },
+    "1.2.1": {
+        "en": "Bugfix: Fixed issue where app could crash. Updated to node 16, used from Homey firmware 7.4.0."
+    },
+    "1.2.0": {
+        "en": "Added support for updating consumption in kW. Added support for negative values in case the user delivers back to the grid."
+    },
+    "1.1.0": {
+        "en": "Added prediction of cost."
+    },
+    "1.0.0": {
+        "en": "Added four new action flow cards for setting new limits and reset values. Added three new condition flow card for checking against limits. Insights for peak and previous hours consumption. Changed from Wt to Wh for Norwegian langauge. Persitent values, restarting homey/app will not clear consumption and triggers if started within same hour again."
+    },
+    "0.2.0": {
+        "en": "Added timeline for trigger/reset of prediction and consumption notifications. Added one new trigger flow card: Consumption notification reset. Added two new condition flow cards: Consumption/Prediction notification trigged. Updated names, descriptions and hints of flow cards and settings to be more descriptive. Fixed issue where reset prediction would reset even with setting disabled."
+    },
+    "0.1.3": {
+        "en": "On restart of homey/app: This hours consumpion calculated on first reading and elapsed time. Internal check of notifications every 60 seconds if no readings are received."
+    },
+    "0.1.2": {
+        "en": "Added insight for consumption and predicted"
+    },
+    "0.1.1": {
+        "en": "Peristent values"
+    },
+    "0.1.0": {
+        "en": "Initial version"
+    }
 }
