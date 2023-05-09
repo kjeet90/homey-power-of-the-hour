@@ -22,7 +22,7 @@ class PowerOfTheHourDevice extends Homey.Device {
             this.log('Failed to get latest: ', err);
             this.error(err);
         }
-        const validTimeStamp = this.latest.timestamp && !isNewHour(new Date(), new Date(this.latest.timestamp));
+        const validTimeStamp = !!(this.latest.timestamp && !isNewHour(new Date(), new Date(this.latest.timestamp)));
         await this.upgradeExistingDevice();
         await this.setInitialValues(validTimeStamp);
         this.log('Initialized device', this.getName());
