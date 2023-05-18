@@ -338,9 +338,7 @@ class PowerOfTheHourDevice extends Homey.Device {
     }
 
     updateCapabilityValue(parameter: string, value: string | number | boolean | null) {
-        return this.setCapabilityValue(parameter, value)
-            .then()
-            .catch((err: Error) => this.log(`Failed to set capability value ${parameter} with the value ${value}. --> ${err}`));
+        return this.setCapabilityValue(parameter, value).catch((err: Error) => this.log(`Failed to set capability value ${parameter} with the value ${value}. --> ${err}`));
     }
 
     scheduleRecalculation(watt: number) {
