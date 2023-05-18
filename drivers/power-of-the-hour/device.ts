@@ -85,11 +85,11 @@ class PowerOfTheHourDevice extends Homey.Device {
         this.predict();
     }
 
-    async onActionConsumptionChanged(args: { unit: 'kW' | 'W'; consumption: number }) {
+    onActionConsumptionChanged(args: { unit: 'kW' | 'W'; consumption: number }) {
         this.checkReading(args.unit === 'kW' ? args.consumption * 1000 : args.consumption, new Date());
     }
 
-    async onActionSettingChanged(args: { [index: string]: number }, setting: string) {
+    onActionSettingChanged(args: { [index: string]: number }, setting: string) {
         if (setting) {
             this.newSettings[setting] = args[setting];
             this.queueSettings();
@@ -116,12 +116,12 @@ class PowerOfTheHourDevice extends Homey.Device {
         }
     }
 
-    async onActionResetAllValues() {
-        await this.setInitialValues();
+    onActionResetAllValues() {
+        this.setInitialValues();
         this.log('Reset all values');
     }
 
-    async isLimitAbove(args: { limit: number }, capability: string) {
+    isLimitAbove(args: { limit: number }, capability: string) {
         return this.getSetting(capability) > args.limit;
     }
 
