@@ -5,7 +5,7 @@ export function getElapsedHour(timestamp: Date) {
     return time.getMinutes() / 60 + time.getSeconds() / 3600;
 }
 
-export const getHoursBetween = (newest: Date, oldest: Date | undefined) => {
+export const getHoursBetween = (newest: Date, oldest: Date | null) => {
     if (!oldest) return getElapsedHour(newest);
     const secondsDifference = (new Date(newest).getTime() - new Date(oldest).getTime()) / 1000;
     const hourDifference = secondsDifference / 3600;
@@ -18,7 +18,7 @@ export const getRemainingHour = (timestamp: Date) => {
     return 1 - totalSeconds / 3600;
 };
 
-export const isNewHour = (newestTimestamp: Date, oldestTimestamp: Date | undefined) => {
+export const isNewHour = (newestTimestamp: Date, oldestTimestamp: Date | null) => {
     if (!oldestTimestamp) return true;
     if (newestTimestamp.getHours() !== oldestTimestamp.getHours()) {
         return true;

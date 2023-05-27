@@ -2,7 +2,7 @@ import Homey from 'homey';
 import { isNewHour, getHoursBetween, getPowerAvailable, getRemainingHour, getPrediction, getElapsedHour } from '../../lib/calculations';
 
 class PowerOfTheHourDevice extends Homey.Device {
-    previousTimestamp: Date | undefined;
+    previousTimestamp: Date | null = null;
     previousConsumption = 0;
 
     newSettings: { [index: string]: any } = {};
@@ -47,7 +47,7 @@ class PowerOfTheHourDevice extends Homey.Device {
     async setInitialValues(validTimeStamp = false) {
         if (validTimeStamp) {
             this.log('Found valid timestamp in store, using existing capabilities.');
-            this.previousTimestamp = this.latest.timestamp ? new Date(this.latest.timestamp) : undefined;
+            this.previousTimestamp = this.latest.timestamp ? new Date(this.latest.timestamp) : null;
         } else {
             this.log('Did not find any valid timestamp in store. Clearing capabilities.');
             await this.updateCapabilityValue('alarm_consumption_notified', false);
@@ -163,19 +163,19 @@ class PowerOfTheHourDevice extends Homey.Device {
     async updateRemaining(timeNow: Date) {
         const consumptionRemaining = this.getCapabilityValue('meter_consumption_remaining');
         const predictionRemaining = this.getCapabilityValue('meter_prediction_remaining');
-        const newConsumption = getPowerAvailable(this.getSetting('consumption_limit'), this.getCapabilityValue('meter_consumption'), timeNow);
-        const newPrediction = getPowerAvailable(this.getSetting('prediction_limit'), this.getCapabilityValue('meter_consumption'), timeNow);
-        if (consumptionRemaining !== newConsumption) {
-            await this.updateCapabilityValue('meter_consumption_remaining', newConsumption);
+        const newConsumptionRemaining = getPowerAvailable(this.getSetting('consumption_limit'), this.getCapabilityValue('meter_consumption'), timeNow);
+        const newPredictionRemaining = getPowerAvailable(this.getSetting('prediction_limit'), this.getCapabilityValue('meter_consumption'), timeNow);
+        if (consumptionRemaining !== newConsumptionRemaining) {
+            await this.updateCapabilityValue('meter_consumption_remaining', newConsumptionRemaining);
             this.homey.flow.getDeviceTriggerCard('meter_consumption_remaining_changed').trigger(this, { remaining: this.decimals(this.getCapabilityValue('meter_consumption_remaining'), 0) });
         }
-        if (predictionRemaining !== newPrediction) {
-            await this.updateCapabilityValue('meter_prediction_remaining', newPrediction);
+        if (predictionRemaining !== newPredictionRemaining) {
+            await this.updateCapabilityValue('meter_prediction_remaining', newPredictionRemaining);
             this.homey.flow.getDeviceTriggerCard('meter_prediction_remaining_changed').trigger(this, { remaining: this.decimals(this.getCapabilityValue('meter_prediction_remaining'), 0) });
         }
     }
 
-    async storeLatest(timeNow: Date, watt: number) {
+    storeLatest(timeNow: Date, watt: number) {
         this.previousTimestamp = timeNow;
         this.previousConsumption = watt;
         this.setStoreValue('latest', { timestamp: this.previousTimestamp }); // Object to keep open for future implementations and also to support v1.0.0 implementation
