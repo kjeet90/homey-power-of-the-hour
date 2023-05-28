@@ -280,7 +280,7 @@ class PowerOfTheHourDevice extends Homey.Device {
 
     async resetConsumptionNotification() {
         if (this.getCapabilityValue('alarm_consumption_notified')) {
-            this.log(`Triggering consumption reset with the value ${this.decimals(this.getCapabilityValue('meter_consumption'), 0)}`);
+            this.log(`Triggering consumption reset with the value ${this.decimals(this.getCapabilityValue('meter_consumption_previous_hour'), 0)}`);
             this.homey.flow.getDeviceTriggerCard('consumption_reset').trigger(this, { previous: this.decimals(this.getCapabilityValue('meter_consumption_previous_hour'), 0) }, {});
         }
         await this.updateCapabilityValue('alarm_consumption_notified', false);
@@ -288,7 +288,7 @@ class PowerOfTheHourDevice extends Homey.Device {
 
     async resetCostNotification() {
         if (this.getCapabilityValue('alarm_cost_notified')) {
-            this.log(`Triggering cost reset with the value ${this.decimals(this.getCapabilityValue('meter_cost'), 2)}`);
+            this.log(`Triggering cost reset with the value ${this.decimals(this.getCapabilityValue('meter_cost_previous_hour'), 2)}`);
             this.homey.flow.getDeviceTriggerCard('cost_reset').trigger(this, { previousCost: this.decimals(this.getCapabilityValue('meter_cost_previous_hour'), 2) }, {});
         }
         await this.updateCapabilityValue('alarm_cost_notified', false);
@@ -299,26 +299,9 @@ class PowerOfTheHourDevice extends Homey.Device {
     }
 
     isNotifyAllowed(setting: 'prediction' | 'consumption' | 'cost' | 'cost_prediction') {
-        let earliest;
-        let latest;
-        let enabled;
-        if (setting === 'prediction') {
-            earliest = this.getSetting('notification_prediction_time_earliest');
-            latest = this.getSetting('notification_prediction_time_latest');
-            enabled = this.getSetting('notification_prediction_enabled');
-        } else if (setting === 'consumption') {
-            earliest = this.getSetting('notification_consumption_time_earliest');
-            latest = this.getSetting('notification_consumption_time_latest');
-            enabled = this.getSetting('notification_consumption_enabled');
-        } else if (setting === 'cost') {
-            earliest = this.getSetting('notification_cost_time_earliest');
-            latest = this.getSetting('notification_cost_time_latest');
-            enabled = this.getSetting('notification_cost_enabled');
-        } else if (setting === 'cost_prediction') {
-            earliest = this.getSetting('notification_cost_prediction_time_earliest');
-            latest = this.getSetting('notification_cost_prediction_time_latest');
-            enabled = this.getSetting('notification_cost_prediction_enabled');
-        }
+        const earliest = this.getSetting(`notification_${setting}_time_earliest`);
+        const latest = this.getSetting(`notification_${setting}_time_latest`);
+        const enabled = this.getSetting(`notification_${setting}_enabled`);
         const currentTime = new Date().getMinutes();
         return enabled && currentTime <= Number(latest) && currentTime >= Number(earliest);
     }
@@ -331,13 +314,13 @@ class PowerOfTheHourDevice extends Homey.Device {
 
     updateHistory(watt: number, timeOfReading: Date) {
         const newReading = { consumption: watt, timestamp: timeOfReading };
-        if (this.history.length > this.getSetting('prediction_history_count')) {
+        if (this.history.length + 1 > this.getSetting('prediction_history_count')) {
             this.history.pop();
         }
         this.history.unshift(newReading);
     }
 
-    updateCapabilityValue(parameter: string, value: string | number | boolean | null) {
+    async updateCapabilityValue(parameter: string, value: string | number | boolean | null) {
         return this.setCapabilityValue(parameter, value).catch((err: Error) => this.log(`Failed to set capability value ${parameter} with the value ${value}. --> ${err}`));
     }
 

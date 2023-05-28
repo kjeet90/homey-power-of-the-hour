@@ -457,7 +457,7 @@ describe('POTH', () => {
                 { watt: 1002, timeNow: new Date('2023-05-15T12:05:04.000Z') }
             ];
             unit.isProcessing = false;
-            unit.checkReading(1003, new Date('2023-05-15T12:05:05.000Z'));
+            await unit.checkReading(1003, new Date('2023-05-15T12:05:05.000Z'));
             expect(unit.processingQueue.length).toBe(0);
             expect(checkReadingSpy).toHaveBeenCalledTimes(4);
         });
@@ -647,7 +647,7 @@ describe('POTH', () => {
             expect(resetPredictionNotificationSpy).toHaveBeenCalledWith(true);
         });
 
-        it('should NOT call resetPredictionNotification if prediction_consumption_reset_transfer_enabled is false', async () => {
+        it('should NOT call resetPredictionNotification if prediction_consumption_reset_transfer_enabled is true', async () => {
             const unit = new PowerOfTheHourDevice();
             unit.previousTimestamp = new Date('2023-05-15T11:45:00.000Z');
             const updateCapabilitySpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
@@ -894,7 +894,7 @@ describe('POTH', () => {
             it('shoul NOT notify if meter_consumption is greater than the consumption_limit, allowed to notify but notified is TRUE', async () => {
                 const unit = new PowerOfTheHourDevice();
                 const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
-                vi.spyOn(unit, 'isNotifyAllowed').mockImplementation(() => false);
+                vi.spyOn(unit, 'isNotifyAllowed').mockImplementation(() => true);
                 vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
                     if (s === 'consumption_limit') return 1000;
                 });
@@ -909,6 +909,736 @@ describe('POTH', () => {
                 expect(flowTriggerValues).toEqual({});
                 /* eslint-enable camelcase */
             });
+        });
+
+        describe('Reset predicted notifiction', () => {
+            it('should call resetPredictionNotification if prediction_reset_enabled is true, meter_predictor is less than the prediction_reset_limit', async () => {
+                const unit = new PowerOfTheHourDevice();
+                vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+                const resetPredictionNotificationSpy = vi.spyOn(unit, 'resetPredictionNotification');
+                vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                    if (s === 'prediction_reset_limit') return 1500;
+                    else if (s === 'prediction_reset_enabled') return true;
+                });
+                vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                    if (c === 'meter_predictor') return 1000;
+                });
+
+                await unit.checkNotify();
+                expect(resetPredictionNotificationSpy).toHaveBeenCalled();
+            });
+
+            it('should NOT call resetPredictionNotification if prediction_reset_enabled is false, meter_predictor is less than the prediction_reset_limit', async () => {
+                const unit = new PowerOfTheHourDevice();
+                vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+                const resetPredictionNotificationSpy = vi.spyOn(unit, 'resetPredictionNotification');
+                vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                    if (s === 'prediction_reset_limit') return 1500;
+                    else if (s === 'prediction_reset_enabled') return false;
+                });
+                vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                    if (c === 'meter_predictor') return 1000;
+                });
+
+                await unit.checkNotify();
+                expect(resetPredictionNotificationSpy).not.toHaveBeenCalled();
+            });
+
+            it('should NOT call resetPredictionNotification if prediction_reset_enabled is true, meter_predictor is greater than the prediction_reset_limit', async () => {
+                const unit = new PowerOfTheHourDevice();
+                vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+                const resetPredictionNotificationSpy = vi.spyOn(unit, 'resetPredictionNotification');
+                vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                    if (s === 'prediction_reset_limit') return 1000;
+                    else if (s === 'prediction_reset_enabled') return true;
+                });
+                vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                    if (c === 'meter_predictor') return 1500;
+                });
+
+                await unit.checkNotify();
+                expect(resetPredictionNotificationSpy).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('predicted cost', () => {
+            it('should not notify if meter_cost_predictor is less than the prediction_cost_limit, allowed to notify and not notified', async () => {
+                const unit = new PowerOfTheHourDevice();
+                const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+                vi.spyOn(unit, 'isNotifyAllowed').mockImplementation(() => true);
+                vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                    if (s === 'prediction_cost_limit') return 1.5;
+                });
+                vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                    if (c === 'meter_cost_predictor') return 1;
+                    else if (c === 'alarm_cost_prediction_notified') return false;
+                });
+
+                await unit.checkNotify();
+                expect(updateCapabilityValueSpy).not.toHaveBeenCalled();
+                expect(flowTriggerValues).toEqual({});
+            });
+
+            it('shoul notify if meter_cost_predictor is greater than the prediction_cost_limit, allowed to notify and not notified', async () => {
+                const unit = new PowerOfTheHourDevice();
+                const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+                vi.spyOn(unit, 'isNotifyAllowed').mockImplementation(() => true);
+                vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                    if (s === 'prediction_cost_limit') return 1;
+                });
+                vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                    if (c === 'meter_cost_prediction') return 1.5;
+                    else if (c === 'alarm_cost_prediction_notified') return false;
+                });
+
+                await unit.checkNotify();
+                expect(updateCapabilityValueSpy).toHaveBeenCalledWith('alarm_cost_prediction_notified', true);
+                /* eslint-disable camelcase */
+                expect(flowTriggerValues).toEqual({ prediction_cost_limit_reached: [{ predicted: 1.5 }] });
+                /* eslint-enable camelcase */
+            });
+
+            it('shoul NOT notify if meter_predictor is greater than the prediction_limit, allowed to notify is FALSE and not notified', async () => {
+                const unit = new PowerOfTheHourDevice();
+                const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+                vi.spyOn(unit, 'isNotifyAllowed').mockImplementation(() => false);
+                vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                    if (s === 'prediction_cost_limit') return 1;
+                });
+                vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                    if (c === 'meter_cost_prediction') return 1.5;
+                    else if (c === 'alarm_cost_prediction_notified') return false;
+                });
+
+                await unit.checkNotify();
+                expect(updateCapabilityValueSpy).not.toHaveBeenCalled();
+                /* eslint-disable camelcase */
+                expect(flowTriggerValues).toEqual({});
+                /* eslint-enable camelcase */
+            });
+
+            it('shoul NOT notify if meter_predictor is greater than the prediction_limit, allowed to notify but notified is TRUE', async () => {
+                const unit = new PowerOfTheHourDevice();
+                const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+                vi.spyOn(unit, 'isNotifyAllowed').mockImplementation(() => true);
+                vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                    if (s === 'prediction_cost_limit') return 1;
+                });
+                vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                    if (c === 'meter_cost_prediction') return 1.5;
+                    else if (c === 'alarm_cost_prediction_notified') return true;
+                });
+
+                await unit.checkNotify();
+                expect(updateCapabilityValueSpy).not.toHaveBeenCalled();
+                /* eslint-disable camelcase */
+                expect(flowTriggerValues).toEqual({});
+                /* eslint-enable camelcase */
+            });
+        });
+
+        describe('cost notification', () => {
+            it('should not notify if meter_cost is less than the cost_limit, allowed to notify and not notified', async () => {
+                const unit = new PowerOfTheHourDevice();
+                const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+                vi.spyOn(unit, 'isNotifyAllowed').mockImplementation(() => true);
+                vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                    if (s === 'cost_limit') return 1.5;
+                });
+                vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                    if (c === 'meter_cost') return 1;
+                    else if (c === 'alarm_cost_notified') return false;
+                });
+
+                await unit.checkNotify();
+                expect(updateCapabilityValueSpy).not.toHaveBeenCalled();
+                /* eslint-disable camelcase */
+                expect(flowTriggerValues).toEqual({});
+                /* eslint-enable camelcase */
+            });
+
+            it('shoul notify if meter_cost is greater than the cost_limit, allowed to notify and not notified', async () => {
+                const unit = new PowerOfTheHourDevice();
+                const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+                vi.spyOn(unit, 'isNotifyAllowed').mockImplementation(() => true);
+                vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                    if (s === 'cost_limit') return 1;
+                });
+                vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                    if (c === 'meter_cost') return 1.5;
+                    else if (c === 'alarm_cost_notified') return false;
+                });
+
+                await unit.checkNotify();
+                expect(updateCapabilityValueSpy).toHaveBeenCalledWith('alarm_cost_notified', true);
+                /* eslint-disable camelcase */
+                expect(flowTriggerValues).toEqual({
+                    cost_limit_reached: [{ cost: 1.5 }]
+                });
+                /* eslint-enable camelcase */
+            });
+
+            it('shoul NOT notify if meter_cost is greater than the cost_limit, allowed to notify is FALSE and not notified', async () => {
+                const unit = new PowerOfTheHourDevice();
+                const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+                vi.spyOn(unit, 'isNotifyAllowed').mockImplementation(() => false);
+                vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                    if (s === 'cost_limit') return 1;
+                });
+                vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                    if (c === 'meter_cost') return 1.5;
+                    else if (c === 'alarm_cost_notified') return false;
+                });
+
+                await unit.checkNotify();
+                expect(updateCapabilityValueSpy).not.toHaveBeenCalled();
+            });
+
+            it('shoul NOT notify if meter_cost is greater than the cost_limit, allowed to notify but notified is TRUE', async () => {
+                const unit = new PowerOfTheHourDevice();
+                const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+                vi.spyOn(unit, 'isNotifyAllowed').mockImplementation(() => true);
+                vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                    if (s === 'cost_limit') return 1000;
+                });
+                vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                    if (c === 'meter_cost') return 1500;
+                    else if (c === 'alarm_cost_notified') return true;
+                });
+
+                await unit.checkNotify();
+                expect(updateCapabilityValueSpy).not.toHaveBeenCalled();
+                /* eslint-disable camelcase */
+                expect(flowTriggerValues).toEqual({});
+                /* eslint-enable camelcase */
+            });
+        });
+
+        describe('Reset predicted cost notifiction', () => {
+            it('should call resetCostPredictionNotification if prediction_cost_reset_enabled is true, meter_cost_prediction is less than the prediction_cost_reset_limit', async () => {
+                const unit = new PowerOfTheHourDevice();
+                vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+                const resetCostPredictionNotificationSpy = vi.spyOn(unit, 'resetCostPredictionNotification');
+                vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                    if (s === 'prediction_cost_reset_limit') return 1.5;
+                    else if (s === 'prediction_cost_reset_enabled') return true;
+                });
+                vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                    if (c === 'meter_cost_prediction') return 1;
+                });
+
+                await unit.checkNotify();
+                expect(resetCostPredictionNotificationSpy).toHaveBeenCalled();
+            });
+
+            it('should NOT call resetPredictionNotification if prediction_cost_reset_enabled is false, meter_cost_prediction is less than the prediction_cost_reset_limit', async () => {
+                const unit = new PowerOfTheHourDevice();
+                vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+                const resetCostPredictionNotificationSpy = vi.spyOn(unit, 'resetCostPredictionNotification');
+                vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                    if (s === 'prediction_cost_reset_limit') return 1.5;
+                    else if (s === 'prediction_cost_reset_enabled') return false;
+                });
+                vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                    if (c === 'meter_cost_prediction') return 1;
+                });
+
+                await unit.checkNotify();
+                expect(resetCostPredictionNotificationSpy).not.toHaveBeenCalled();
+            });
+
+            it('should NOT call resetPredictionNotification if prediction_cost_reset_enabled is true, meter_cost_prediction is greater than the prediction_cost_reset_limit', async () => {
+                const unit = new PowerOfTheHourDevice();
+                vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+                const resetCostPredictionNotificationSpy = vi.spyOn(unit, 'resetCostPredictionNotification');
+                vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                    if (s === 'prediction_cost_reset_limit') return 1;
+                    else if (s === 'prediction_cost_reset_enabled') return true;
+                });
+                vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                    if (c === 'meter_cost_prediction') return 1.5;
+                });
+
+                await unit.checkNotify();
+                expect(resetCostPredictionNotificationSpy).not.toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe('resetPredictionNotification', () => {
+        it('should trigger prediction_reset if alarm_prediction_notified and not a new hour and set alarm_prediction_notified to false', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+
+            vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                if (c === 'alarm_prediction_notified') return true;
+                else if (c === 'meter_predictor') return 1337;
+            });
+
+            await unit.resetPredictionNotification(false);
+
+            expect(updateCapabilityValueSpy).toHaveBeenCalledWith('alarm_prediction_notified', false);
+            /* eslint-disable camelcase */
+            expect(flowTriggerValues).toEqual({
+                prediction_reset: [{ predicted: 1337 }]
+            });
+            /* eslint-enable camelcase */
+        });
+
+        it('should NOT trigger prediction_reset if alarm_prediction_notified is false and not a new hour, but set alarm_prediction_notified to false', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+
+            vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                if (c === 'alarm_prediction_notified') return false;
+                else if (c === 'meter_predictor') return 1337;
+            });
+
+            await unit.resetPredictionNotification(false);
+
+            expect(updateCapabilityValueSpy).toHaveBeenCalledWith('alarm_prediction_notified', false);
+            /* eslint-disable camelcase */
+            expect(flowTriggerValues).toEqual({});
+            /* eslint-enable camelcase */
+        });
+
+        it('should trigger prediction_reset if alarm_prediction_notified, new hour and prediction_reset_new_hour_enabled is true', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+            vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                if (s === 'prediction_reset_new_hour_enabled') return true;
+            });
+            vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                if (c === 'alarm_prediction_notified') return true;
+                else if (c === 'meter_predictor') return 1337;
+            });
+
+            await unit.resetPredictionNotification(true);
+
+            expect(updateCapabilityValueSpy).toHaveBeenCalledWith('alarm_prediction_notified', false);
+            /* eslint-disable camelcase */
+            expect(flowTriggerValues).toEqual({
+                prediction_reset: [{ predicted: 1337 }]
+            });
+            /* eslint-enable camelcase */
+        });
+
+        it('should NOT trigger prediction_reset if alarm_prediction_notified, new hour and prediction_reset_new_hour_enabled is false', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+            vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                if (s === 'prediction_reset_new_hour_enabled') return false;
+            });
+            vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                if (c === 'alarm_prediction_notified') return true;
+                else if (c === 'meter_predictor') return 1337;
+            });
+
+            await unit.resetPredictionNotification(true);
+
+            expect(updateCapabilityValueSpy).toHaveBeenCalledWith('alarm_prediction_notified', false);
+            /* eslint-disable camelcase */
+            expect(flowTriggerValues).toEqual({});
+            /* eslint-enable camelcase */
+        });
+    });
+
+    describe('resetCostPredictionNotification', () => {
+        it('should trigger prediction_reset if alarm_cost_prediction_notified and not a new hour and set alarm_cost_prediction_notified to false', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+
+            vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                if (c === 'alarm_cost_prediction_notified') return true;
+                else if (c === 'meter_cost_prediction') return 13.37;
+            });
+
+            await unit.resetCostPredictionNotification(false);
+
+            expect(updateCapabilityValueSpy).toHaveBeenCalledWith('alarm_cost_prediction_notified', false);
+            /* eslint-disable camelcase */
+            expect(flowTriggerValues).toEqual({
+                prediction_cost_reset: [{ predicted: 13.37 }]
+            });
+            /* eslint-enable camelcase */
+        });
+
+        it('should NOT trigger prediction_reset if alarm_cost_prediction_notified is false and not a new hour, but set alarm_cost_prediction_notified to false', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+
+            vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                if (c === 'alarm_cost_prediction_notified') return false;
+                else if (c === 'meter_cost_prediction') return 1337;
+            });
+
+            await unit.resetCostPredictionNotification(false);
+
+            expect(updateCapabilityValueSpy).toHaveBeenCalledWith('alarm_cost_prediction_notified', false);
+            /* eslint-disable camelcase */
+            expect(flowTriggerValues).toEqual({});
+            /* eslint-enable camelcase */
+        });
+
+        it('should trigger prediction_reset if alarm_cost_prediction_notified, new hour and prediction_cost_reset_new_hour_enabled is true', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+            vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                if (s === 'prediction_cost_reset_new_hour_enabled') return true;
+            });
+            vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                if (c === 'alarm_cost_prediction_notified') return true;
+                else if (c === 'meter_cost_prediction') return 13.37;
+            });
+
+            await unit.resetCostPredictionNotification(true);
+
+            expect(updateCapabilityValueSpy).toHaveBeenCalledWith('alarm_cost_prediction_notified', false);
+            /* eslint-disable camelcase */
+            expect(flowTriggerValues).toEqual({
+                prediction_cost_reset: [{ predicted: 13.37 }]
+            });
+            /* eslint-enable camelcase */
+        });
+
+        it('should NOT trigger prediction_reset if alarm_cost_prediction_notified, new hour and prediction_cost_reset_new_hour_enabled is false', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+            vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                if (s === 'prediction_cost_reset_new_hour_enabled') return false;
+            });
+            vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                if (c === 'alarm_cost_prediction_notified') return true;
+                else if (c === 'meter_cost_prediction') return 13.37;
+            });
+
+            await unit.resetCostPredictionNotification(true);
+
+            expect(updateCapabilityValueSpy).toHaveBeenCalledWith('alarm_cost_prediction_notified', false);
+            /* eslint-disable camelcase */
+            expect(flowTriggerValues).toEqual({});
+            /* eslint-enable camelcase */
+        });
+    });
+
+    describe('resetConsumptionNotification', () => {
+        it('should trigger flowCard consumption_reset if alarm_consumption_notified is true', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+            vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                if (c === 'alarm_consumption_notified') return true;
+                else if (c === 'meter_consumption_previous_hour') return 1337;
+            });
+
+            await unit.resetConsumptionNotification();
+
+            expect(updateCapabilityValueSpy).toHaveBeenCalledWith('alarm_consumption_notified', false);
+
+            /* eslint-disable camelcase */
+            expect(flowTriggerValues).toEqual({
+                consumption_reset: [{ previous: 1337 }]
+            });
+            /* eslint-enable camelcase */
+        });
+
+        it('should NOT trigger flowCard consumption_reset if alarm_consumption_notified is false', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+            vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                if (c === 'alarm_consumption_notified') return false;
+                else if (c === 'meter_consumption_previous_hour') return 1337;
+            });
+
+            await unit.resetConsumptionNotification();
+
+            expect(updateCapabilityValueSpy).toHaveBeenCalledWith('alarm_consumption_notified', false);
+
+            /* eslint-disable camelcase */
+            expect(flowTriggerValues).toEqual({});
+            /* eslint-enable camelcase */
+        });
+    });
+
+    describe('resetCostNotification', () => {
+        it('should trigger flowCard cost_reset if alarm_cost_notified is true', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+            vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                if (c === 'alarm_cost_notified') return true;
+                else if (c === 'meter_cost_previous_hour') return 13.37;
+            });
+
+            await unit.resetCostNotification();
+
+            expect(updateCapabilityValueSpy).toHaveBeenCalledWith('alarm_cost_notified', false);
+
+            /* eslint-disable camelcase */
+            expect(flowTriggerValues).toEqual({
+                cost_reset: [{ previousCost: 13.37 }]
+            });
+            /* eslint-enable camelcase */
+        });
+
+        it('should NOT trigger flowCard consumption_reset if alarm_cost_notified is false', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const updateCapabilityValueSpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+            vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                if (c === 'alarm_cost_notified') return false;
+                else if (c === 'meter_cost_previous_hour') return 13.37;
+            });
+
+            await unit.resetCostNotification();
+
+            expect(updateCapabilityValueSpy).toHaveBeenCalledWith('alarm_cost_notified', false);
+
+            /* eslint-disable camelcase */
+            expect(flowTriggerValues).toEqual({});
+            /* eslint-enable camelcase */
+        });
+    });
+
+    describe('decimals', () => {
+        it('should cut to two decimals', () => {
+            const unit = new PowerOfTheHourDevice();
+            const result = unit.decimals(12.37272871, 2);
+            expect(result).toBe(12.37);
+        });
+
+        it('should cut all decimals', () => {
+            const unit = new PowerOfTheHourDevice();
+            const result = unit.decimals(12.37272871, 0);
+            expect(result).toBe(12);
+        });
+    });
+
+    describe('isNotifyAllowed', () => {
+        it('should return true when time is between earliest and latest and notification is enabled', () => {
+            const unit = new PowerOfTheHourDevice();
+            vi.useFakeTimers();
+            vi.setSystemTime(new Date('2023-05-15T12:35:00.000Z'));
+            vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                if (s === 'notification_prediction_time_earliest') return 30;
+                if (s === 'notification_prediction_time_latest') return 60;
+                if (s === 'notification_prediction_enabled') return true;
+            });
+            expect(unit.isNotifyAllowed('prediction')).toBe(true);
+        });
+
+        it('should return false when time is not between earliest and latest and notification is enabled', () => {
+            const unit = new PowerOfTheHourDevice();
+            vi.useFakeTimers();
+            vi.setSystemTime(new Date('2023-05-15T12:25:00.000Z'));
+            vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                if (s === 'notification_consumption_time_earliest') return 30;
+                if (s === 'notification_consumption_time_latest') return 60;
+                if (s === 'notification_consumption_enabled') return true;
+            });
+            expect(unit.isNotifyAllowed('consumption')).toBe(false);
+        });
+
+        it('should return false when time is between earliest and latest and notification is false', () => {
+            const unit = new PowerOfTheHourDevice();
+            vi.useFakeTimers();
+            vi.setSystemTime(new Date('2023-05-15T12:35:00.000Z'));
+            vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                if (s === 'notification_cost_time_earliest') return 30;
+                if (s === 'notification_cost_time_latest') return 60;
+                if (s === 'notification_cost_enabled') return false;
+            });
+            expect(unit.isNotifyAllowed('cost')).toBe(false);
+        });
+
+        it('should return false when time is not between earliest and latest and notification is false', () => {
+            const unit = new PowerOfTheHourDevice();
+            vi.useFakeTimers();
+            vi.setSystemTime(new Date('2023-05-15T12:25:00.000Z'));
+            vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+                if (s === 'notification_cost_prediction_time_earliest') return 30;
+                if (s === 'notification_cost_prediction_time_latest') return 60;
+                if (s === 'notification_cost_prediction_enabled') return false;
+            });
+            expect(unit.isNotifyAllowed('cost_prediction')).toBe(false);
+        });
+    });
+
+    describe('predict', () => {
+        it('should add prediction to meter_predictor', async () => {
+            const unit = new PowerOfTheHourDevice();
+            vi.spyOn(calculations, 'getPrediction').mockImplementation(() => 1000);
+            vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                if (c === 'meter_consumption') return 1337;
+            });
+            const updateCapabilitySpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+            await unit.predict();
+            expect(updateCapabilitySpy).toHaveBeenCalledWith('meter_predictor', 2337);
+        });
+
+        it('should add prediction to meter_cost_prediction', async () => {
+            const unit = new PowerOfTheHourDevice();
+            vi.spyOn(calculations, 'getPrediction').mockImplementation(() => 1000);
+            vi.spyOn(unit, 'getCapabilityValue').mockImplementation((c) => {
+                if (c === 'meter_cost') return 1.37;
+                else if (c === 'meter_price') return 2;
+            });
+            const updateCapabilitySpy = vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+            await unit.predict();
+            expect(updateCapabilitySpy).toHaveBeenCalledWith('meter_cost_prediction', 3.37);
+        });
+    });
+
+    describe('updateHistory', () => {
+        it('should add new reading to the empty history', () => {
+            const unit = new PowerOfTheHourDevice();
+            expect(unit.history).toEqual([]);
+            unit.updateHistory(1000, new Date('2023-05-15T12:25:00.000Z'));
+            expect(unit.history).toEqual([{ consumption: 1000, timestamp: new Date('2023-05-15T12:25:00.000Z') }]);
+        });
+
+        it('should prepend new reading to the empty history', () => {
+            const unit = new PowerOfTheHourDevice();
+            unit.updateHistory(1000, new Date('2023-05-15T12:25:00.000Z'));
+            expect(unit.history).toEqual([{ consumption: 1000, timestamp: new Date('2023-05-15T12:25:00.000Z') }]);
+            unit.updateHistory(1337, new Date('2023-05-15T12:26:00.000Z'));
+            expect(unit.history).toEqual([
+                { consumption: 1337, timestamp: new Date('2023-05-15T12:26:00.000Z') },
+                { consumption: 1000, timestamp: new Date('2023-05-15T12:25:00.000Z') }
+            ]);
+        });
+
+        it('should remove last reading from history if count exceeds history_count', () => {
+            const unit = new PowerOfTheHourDevice();
+            vi.spyOn(unit, 'getSetting').mockImplementation((c) => {
+                if (c === 'prediction_history_count') return 4;
+            });
+            unit.history = [
+                { consumption: 1337, timestamp: new Date('2023-05-15T12:26:00.000Z') },
+                { consumption: 1200, timestamp: new Date('2023-05-15T12:25:00.000Z') },
+                { consumption: 1300, timestamp: new Date('2023-05-15T12:24:00.000Z') },
+                { consumption: 1400, timestamp: new Date('2023-05-15T12:23:00.000Z') }
+            ];
+            unit.updateHistory(1234, new Date('2023-05-15T12:27:00.000Z'));
+            expect(unit.history).toEqual([
+                { consumption: 1234, timestamp: new Date('2023-05-15T12:27:00.000Z') },
+                { consumption: 1337, timestamp: new Date('2023-05-15T12:26:00.000Z') },
+                { consumption: 1200, timestamp: new Date('2023-05-15T12:25:00.000Z') },
+                { consumption: 1300, timestamp: new Date('2023-05-15T12:24:00.000Z') }
+            ]);
+        });
+
+        it('should not remove last reading from history if count does not exceeds history_count', () => {
+            const unit = new PowerOfTheHourDevice();
+            vi.spyOn(unit, 'getSetting').mockImplementation((c) => {
+                if (c === 'prediction_history_count') return 5;
+            });
+            unit.history = [
+                { consumption: 1337, timestamp: new Date('2023-05-15T12:26:00.000Z') },
+                { consumption: 1200, timestamp: new Date('2023-05-15T12:25:00.000Z') },
+                { consumption: 1300, timestamp: new Date('2023-05-15T12:24:00.000Z') },
+                { consumption: 1400, timestamp: new Date('2023-05-15T12:23:00.000Z') }
+            ];
+            unit.updateHistory(1234, new Date('2023-05-15T12:27:00.000Z'));
+            expect(unit.history).toEqual([
+                { consumption: 1234, timestamp: new Date('2023-05-15T12:27:00.000Z') },
+                { consumption: 1337, timestamp: new Date('2023-05-15T12:26:00.000Z') },
+                { consumption: 1200, timestamp: new Date('2023-05-15T12:25:00.000Z') },
+                { consumption: 1300, timestamp: new Date('2023-05-15T12:24:00.000Z') },
+                { consumption: 1400, timestamp: new Date('2023-05-15T12:23:00.000Z') }
+            ]);
+        });
+    });
+
+    describe('updateCapabilityValue', () => {
+        it('should call setCapabilityValue with the capability and value', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const setCapabilitySpy = vi.spyOn(unit, 'setCapabilityValue').mockResolvedValue();
+            const logSpy = vi.spyOn(unit, 'log');
+            await unit.updateCapabilityValue('meter_prediction', 1234);
+            expect(setCapabilitySpy).toHaveBeenCalledWith('meter_prediction', 1234);
+            expect(logSpy).not.toHaveBeenCalled();
+        });
+
+        it('should catch error on setCapabilityValue with the capability and value and log error', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const logSpy = vi.spyOn(unit, 'log');
+            const setCapabilitySpy = vi.spyOn(unit, 'setCapabilityValue').mockRejectedValue('I failed');
+            await unit.updateCapabilityValue('meter_prediction', 1234);
+            expect(setCapabilitySpy).toHaveBeenCalledWith('meter_prediction', 1234);
+            expect(logSpy).toHaveBeenCalledWith('Failed to set capability value meter_prediction with the value 1234. --> I failed');
+        });
+    });
+
+    describe('scheduleRecalculation', () => {
+        it('should not call clear timeout if no pending timeout exists', () => {
+            const unit = new PowerOfTheHourDevice();
+            const clearTimeoutSpy = vi.spyOn(unit.homey, 'clearTimeout');
+            vi.useFakeTimers();
+            vi.setSystemTime(new Date('2023-05-15T12:27:00.000Z'));
+            unit.scheduleRecalculation(1234);
+            expect(clearTimeoutSpy).not.toHaveBeenCalled();
+        });
+
+        it('should call clear timeout if pending timeout exists', () => {
+            const unit = new PowerOfTheHourDevice();
+            const clearTimeoutSpy = vi.spyOn(unit.homey, 'clearTimeout');
+            vi.useFakeTimers();
+            vi.setSystemTime(new Date('2023-05-15T12:27:00.000Z'));
+            unit.scheduleRecalculation(1234);
+            unit.scheduleRecalculation(1235);
+            expect(clearTimeoutSpy).toHaveBeenCalledOnce();
+        });
+
+        it('should call checkReading if timeout finishes (after 60 seconds)', () => {
+            const unit = new PowerOfTheHourDevice();
+            const checkReadingSpy = vi.spyOn(unit, 'checkReading');
+            vi.useFakeTimers();
+            vi.setSystemTime(new Date('2023-05-15T12:27:00.000Z'));
+            unit.scheduleRecalculation(1234);
+            vi.advanceTimersByTime(59000);
+            expect(checkReadingSpy).not.toHaveBeenCalled();
+            vi.advanceTimersByTime(1000);
+            expect(checkReadingSpy).toHaveBeenCalledWith(1234, new Date('2023-05-15T12:28:00.000Z'));
+        });
+    });
+
+    describe('onSettings', () => {
+        it('should call predict if new setting contains prediction_age', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const predictionSpy = vi.spyOn(unit, 'predict');
+            vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+            /* eslint-disable camelcase */
+            await unit.onSettings({ oldSettings: { prediction_age: 5 }, newSettings: { prediction_age: 6 }, changedKeys: ['prediction_age'] });
+            /* eslint-enable camelcase */
+            expect(predictionSpy).toHaveBeenCalledOnce();
+        });
+
+        it('should NOT call predict if new setting does not contain prediction_age', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const predictionSpy = vi.spyOn(unit, 'predict');
+            vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+            /* eslint-disable camelcase */
+            await unit.onSettings({ oldSettings: { notification_cost_enabled: false }, newSettings: { notification_cost_enabled: true }, changedKeys: ['notification_cost_enabled'] });
+            /* eslint-enable camelcase */
+            expect(predictionSpy).not.toHaveBeenCalledOnce();
+        });
+
+        it('should call slice the history if new setting contains prediction_history_count', async () => {
+            const unit = new PowerOfTheHourDevice();
+            unit.history = [
+                { consumption: 1234, timestamp: new Date('2023-05-15T12:27:00.000Z') },
+                { consumption: 1337, timestamp: new Date('2023-05-15T12:26:00.000Z') },
+                { consumption: 1200, timestamp: new Date('2023-05-15T12:25:00.000Z') },
+                { consumption: 1300, timestamp: new Date('2023-05-15T12:24:00.000Z') },
+                { consumption: 1400, timestamp: new Date('2023-05-15T12:23:00.000Z') }
+            ];
+            vi.spyOn(unit, 'updateCapabilityValue').mockResolvedValue();
+            /* eslint-disable camelcase */
+            await unit.onSettings({ oldSettings: { prediction_history_count: 10 }, newSettings: { prediction_history_count: 3 }, changedKeys: ['prediction_history_count'] });
+            /* eslint-enable camelcase */
+            expect(unit.history).toEqual([
+                { consumption: 1234, timestamp: new Date('2023-05-15T12:27:00.000Z') },
+                { consumption: 1337, timestamp: new Date('2023-05-15T12:26:00.000Z') },
+                { consumption: 1200, timestamp: new Date('2023-05-15T12:25:00.000Z') }
+            ]);
         });
     });
 });
