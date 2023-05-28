@@ -39,7 +39,7 @@ describe('getHoursBetween', () => {
     });
 
     it('Hours between undefined-12:30 the same day to equal 0.5', () => {
-        const oldest = undefined;
+        const oldest = null;
         const newest = new Date('2020-10-21T12:30:00.000Z');
         expect(calculations.getHoursBetween(newest, oldest)).toBe(0.5);
     });
@@ -208,7 +208,7 @@ describe('getRemainingHour', () => {
 describe('isNewHour', () => {
     describe('Same day', () => {
         it('Is new hour when previous hour is undefined', () => {
-            const oldest = undefined;
+            const oldest = null;
             const newest = new Date('2020-10-21T13:20:00.000Z');
             expect(calculations.isNewHour(newest, oldest)).toBe(true);
         });
