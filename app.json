@@ -1032,7 +1032,9 @@
         "meter_cost_prediction",
         "alarm_cost_prediction_notified",
         "meter_price",
-        "meter_cost_previous_hour"
+        "meter_cost_previous_hour",
+        "meter_consumption_remaining",
+        "meter_prediction_remaining"
       ],
       "images": {
         "large": "/drivers/power-of-the-hour/assets/images/large.png",

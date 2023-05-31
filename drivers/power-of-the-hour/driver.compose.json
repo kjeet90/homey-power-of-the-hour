@@ -1,27 +1,42 @@
 {
-  "id": "power-of-the-hour",
-  "name": {
-    "en": "Power of the hour",
-    "no": "Power of the hour"
-  },
-  "class": "sensor",
-  "capabilities": ["meter_consumption", "alarm_consumption_notified","meter_predictor", "alarm_prediction_notified","meter_consumption_peak", "meter_consumption_previous_hour", "meter_cost", "alarm_cost_notified", "meter_cost_prediction", "alarm_cost_prediction_notified", "meter_price", "meter_cost_previous_hour" ],
-  "images": {
-    "large": "{{driverAssetsPath}}/images/large.png",
-    "small": "{{driverAssetsPath}}/images/small.png"
-  },
-  "icon": "{{driverAssetsPath}}/icon.svg",
-  "pair": [
-    {
-      "id": "list_devices",
-      "template": "list_devices",
-      "navigation": {
-        "next": "add_my_devices"
-      }
+    "id": "power-of-the-hour",
+    "name": {
+        "en": "Power of the hour",
+        "no": "Power of the hour"
     },
-    {
-      "id": "add_my_devices",
-      "template": "add_devices"
-    }
-  ]
+    "class": "sensor",
+    "capabilities": [
+        "meter_consumption",
+        "alarm_consumption_notified",
+        "meter_predictor",
+        "alarm_prediction_notified",
+        "meter_consumption_peak",
+        "meter_consumption_previous_hour",
+        "meter_cost",
+        "alarm_cost_notified",
+        "meter_cost_prediction",
+        "alarm_cost_prediction_notified",
+        "meter_price",
+        "meter_cost_previous_hour",
+        "meter_consumption_remaining",
+        "meter_prediction_remaining"
+    ],
+    "images": {
+        "large": "{{driverAssetsPath}}/images/large.png",
+        "small": "{{driverAssetsPath}}/images/small.png"
+    },
+    "icon": "{{driverAssetsPath}}/icon.svg",
+    "pair": [
+        {
+            "id": "list_devices",
+            "template": "list_devices",
+            "navigation": {
+                "next": "add_my_devices"
+            }
+        },
+        {
+            "id": "add_my_devices",
+            "template": "add_devices"
+        }
+    ]
 }
