@@ -5,7 +5,7 @@ class PowerOfTheHourDevice extends Homey.Device {
     previousTimestamp: Date | null = null;
     previousConsumption = 0;
 
-    newSettings: { [index: string]: any } = {};
+    newSettings: { [index: string]: string | number | boolean | null | undefined } = {};
     setSettingsTimeout: NodeJS.Timeout | null = null;
     recalculationTimeout: NodeJS.Timeout | null = null;
 
@@ -13,7 +13,7 @@ class PowerOfTheHourDevice extends Homey.Device {
     processingQueue: { watt: number; timeNow: Date }[] = [];
     history: { consumption: number; timestamp: Date }[] = [];
 
-    latest: { [index: string]: any } = {};
+    latest: { timestamp: Date | null } = { timestamp: null };
 
     async onInit() {
         try {

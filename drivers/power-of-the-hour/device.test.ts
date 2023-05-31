@@ -83,7 +83,21 @@ describe('POTH', () => {
             expect(setInitialValuesSpy).toHaveBeenCalledWith(false);
         });
 
-        it('should call setCapabilityValue with empty values when invalid timestamp is found', async () => {
+        it('should call setCapabilityValue with empty values when no valid timestamp is found', async () => {
+            const unit = new PowerOfTheHourDevice();
+
+            vi.useFakeTimers();
+            vi.setSystemTime(new Date('2023-05-15T12:05:00.000Z'));
+            vi.spyOn(unit, 'getStoreValue').mockResolvedValue({ timestamp: null });
+            vi.spyOn(unit, 'setCapabilityValue').mockResolvedValue();
+            const setInitialValuesSpy = vi.spyOn(unit, 'setInitialValues');
+
+            await unit.onInit();
+
+            expect(setInitialValuesSpy).toHaveBeenCalledWith(false);
+        });
+
+        it('should call setCapabilityValue with empty values when a too old timestamp is found', async () => {
             const unit = new PowerOfTheHourDevice();
 
             vi.useFakeTimers();

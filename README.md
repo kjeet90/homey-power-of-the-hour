@@ -6,7 +6,7 @@ A Homey app for staying within your preferred consumption and/or cost limits one
 
 ## How do I get started?
 
-Read the guide on the [Github wiki](https://github.com/kjeet90/homey-power-of-the-hour/wiki). That contains everything you need to know, and probably even more.
+Read the guide on the [Github wiki](https://github.com/kjeet90/homey-power-of-the-hour/wiki). That should contain everything you need to know.
 
 # Release notes:
 
