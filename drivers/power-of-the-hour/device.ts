@@ -85,7 +85,7 @@ class PowerOfTheHourDevice extends Homey.Device {
         this.predict();
     }
 
-    onActionConsumptionChanged(args: { unit: 'kW' | 'W'; consumption: number }) {
+    async onActionConsumptionChanged(args: { unit: 'kW' | 'W'; consumption: number }) {
         this.checkReading(args.unit === 'kW' ? args.consumption * 1000 : args.consumption, new Date());
     }
 
