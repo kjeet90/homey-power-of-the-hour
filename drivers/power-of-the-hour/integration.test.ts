@@ -359,7 +359,7 @@ describe('Predicted consumption', () => {
         ]);
     });
 
-    it('should NOT trigger reset prediction notification on new hour if prediction_reset_new_hour_enabled is disabled', async () => {
+    it('should NOT reset prediction notification on new hour if prediction_reset_new_hour_enabled is disabled', async () => {
         const capabilities: { [index: string]: any } = {};
         const unit = new PowerOfTheHourDevice();
         vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
@@ -448,5 +448,97 @@ describe('Predicted consumption', () => {
 
         expect(unit.getCapabilityValue('alarm_prediction_notified')).toBe(true);
         expect(flowTriggerValues['prediction_reset']).toBe(undefined);
+    });
+
+    it('should NOT transfer prediction warning into next hour if prediction_consumption_reset_transfer_enabled is disabled', async () => {
+        const capabilities: { [index: string]: any } = {};
+        const unit = new PowerOfTheHourDevice();
+        vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+            if (s === 'prediction_consumption_reset_transfer_enabled') return false;
+            else if (s === 'prediction_reset_enabled') return false;
+            return getDefaultSetting(s);
+        });
+        vi.spyOn(unit, 'getCapabilityValue').mockImplementation((id: string) => {
+            if (typeof capabilities[id] === 'number') return Number(capabilities[id].toFixed(0));
+            return capabilities[id];
+        });
+        vi.spyOn(unit, 'setCapabilityValue').mockImplementation((id: string, value: string | number | boolean | null) => {
+            return new Promise<void>((resolve, _reject) => {
+                capabilities[id] = value;
+                resolve();
+            });
+        });
+
+        vi.useFakeTimers();
+        await unit.onInit();
+        await newReading(unit, 4500, new Date('2023-05-15T12:00:00.000Z'));
+        await newReading(unit, 4500, new Date('2023-05-15T12:10:00.000Z'));
+        await newReading(unit, 4500, new Date('2023-05-15T12:15:00.000Z'));
+        await newReading(unit, 4500, new Date('2023-05-15T12:28:00.000Z'));
+
+        expect(unit.getCapabilityValue('meter_predictor')).toBe(4500);
+        expect(unit.getCapabilityValue('alarm_prediction_notified')).toBe(false);
+        expect(flowTriggerValues['prediction_limit_reached']).toBe(undefined);
+
+        await newReading(unit, 4591, new Date('2023-05-15T12:30:01.000Z'));
+
+        expect(unit.getCapabilityValue('meter_predictor')).toBe(4503);
+        expect(unit.getCapabilityValue('alarm_prediction_notified')).toBe(true);
+        expect(flowTriggerValues['prediction_limit_reached']).toEqual([
+            {
+                predicted: 4503
+            }
+        ]);
+
+        await newReading(unit, 12000, new Date('2023-05-15T13:05:00.000Z'));
+
+        expect(unit.getCapabilityValue('alarm_prediction_notified')).toBe(false);
+        expect(flowTriggerValues['prediction_reset']).toEqual([{ predicted: 0 }]);
+    });
+
+    it('should NOT transfer prediction warning into next hour if prediction_consumption_reset_transfer_enabled is disabled, but prediction_reset_enabled is enabled', async () => {
+        const capabilities: { [index: string]: any } = {};
+        const unit = new PowerOfTheHourDevice();
+        vi.spyOn(unit, 'getSetting').mockImplementation((s) => {
+            if (s === 'prediction_consumption_reset_transfer_enabled') return false;
+            else if (s === 'prediction_reset_enabled') return true;
+            return getDefaultSetting(s);
+        });
+        vi.spyOn(unit, 'getCapabilityValue').mockImplementation((id: string) => {
+            if (typeof capabilities[id] === 'number') return Number(capabilities[id].toFixed(0));
+            return capabilities[id];
+        });
+        vi.spyOn(unit, 'setCapabilityValue').mockImplementation((id: string, value: string | number | boolean | null) => {
+            return new Promise<void>((resolve, _reject) => {
+                capabilities[id] = value;
+                resolve();
+            });
+        });
+
+        vi.useFakeTimers();
+        await unit.onInit();
+        await newReading(unit, 4500, new Date('2023-05-15T12:00:00.000Z'));
+        await newReading(unit, 4500, new Date('2023-05-15T12:10:00.000Z'));
+        await newReading(unit, 4500, new Date('2023-05-15T12:15:00.000Z'));
+        await newReading(unit, 4500, new Date('2023-05-15T12:28:00.000Z'));
+
+        expect(unit.getCapabilityValue('meter_predictor')).toBe(4500);
+        expect(unit.getCapabilityValue('alarm_prediction_notified')).toBe(false);
+        expect(flowTriggerValues['prediction_limit_reached']).toBe(undefined);
+
+        await newReading(unit, 4591, new Date('2023-05-15T12:30:01.000Z'));
+
+        expect(unit.getCapabilityValue('meter_predictor')).toBe(4503);
+        expect(unit.getCapabilityValue('alarm_prediction_notified')).toBe(true);
+        expect(flowTriggerValues['prediction_limit_reached']).toEqual([
+            {
+                predicted: 4503
+            }
+        ]);
+
+        await newReading(unit, 12000, new Date('2023-05-15T13:05:00.000Z'));
+
+        expect(unit.getCapabilityValue('alarm_prediction_notified')).toBe(false);
+        expect(flowTriggerValues['prediction_reset']).toEqual([{ predicted: 0 }]);
     });
 });
