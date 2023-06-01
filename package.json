@@ -16,7 +16,7 @@
         "@vitest/coverage-c8": "^0.31.1",
         "eslint": "^8.41.0",
         "typescript": "^5.0.4",
-        "vitest": "^0.31.1"
+        "vitest": "^0.31.3"
     },
     "dependencies": {
         "uuid": "^9.0.0"
