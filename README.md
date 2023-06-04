@@ -10,6 +10,11 @@ Read the guide on the [Github wiki](https://github.com/kjeet90/homey-power-of-th
 
 # Release notes:
 
+## 1.3.5
+
+-   Improved error handling.
+-   Updated dependencies
+
 ## 1.3.4
 
 -   Code improvements. Added tests.
