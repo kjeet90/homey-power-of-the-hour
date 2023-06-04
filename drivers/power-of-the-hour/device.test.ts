@@ -46,8 +46,11 @@ vi.mock('homey', () => {
         flow: {
             getDeviceTriggerCard: vi.fn().mockImplementation((flowCard: string) => ({
                 trigger: vi.fn().mockImplementation((_device, tokens) => {
-                    if (!flowTriggerValues[flowCard]) flowTriggerValues[flowCard] = [tokens];
-                    else flowTriggerValues[flowCard].push(tokens);
+                    return new Promise<void>((resolve, _reject) => {
+                        if (!flowTriggerValues[flowCard]) flowTriggerValues[flowCard] = [tokens];
+                        else flowTriggerValues[flowCard].push(tokens);
+                        resolve();
+                    });
                 })
             }))
         }
@@ -415,7 +418,7 @@ describe('POTH', () => {
             vi.spyOn(unit, 'predict').mockResolvedValue();
             vi.spyOn(unit, 'updateRemaining').mockResolvedValue();
             vi.spyOn(unit, 'checkNotify').mockResolvedValue();
-            vi.spyOn(unit, 'storeLatest');
+            vi.spyOn(unit, 'storeLatest').mockResolvedValue();
             vi.spyOn(unit, 'scheduleRecalculation');
             const checkIfPeakSpy = vi.spyOn(unit, 'checkIfPeak').mockResolvedValue();
 
@@ -438,7 +441,6 @@ describe('POTH', () => {
             const checkIfPeakSpy = vi.spyOn(unit, 'checkIfPeak').mockResolvedValue();
 
             expect(unit.previousTimestamp).toEqual(new Date('2023-05-15T12:05:01.000Z'));
-
             await unit.checkReading(1000, new Date('2023-05-15T12:05:01.000Z'));
 
             expect(startNewHourSpy).not.toHaveBeenCalled();
@@ -559,26 +561,37 @@ describe('POTH', () => {
     });
 
     describe('storeLatest', () => {
-        it('should update the previousTimestamp when a new one is sent in', () => {
+        it('should update the previousTimestamp when a new one is sent in', async () => {
             const unit = new PowerOfTheHourDevice();
+            vi.spyOn(unit, 'setStoreValue').mockResolvedValue();
             unit.previousTimestamp = new Date('2023-05-15T12:00:00.000Z');
-            unit.storeLatest(new Date('2023-05-15T12:05:00.000Z'), 1002);
+            await unit.storeLatest(new Date('2023-05-15T12:05:00.000Z'), 1002);
             expect(unit.previousTimestamp).toEqual(new Date('2023-05-15T12:05:00.000Z'));
         });
 
-        it('should update the previousConsumption when a new one is sent in', () => {
+        it('should update the previousConsumption when a new one is sent in', async () => {
             const unit = new PowerOfTheHourDevice();
+            vi.spyOn(unit, 'setStoreValue').mockResolvedValue();
             unit.previousConsumption = 1337;
-            unit.storeLatest(new Date('2023-05-15T12:05:00.000Z'), 2222);
+            await unit.storeLatest(new Date('2023-05-15T12:05:00.000Z'), 2222);
             expect(unit.previousConsumption).toBe(2222);
         });
 
-        it('should call setStoreValue with the new timestamp', () => {
+        it('should call setStoreValue with the new timestamp', async () => {
             const unit = new PowerOfTheHourDevice();
             const setStoreValueSpy = vi.spyOn(unit, 'setStoreValue').mockResolvedValue();
             unit.previousConsumption = 1337;
-            unit.storeLatest(new Date('2023-05-15T12:05:00.000Z'), 2222);
+            await unit.storeLatest(new Date('2023-05-15T12:05:00.000Z'), 2222);
             expect(setStoreValueSpy).toHaveBeenCalledWith('latest', { timestamp: new Date('2023-05-15T12:05:00.000Z') });
+        });
+
+        it('should catch error when calling setStoreValue', async () => {
+            const unit = new PowerOfTheHourDevice();
+            const errorSpy = vi.spyOn(unit, 'error');
+            vi.spyOn(unit, 'setStoreValue').mockRejectedValue('Oh noes');
+            unit.previousConsumption = 1337;
+            await unit.storeLatest(new Date('2023-05-15T12:05:00.000Z'), 2222);
+            expect(errorSpy).toHaveBeenCalledWith('Oh noes');
         });
     });
 

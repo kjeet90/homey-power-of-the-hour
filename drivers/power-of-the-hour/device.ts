@@ -167,18 +167,24 @@ class PowerOfTheHourDevice extends Homey.Device {
         const newPredictionRemaining = getPowerAvailable(this.getSetting('prediction_limit'), this.getCapabilityValue('meter_consumption'), timeNow);
         if (consumptionRemaining !== newConsumptionRemaining) {
             await this.updateCapabilityValue('meter_consumption_remaining', newConsumptionRemaining);
-            this.homey.flow.getDeviceTriggerCard('meter_consumption_remaining_changed').trigger(this, { remaining: this.decimals(this.getCapabilityValue('meter_consumption_remaining'), 0) });
+            this.homey.flow
+                .getDeviceTriggerCard('meter_consumption_remaining_changed')
+                .trigger(this, { remaining: this.decimals(this.getCapabilityValue('meter_consumption_remaining'), 0) })
+                .catch(this.error);
         }
         if (predictionRemaining !== newPredictionRemaining) {
             await this.updateCapabilityValue('meter_prediction_remaining', newPredictionRemaining);
-            this.homey.flow.getDeviceTriggerCard('meter_prediction_remaining_changed').trigger(this, { remaining: this.decimals(this.getCapabilityValue('meter_prediction_remaining'), 0) });
+            this.homey.flow
+                .getDeviceTriggerCard('meter_prediction_remaining_changed')
+                .trigger(this, { remaining: this.decimals(this.getCapabilityValue('meter_prediction_remaining'), 0) })
+                .catch(this.error);
         }
     }
 
-    storeLatest(timeNow: Date, watt: number) {
+    async storeLatest(timeNow: Date, watt: number) {
         this.previousTimestamp = timeNow;
         this.previousConsumption = watt;
-        this.setStoreValue('latest', { timestamp: this.previousTimestamp }); // Object to keep open for future implementations and also to support v1.0.0 implementation
+        await this.setStoreValue('latest', { timestamp: this.previousTimestamp }).catch(this.error); // Object to keep open for future implementations and also to support v1.0.0 implementation
     }
 
     async startNewHour(watt: number, timeNow: Date) {
@@ -205,13 +211,17 @@ class PowerOfTheHourDevice extends Homey.Device {
                 this,
                 { previous: this.decimals(this.getCapabilityValue('meter_consumption_previous_hour'), 0), previousCost: this.decimals(this.getCapabilityValue('meter_cost_previous_hour'), 2) },
                 {}
-            );
+            )
+            .catch(this.error);
     }
 
     async checkIfPeak(watt: number) {
         if (watt > this.getCapabilityValue('meter_consumption_peak')) {
             await this.updateCapabilityValue('meter_consumption_peak', watt);
-            this.homey.flow.getDeviceTriggerCard('new_peak').trigger(this, { peak: this.decimals(this.getCapabilityValue('meter_consumption_peak'), 0) }, {});
+            this.homey.flow
+                .getDeviceTriggerCard('new_peak')
+                .trigger(this, { peak: this.decimals(this.getCapabilityValue('meter_consumption_peak'), 0) }, {})
+                .catch(this.error);
         }
     }
 
@@ -219,13 +229,19 @@ class PowerOfTheHourDevice extends Homey.Device {
         // Predicted consumption
         if (this.getCapabilityValue('meter_predictor') > this.getSetting('prediction_limit') && this.isNotifyAllowed('prediction') && !this.getCapabilityValue('alarm_prediction_notified')) {
             await this.updateCapabilityValue('alarm_prediction_notified', true);
-            this.homey.flow.getDeviceTriggerCard('prediction_limit_reached').trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_predictor'), 0) }, {});
+            this.homey.flow
+                .getDeviceTriggerCard('prediction_limit_reached')
+                .trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_predictor'), 0) }, {})
+                .catch(this.error);
             this.log(`Triggering prediction with the value ${this.decimals(this.getCapabilityValue('meter_predictor'), 0)} and the limit was set to ${this.getSetting('prediction_limit')}`);
         }
         // Consumption
         if (this.getCapabilityValue('meter_consumption') > this.getSetting('consumption_limit') && this.isNotifyAllowed('consumption') && !this.getCapabilityValue('alarm_consumption_notified')) {
             await this.updateCapabilityValue('alarm_consumption_notified', true);
-            this.homey.flow.getDeviceTriggerCard('consumption_limit_reached').trigger(this, { consumption: this.decimals(this.getCapabilityValue('meter_consumption'), 0) }, {});
+            this.homey.flow
+                .getDeviceTriggerCard('consumption_limit_reached')
+                .trigger(this, { consumption: this.decimals(this.getCapabilityValue('meter_consumption'), 0) }, {})
+                .catch(this.error);
             this.log(`Triggering consumption with the value ${this.decimals(this.getCapabilityValue('meter_consumption'), 0)} and the limit was set to ${this.getSetting('consumption_limit')}`);
         }
         // Reset predicted consumption
@@ -239,7 +255,10 @@ class PowerOfTheHourDevice extends Homey.Device {
             !this.getCapabilityValue('alarm_cost_prediction_notified')
         ) {
             await this.updateCapabilityValue('alarm_cost_prediction_notified', true);
-            this.homey.flow.getDeviceTriggerCard('prediction_cost_limit_reached').trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_cost_prediction'), 2) }, {});
+            this.homey.flow
+                .getDeviceTriggerCard('prediction_cost_limit_reached')
+                .trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_cost_prediction'), 2) }, {})
+                .catch(this.error);
             this.log(
                 `Triggering cost prediction with the value ${this.decimals(this.getCapabilityValue('meter_cost_prediction'), 2)} and the limit was set to ${this.getSetting('prediction_cost_limit')}`
             );
@@ -247,7 +266,10 @@ class PowerOfTheHourDevice extends Homey.Device {
         // Cost
         if (this.getCapabilityValue('meter_cost') > this.getSetting('cost_limit') && this.isNotifyAllowed('cost') && !this.getCapabilityValue('alarm_cost_notified')) {
             await this.updateCapabilityValue('alarm_cost_notified', true);
-            this.homey.flow.getDeviceTriggerCard('cost_limit_reached').trigger(this, { cost: this.decimals(this.getCapabilityValue('meter_cost'), 2) }, {});
+            this.homey.flow
+                .getDeviceTriggerCard('cost_limit_reached')
+                .trigger(this, { cost: this.decimals(this.getCapabilityValue('meter_cost'), 2) }, {})
+                .catch(this.error);
             this.log(`Triggering cost with the value ${this.decimals(this.getCapabilityValue('meter_cost'), 2)} and the limit was set to ${this.getSetting('cost_limit')}`);
         }
         // Reset predicted cost
@@ -258,7 +280,10 @@ class PowerOfTheHourDevice extends Homey.Device {
 
     async resetPredictionNotification(isNewHour = false) {
         if (this.getCapabilityValue('alarm_prediction_notified') && (!isNewHour || (isNewHour && this.getSetting('prediction_reset_new_hour_enabled')))) {
-            this.homey.flow.getDeviceTriggerCard('prediction_reset').trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_predictor'), 0) }, {});
+            this.homey.flow
+                .getDeviceTriggerCard('prediction_reset')
+                .trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_predictor'), 0) }, {})
+                .catch(this.error);
             this.log(
                 `Triggering prediction reset with the value ${this.decimals(this.getCapabilityValue('meter_predictor'), 0)} and the limit was set to ${this.getSetting('prediction_reset_limit')}`
             );
@@ -268,7 +293,10 @@ class PowerOfTheHourDevice extends Homey.Device {
 
     async resetCostPredictionNotification(isNewHour = false) {
         if (this.getCapabilityValue('alarm_cost_prediction_notified') && (!isNewHour || (isNewHour && this.getSetting('prediction_cost_reset_new_hour_enabled')))) {
-            this.homey.flow.getDeviceTriggerCard('prediction_cost_reset').trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_cost_prediction'), 2) }, {});
+            this.homey.flow
+                .getDeviceTriggerCard('prediction_cost_reset')
+                .trigger(this, { predicted: this.decimals(this.getCapabilityValue('meter_cost_prediction'), 2) }, {})
+                .catch(this.error);
             this.log(
                 `Triggering cost prediction reset with the value ${this.decimals(this.getCapabilityValue('meter_cost_prediction'), 2)} and the limit was set to ${this.getSetting(
                     'prediction_cost_reset_limit'
@@ -281,7 +309,10 @@ class PowerOfTheHourDevice extends Homey.Device {
     async resetConsumptionNotification() {
         if (this.getCapabilityValue('alarm_consumption_notified')) {
             this.log(`Triggering consumption reset with the value ${this.decimals(this.getCapabilityValue('meter_consumption_previous_hour'), 0)}`);
-            this.homey.flow.getDeviceTriggerCard('consumption_reset').trigger(this, { previous: this.decimals(this.getCapabilityValue('meter_consumption_previous_hour'), 0) }, {});
+            this.homey.flow
+                .getDeviceTriggerCard('consumption_reset')
+                .trigger(this, { previous: this.decimals(this.getCapabilityValue('meter_consumption_previous_hour'), 0) }, {})
+                .catch(this.error);
         }
         await this.updateCapabilityValue('alarm_consumption_notified', false);
     }
@@ -289,7 +320,10 @@ class PowerOfTheHourDevice extends Homey.Device {
     async resetCostNotification() {
         if (this.getCapabilityValue('alarm_cost_notified')) {
             this.log(`Triggering cost reset with the value ${this.decimals(this.getCapabilityValue('meter_cost_previous_hour'), 2)}`);
-            this.homey.flow.getDeviceTriggerCard('cost_reset').trigger(this, { previousCost: this.decimals(this.getCapabilityValue('meter_cost_previous_hour'), 2) }, {});
+            this.homey.flow
+                .getDeviceTriggerCard('cost_reset')
+                .trigger(this, { previousCost: this.decimals(this.getCapabilityValue('meter_cost_previous_hour'), 2) }, {})
+                .catch(this.error);
         }
         await this.updateCapabilityValue('alarm_cost_notified', false);
     }

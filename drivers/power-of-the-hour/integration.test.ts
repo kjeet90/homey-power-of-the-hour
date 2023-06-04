@@ -45,8 +45,11 @@ vi.mock('homey', () => {
         flow: {
             getDeviceTriggerCard: vi.fn().mockImplementation((flowCard: string) => ({
                 trigger: vi.fn().mockImplementation((_device, tokens) => {
-                    if (!flowTriggerValues[flowCard]) flowTriggerValues[flowCard] = [tokens];
-                    else flowTriggerValues[flowCard].push(tokens);
+                    return new Promise<void>((resolve, _reject) => {
+                        if (!flowTriggerValues[flowCard]) flowTriggerValues[flowCard] = [tokens];
+                        else flowTriggerValues[flowCard].push(tokens);
+                        resolve();
+                    });
                 })
             }))
         }
@@ -88,6 +91,7 @@ describe('Predicted consumption', () => {
                 resolve();
             });
         });
+        vi.spyOn(unit, 'setStoreValue').mockResolvedValue();
 
         vi.useFakeTimers();
         await unit.onInit();
@@ -117,6 +121,7 @@ describe('Predicted consumption', () => {
                 resolve();
             });
         });
+        vi.spyOn(unit, 'setStoreValue').mockResolvedValue();
 
         vi.useFakeTimers();
         await unit.onInit();
@@ -158,6 +163,7 @@ describe('Predicted consumption', () => {
                 resolve();
             });
         });
+        vi.spyOn(unit, 'setStoreValue').mockResolvedValue();
 
         vi.useFakeTimers();
         await unit.onInit();
@@ -194,6 +200,7 @@ describe('Predicted consumption', () => {
                 resolve();
             });
         });
+        vi.spyOn(unit, 'setStoreValue').mockResolvedValue();
 
         vi.useFakeTimers();
         await unit.onInit();
@@ -232,6 +239,7 @@ describe('Predicted consumption', () => {
                 resolve();
             });
         });
+        vi.spyOn(unit, 'setStoreValue').mockResolvedValue();
 
         vi.useFakeTimers();
         await unit.onInit();
@@ -282,6 +290,7 @@ describe('Predicted consumption', () => {
                 resolve();
             });
         });
+        vi.spyOn(unit, 'setStoreValue').mockResolvedValue();
 
         vi.useFakeTimers();
         await unit.onInit();
@@ -327,6 +336,7 @@ describe('Predicted consumption', () => {
                 resolve();
             });
         });
+        vi.spyOn(unit, 'setStoreValue').mockResolvedValue();
 
         vi.useFakeTimers();
         await unit.onInit();
@@ -376,6 +386,7 @@ describe('Predicted consumption', () => {
                 resolve();
             });
         });
+        vi.spyOn(unit, 'setStoreValue').mockResolvedValue();
 
         vi.useFakeTimers();
         await unit.onInit();
@@ -422,6 +433,7 @@ describe('Predicted consumption', () => {
                 resolve();
             });
         });
+        vi.spyOn(unit, 'setStoreValue').mockResolvedValue();
 
         vi.useFakeTimers();
         await unit.onInit();
@@ -468,6 +480,7 @@ describe('Predicted consumption', () => {
                 resolve();
             });
         });
+        vi.spyOn(unit, 'setStoreValue').mockResolvedValue();
 
         vi.useFakeTimers();
         await unit.onInit();
@@ -514,6 +527,7 @@ describe('Predicted consumption', () => {
                 resolve();
             });
         });
+        vi.spyOn(unit, 'setStoreValue').mockResolvedValue();
 
         vi.useFakeTimers();
         await unit.onInit();
