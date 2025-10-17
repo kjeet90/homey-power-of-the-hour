@@ -19,6 +19,6 @@
         "vitest": "^0.31.4"
     },
     "dependencies": {
-        "uuid": "^9.0.0"
+        "uuid": "^13.0.0"
     }
 }
