@@ -1,1 +1,4 @@
-{}
+{
+    "token_consumption_limit": "Consumption limit",
+    "token_prediction_limit": "Prediction limit"
+}

@@ -10,6 +10,10 @@ Read the guide on the [Github wiki](https://github.com/kjeet90/homey-power-of-th
 
 # Release notes:
 
+## 1.5.0
+
+-   Added global token for consumption limit and prediction limit
+
 ## 1.4.0
 
 -   Added "Power of the quarter" device

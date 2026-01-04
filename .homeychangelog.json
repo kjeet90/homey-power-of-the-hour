@@ -1,4 +1,7 @@
 {
+    "1.5.0": {
+        "en": "Added global token for consumption limit and prediction limit"
+    },
     "1.4.0": {
         "en": "Added Power of the quarter device"
     },

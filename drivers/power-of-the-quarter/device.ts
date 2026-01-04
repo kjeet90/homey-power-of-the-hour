@@ -1,4 +1,4 @@
-import Homey from 'homey';
+import Homey, { FlowToken } from 'homey';
 import { getPowerAvailableQuarter, getQuarterPrediction, getElapsedQuarter, isNewQuarter, getRemainingQuarter } from '../../lib/quarter-calculations.js';
 import { getHoursBetween } from '../../lib/calculations.js';
 
@@ -16,6 +16,9 @@ class PowerOfTheQuarterDevice extends Homey.Device {
 
     latest: { timestamp: Date | null } = { timestamp: null };
 
+    token_consumption_limit: FlowToken | null = null;
+    token_prediction_limit: FlowToken | null = null;
+
     async onInit() {
         try {
             this.latest = (await this.getStoreValue('latest')) ?? {};
@@ -25,6 +28,7 @@ class PowerOfTheQuarterDevice extends Homey.Device {
         }
         const validTimeStamp = !!(this.latest.timestamp && !isNewQuarter(new Date(), new Date(this.latest.timestamp)));
         // await this.upgradeExistingDevice();
+        await this.createGlobalTokens()
         await this.setInitialValues(validTimeStamp);
         this.log('Initialized device', this.getName());
         this.predict();
@@ -44,6 +48,20 @@ class PowerOfTheQuarterDevice extends Homey.Device {
     //     if (!this.hasCapability('meter_consumption_remaining')) await this.addCapability('meter_consumption_remaining');
     //     if (!this.hasCapability('meter_prediction_remaining')) await this.addCapability('meter_prediction_remaining');
     // }
+
+
+    async createGlobalTokens() {
+        this.token_consumption_limit = await this.homey.flow.createToken("consumption_limit", {
+            type: "number",
+            title: this.homey.__('token_consumption_limit'),
+            value: this.getSetting('consumption_limit')
+        });
+        this.token_prediction_limit = await this.homey.flow.createToken("prediction_limit", {
+            type: "number",
+            title: this.homey.__('token_prediction_limit'),
+            value: this.getSetting('prediction_limit')
+        });
+    }
 
     async setInitialValues(validTimeStamp = false) {
         if (validTimeStamp) {
@@ -389,6 +407,12 @@ class PowerOfTheQuarterDevice extends Homey.Device {
         }
         if (changedKeys.includes('prediction_history_count') && typeof newSettings['prediction_history_count'] === 'number') {
             this.history = this.history.slice(0, newSettings['prediction_history_count']);
+        }
+        if (changedKeys.includes('consumption_limit') && typeof newSettings['consumption_limit'] === 'number') {
+            this.token_consumption_limit?.setValue(newSettings['consumption_limit']);
+        }
+        if (changedKeys.includes('prediction_limit') && typeof newSettings['prediction_limit'] === 'number') {
+            this.token_prediction_limit?.setValue(newSettings['prediction_limit']);
         }
         return;
     }
