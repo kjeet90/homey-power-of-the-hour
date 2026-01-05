@@ -10,6 +10,9 @@ Read the guide on the [Github wiki](https://github.com/kjeet90/homey-power-of-th
 
 # Release notes:
 
+## 1.5.1
+-   Fixed issue where the global tokens crashed devices. NOTE: You have to reconfigure any use of the consumption limit and prediction limit tokens.
+
 ## 1.5.0
 
 -   Added global token for consumption limit and prediction limit

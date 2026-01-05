@@ -1,4 +1,7 @@
 {
+    "1.5.1": {
+        "en": "Fixed issue where the global tokens crashed devices. NOTE: You have to reconfigure any use of the consumption limit and prediction limit tokens."
+    },
     "1.5.0": {
         "en": "Added global token for consumption limit and prediction limit"
     },

@@ -49,12 +49,12 @@ class PowerOfTheHourDevice extends Homey.Device {
     }
 
     async createGlobalTokens() {
-        this.token_consumption_limit = await this.homey.flow.createToken("consumption_limit", {
+        this.token_consumption_limit = await this.homey.flow.createToken(`consumption_limit-${this.getData().id}`, {
             type: "number",
             title: this.homey.__('token_consumption_limit'),
             value: this.getSetting('consumption_limit')
         });
-        this.token_prediction_limit = await this.homey.flow.createToken("prediction_limit", {
+        this.token_prediction_limit = await this.homey.flow.createToken(`prediction_limit-${this.getData().id}`, {
             type: "number",
             title: this.homey.__('token_prediction_limit'),
             value: this.getSetting('prediction_limit')
@@ -390,7 +390,9 @@ class PowerOfTheHourDevice extends Homey.Device {
         newSettings,
         changedKeys
     }: {
-        oldSettings: { [key: string]: string | number | boolean | null | undefined };
+        oldSettings: {
+            [key: string]: string | number | boolean | null | undefined
+        };
         newSettings: { [key: string]: string | number | boolean | null | undefined };
         changedKeys: string[];
     }): Promise<string | void> {
